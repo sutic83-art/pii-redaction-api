@@ -1,8 +1,11 @@
 import os
+import time
 from typing import List, Optional
+from uuid import uuid4
 
-from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -17,11 +20,39 @@ from app.rate_limit import enforce_rate_limit
 from app.rec_sr import find_entities
 
 
-app = FastAPI(title="PII Redaction API MVP", version="3.0.0")
+def _get_cors_origins() -> List[str]:
+    raw = os.getenv("CORS_ALLOW_ORIGINS", "").strip()
+    if not raw:
+        return []
+
+    if raw == "*":
+        return ["*"]
+
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+app = FastAPI(
+    title="PII Redaction API MVP",
+    version="3.1.0",
+    docs_url="/docs",
+    redoc_url=None,
+    openapi_url="/openapi.json",
+)
 
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
+
+cors_origins = _get_cors_origins()
+if cors_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=cors_origins,
+        allow_credentials=False if cors_origins == ["*"] else True,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
+        expose_headers=["x-request-id", "x-response-time-ms"],
+    )
 
 
 class RedactRequest(BaseModel):
@@ -65,7 +96,21 @@ def redact_text(text: str, results: List[dict], policy: str) -> str:
     return output
 
 
-@app.get("/")
+@app.middleware("http")
+async def add_request_id(request: Request, call_next):
+    request_id = request.headers.get("x-request-id") or str(uuid4())
+    request.state.request_id = request_id
+    started_at = time.time()
+
+    response = await call_next(request)
+
+    duration_ms = int((time.time() - started_at) * 1000)
+    response.headers["x-request-id"] = request_id
+    response.headers["x-response-time-ms"] = str(duration_ms)
+    return response
+
+
+@app.get("/", include_in_schema=False)
 def root():
     return {
         "name": "PII Redaction API",
@@ -76,6 +121,11 @@ def root():
         "redact": "/redact",
         "api_v1_redact": "/api/v1/redact",
     }
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    return Response(status_code=204)
 
 
 @app.get("/health")

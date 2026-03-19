@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: pii-redaction-api
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: RETENTION_DAYS
+        value: 30
+      - key: RATE_LIMIT_PER_MINUTE
+        value: 30
+      - key: API_KEYS
+        sync: false
+      - key: HASH_SALT
+        sync: false
+      - key: CORS_ALLOW_ORIGINS
+        sync: false
