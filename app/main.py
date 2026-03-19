@@ -1,9 +1,11 @@
+from pathlib import Path
 import os
 import time
 from typing import List, Optional
 from uuid import uuid4
 
 from fastapi import FastAPI, Header, HTTPException, Request, Response
+from fastapi.responses import FileResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -18,6 +20,8 @@ from app.errors import (
 from app.policy import apply_policy
 from app.rate_limit import enforce_rate_limit
 from app.rec_sr import find_entities
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 def _get_cors_origins() -> List[str]:
@@ -118,6 +122,7 @@ def root():
         "version": app.version,
         "docs": "/docs",
         "health": "/health",
+        "demo": "/demo",
         "redact": "/redact",
         "api_v1_redact": "/api/v1/redact",
     }
@@ -127,11 +132,13 @@ def root():
 def favicon():
     return Response(status_code=204)
 
-
 @app.get("/health")
 def health():
     return {"status": "ok", "version": app.version}
 
+@app.get("/demo", include_in_schema=False)
+def demo():
+    return FileResponse(BASE_DIR / "static" / "index.html")
 
 @app.post("/redact", response_model=RedactResponse)
 @app.post("/api/v1/redact", response_model=RedactResponse)
