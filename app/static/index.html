@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API Demo</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #131a2e;
+      --panel-2: #1a2340;
+      --text: #eef2ff;
+      --muted: #a7b0c8;
+      --accent: #6ea8fe;
+      --ok: #34d399;
+      --border: #2a355a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0b1020 0%, #111933 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    p.lead {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(19, 26, 46, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    .row {
+      margin-bottom: 16px;
+    }
+
+    .entities {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .entity {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #081225;
+    }
+
+    .secondary {
+      background: #223156;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    .status.ok {
+      color: var(--ok);
+    }
+
+    .result-box {
+      background: #0f1730;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 160px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 13px;
+      color: #dbe6ff;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #1d2b50;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .entities {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">PII Redaction API Demo</div>
+    <h1>Redakcija osetljivih podataka</h1>
+    <p class="lead">
+      Unesi tekst, izaberi politiku i tipove entiteta, pa klikni na dugme za redakciju.
+      Demo koristi isti backend servis i poziva <code>/api/v1/redact</code>.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="row">
+          <label for="apiKey">API key</label>
+          <input id="apiKey" type="password" placeholder="Unesi API key" />
+        </div>
+
+        <div class="row">
+          <label for="policy">Politika redakcije</label>
+          <select id="policy">
+            <option value="mask">mask</option>
+            <option value="hash">hash</option>
+            <option value="rm">rm</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label>Tipovi entiteta</label>
+          <div class="entities">
+            <label class="entity"><input type="checkbox" value="JMBG" checked> JMBG</label>
+            <label class="entity"><input type="checkbox" value="PIB" checked> PIB</label>
+            <label class="entity"><input type="checkbox" value="MB_COMPANY" checked> MB_COMPANY</label>
+            <label class="entity"><input type="checkbox" value="EMAIL" checked> EMAIL</label>
+            <label class="entity"><input type="checkbox" value="PHONE" checked> PHONE</label>
+            <label class="entity"><input type="checkbox" value="IBAN" checked> IBAN</label>
+            <label class="entity"><input type="checkbox" value="CARD_NUMBER" checked> CARD_NUMBER</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="text">Ulazni tekst</label>
+          <textarea id="text">JMBG 0101990712345; PIB 100000049; matični broj 17580175; email kontakt@example.rs; telefon +381 64 123 4567; IBAN RS69 1234 5678 9012 3456 78; kartica 4111 1111 1111 1111</textarea>
+        </div>
+
+        <div class="actions">
+          <button class="primary" id="runBtn">Redact</button>
+          <button class="secondary" id="resetBtn" type="button">Vrati primer</button>
+        </div>
+
+        <div id="status" class="status"></div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <label>Redacted text</label>
+          <div id="redactedText" class="result-box"></div>
+        </div>
+
+        <div class="meta">
+          <div>
+            <label>Detections</label>
+            <div class="result-box"><pre id="detections"></pre></div>
+          </div>
+
+          <div>
+            <label>Audit</label>
+            <div class="result-box"><pre id="audit"></pre></div>
+          </div>
+
+          <div class="small">
+            Napomena: API key se koristi samo za ovaj zahtev u browseru. Za javni komercijalni frontend sledeći korak je posebna autentikacija bez izlaganja API ključa krajnjem korisniku.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sampleText = 'JMBG 0101990712345; PIB 100000049; matični broj 17580175; email kontakt@example.rs; telefon +381 64 123 4567; IBAN RS69 1234 5678 9012 3456 78; kartica 4111 1111 1111 1111';
+
+    const apiKeyEl = document.getElementById('apiKey');
+    const textEl = document.getElementById('text');
+    const policyEl = document.getElementById('policy');
+    const statusEl = document.getElementById('status');
+    const redactedTextEl = document.getElementById('redactedText');
+    const detectionsEl = document.getElementById('detections');
+    const auditEl = document.getElementById('audit');
+    const runBtn = document.getElementById('runBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function getSelectedEntities() {
+      return Array.from(document.querySelectorAll('.entities input[type="checkbox"]:checked'))
+        .map(el => el.value);
+    }
+
+    function setStatus(message, ok = false) {
+      statusEl.textContent = message;
+      statusEl.className = ok ? 'status ok' : 'status';
+    }
+
+    function clearResult() {
+      redactedTextEl.textContent = '';
+      detectionsEl.textContent = '';
+      auditEl.textContent = '';
+    }
+
+    async function runRedaction() {
+      const apiKey = apiKeyEl.value.trim();
+      const text = textEl.value;
+      const policy = policyEl.value;
+      const entities = getSelectedEntities();
+
+      clearResult();
+
+      if (!apiKey) {
+        setStatus('Unesi API key.');
+        return;
+      }
+
+      if (!text.trim()) {
+        setStatus('Unesi tekst za obradu.');
+        return;
+      }
+
+      setStatus('Slanje zahteva...');
+
+      try {
+        const response = await fetch('/api/v1/redact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey
+          },
+          body: JSON.stringify({
+            text,
+            policy,
+            entities
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setStatus(`Greška: ${data?.error?.message || 'Request failed'}`);
+          redactedTextEl.textContent = JSON.stringify(data, null, 2);
+          return;
+        }
+
+        redactedTextEl.textContent = data.redacted_text || '';
+        detectionsEl.textContent = JSON.stringify(data.detections || [], null, 2);
+        auditEl.textContent = JSON.stringify(data.audit || {}, null, 2);
+        setStatus('Uspešno obrađeno.', true);
+      } catch (error) {
+        setStatus(`Greška: ${error.message}`);
+      }
+    }
+
+    runBtn.addEventListener('click', runRedaction);
+
+    resetBtn.addEventListener('click', () => {
+      textEl.value = sampleText;
+      policyEl.value = 'mask';
+      document.querySelectorAll('.entities input[type="checkbox"]').forEach(el => {
+        el.checked = true;
+      });
+      clearResult();
+      setStatus('');
+    });
+  </script>
+</body>
+</html>
