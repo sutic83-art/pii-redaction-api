@@ -115,7 +115,11 @@ async def add_request_id(request: Request, call_next):
 
 
 @app.get("/", include_in_schema=False)
-def root():
+def landing():
+    return FileResponse(BASE_DIR / "static" / "landing.html")
+
+@app.get("/api", include_in_schema=False)
+def api_info():
     return {
         "name": "PII Redaction API",
         "status": "running",
@@ -126,7 +130,6 @@ def root():
         "redact": "/redact",
         "api_v1_redact": "/api/v1/redact",
     }
-
 
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():

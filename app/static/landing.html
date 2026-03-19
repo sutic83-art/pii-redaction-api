@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API</title>
+  <meta name="description" content="Redakcija osetljivih podataka: JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.92);
+      --panel-2: #13203d;
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .brand {
+      font-weight: bold;
+      font-size: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 26px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 34px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #142445;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 46px;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .lead {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: bold;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #08111f;
+      border-color: transparent;
+    }
+
+    .btn-secondary {
+      background: #162747;
+      color: var(--text);
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .mini {
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .mini strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .mini span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .side-panel {
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .side-title {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .code-box {
+      background: #0b1428;
+      border: 1px solid #223965;
+      border-radius: 14px;
+      padding: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #d8e7ff;
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section-header {
+      margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 20px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .types {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .type-box {
+      padding: 16px;
+      text-align: center;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .type-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .type-box span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cta-final {
+      margin-top: 30px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .cta-final h3 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .cta-final p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 720px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1020px) {
+      .hero,
+      .grid-3,
+      .types {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .trust-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/demo">Demo</a>
+        <a class="nav-link" href="/docs">API Docs</a>
+        <a class="nav-link" href="/health">Health</a>
+        <a class="nav-link" href="/api">API Info</a>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="card hero-main">
+        <div class="badge">Production-ready v1.2 • FastAPI • Docker • Render</div>
+        <h1>Redakcija osetljivih podataka pre deljenja, arhiviranja i AI obrade</h1>
+        <p class="lead">
+          Servis za automatsku redakciju osetljivih podataka u tekstu. Namenjen za firme,
+          pravne timove, računovodstvo, internu dokumentaciju i pripremu sadržaja za AI sisteme.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/demo">Otvori demo</a>
+          <a class="btn btn-secondary" href="/docs">Pogledaj API dokumentaciju</a>
+        </div>
+
+        <div class="trust-row">
+          <div class="mini">
+            <strong>7 podržanih tipova</strong>
+            <span>JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice.</span>
+          </div>
+          <div class="mini">
+            <strong>Tri politike</strong>
+            <span>Maskiranje, hash zamena ili potpuno uklanjanje vrednosti iz teksta.</span>
+          </div>
+          <div class="mini">
+            <strong>Spreman za integraciju</strong>
+            <span>Docker, CI/CD, javni endpoint, docs i demo interfejs već rade.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hero-side">
+        <div class="side-panel">
+          <div class="side-title">Primer ulaza</div>
+          <div class="code-box">JMBG 0101990712345; PIB 100000049; matični broj 17580175; email kontakt@example.rs; telefon +381 64 123 4567; IBAN RS69 1234 5678 9012 3456 78; kartica 4111 1111 1111 1111</div>
+        </div>
+
+        <div class="side-panel">
+          <div class="side-title">Primer izlaza</div>
+          <div class="code-box">JMBG *************; PIB *********; matični broj ********; email ******************; telefon ****************; IBAN ***************************; kartica *******************</div>
+        </div>
+
+        <div class="side-panel">
+          <div class="side-title">Glavna ruta</div>
+          <div class="code-box">POST /api/v1/redact</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Šta servis radi</h2>
+        <p>
+          Prepoznaje osetljive podatke u tekstu, primenjuje izabranu politiku redakcije
+          i vraća bezbedniju verziju sadržaja zajedno sa pregledom detekcija i audit informacijama.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card feature">
+          <h3>Pre deljenja dokumenata</h3>
+          <p>Koristi se kada dokumente ili sadržaj treba poslati eksternim saradnicima, klijentima ili trećim stranama.</p>
+        </div>
+
+        <div class="card feature">
+          <h3>Pre AI obrade</h3>
+          <p>Pomaže da se pre slanja ka LLM ili internim AI tokovima uklone ili zamaskiraju osetljivi identifikatori.</p>
+        </div>
+
+        <div class="card feature">
+          <h3>Za internu standardizaciju</h3>
+          <p>Jedinstvena API tačka za redakciju pre arhiviranja, logovanja, testiranja i razmene tekstualnih podataka.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Podržani tipovi podataka</h2>
+        <p>Aktuelna verzija je fokusirana na tipove koji mogu da daju visoku pouzdanost u praktičnoj upotrebi.</p>
+      </div>
+
+      <div class="types">
+        <div class="type-box"><strong>JMBG</strong><span>Fizička lica</span></div>
+        <div class="type-box"><strong>PIB</strong><span>Pravna lica</span></div>
+        <div class="type-box"><strong>MB_COMPANY</strong><span>Matični broj firme</span></div>
+        <div class="type-box"><strong>EMAIL</strong><span>Email adrese</span></div>
+        <div class="type-box"><strong>PHONE</strong><span>Telefonski brojevi</span></div>
+        <div class="type-box"><strong>IBAN</strong><span>Računi i platni podaci</span></div>
+        <div class="type-box"><strong>CARD_NUMBER</strong><span>Brojevi kartica</span></div>
+        <div class="type-box"><strong>mask / hash / rm</strong><span>Politike redakcije</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card cta-final">
+        <div>
+          <h3>Spremno za prikaz klijentima i testiranje</h3>
+          <p>
+            Otvori demo interfejs za praktičnu proveru rada sistema ili pristupi API dokumentaciji
+            za direktnu integraciju u postojeće procese i aplikacije.
+          </p>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/demo">Pokreni demo</a>
+          <a class="btn btn-secondary" href="/docs">Otvori docs</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      PII Redaction API • Demo i landing strana rade iz istog FastAPI servisa.
+    </div>
+  </div>
+</body>
+</html>
