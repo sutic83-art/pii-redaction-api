@@ -4,22 +4,28 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PII Redaction API</title>
-  <meta name="description" content="Redakcija osetljivih podataka: JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice." />
+  <meta name="description" content="Redakcija osetljivih podataka za firme: JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice." />
   <style>
     :root {
       --bg: #08111f;
       --bg-2: #0d1830;
-      --panel: rgba(17, 27, 50, 0.92);
+      --panel: rgba(17, 27, 50, 0.94);
       --panel-2: #13203d;
       --text: #eef4ff;
       --muted: #aab7d1;
       --accent: #78a8ff;
       --accent-2: #8ef0c2;
+      --warn: #ffd166;
       --border: #26385f;
       --shadow: 0 20px 50px rgba(0,0,0,0.3);
+      --max: 1180px;
     }
 
     * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -34,9 +40,9 @@
     a { color: inherit; text-decoration: none; }
 
     .wrap {
-      max-width: 1180px;
+      max-width: var(--max);
       margin: 0 auto;
-      padding: 28px 20px 60px;
+      padding: 28px 20px 70px;
     }
 
     .nav {
@@ -45,6 +51,7 @@
       justify-content: space-between;
       gap: 16px;
       margin-bottom: 40px;
+      flex-wrap: wrap;
     }
 
     .brand {
@@ -117,7 +124,7 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
 
     .btn {
@@ -141,6 +148,12 @@
     .btn-secondary {
       background: #162747;
       color: var(--text);
+    }
+
+    .btn-tertiary {
+      background: #102038;
+      color: var(--accent-2);
+      border-color: #214a57;
     }
 
     .trust-row {
@@ -202,8 +215,36 @@
       color: #d8e7ff;
     }
 
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .kpi {
+      padding: 16px;
+      text-align: center;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 6px;
+      color: var(--accent-2);
+    }
+
+    .kpi span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     .section {
-      margin-top: 26px;
+      margin-top: 30px;
     }
 
     .section-header {
@@ -269,6 +310,67 @@
       font-size: 13px;
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .list-card {
+      padding: 22px;
+    }
+
+    .list-card h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .step {
+      padding: 18px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .step .num {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #1a2c53;
+      color: var(--accent-2);
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .step h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
     .cta-final {
       margin-top: 30px;
       padding: 28px;
@@ -291,6 +393,41 @@
       max-width: 720px;
     }
 
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .contact-card {
+      padding: 24px;
+    }
+
+    .contact-card h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+    }
+
+    .contact-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: var(--warn);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .footer {
       margin-top: 28px;
       color: var(--muted);
@@ -302,7 +439,11 @@
     @media (max-width: 1020px) {
       .hero,
       .grid-3,
-      .types {
+      .types,
+      .grid-2,
+      .contact-grid,
+      .steps,
+      .kpis {
         grid-template-columns: 1fr;
       }
 
@@ -321,10 +462,11 @@
     <div class="nav">
       <div class="brand">PII Redaction API</div>
       <div class="nav-links">
+        <a class="nav-link" href="#use-cases">Use cases</a>
+        <a class="nav-link" href="#how-it-works">Kako radi</a>
         <a class="nav-link" href="/demo">Demo</a>
         <a class="nav-link" href="/docs">API Docs</a>
-        <a class="nav-link" href="/health">Health</a>
-        <a class="nav-link" href="/api">API Info</a>
+        <a class="nav-link" href="#contact">Kontakt</a>
       </div>
     </div>
 
@@ -340,6 +482,7 @@
         <div class="cta-row">
           <a class="btn btn-primary" href="/demo">Otvori demo</a>
           <a class="btn btn-secondary" href="/docs">Pogledaj API dokumentaciju</a>
+          <a class="btn btn-tertiary" href="#contact">Zakaži razgovor</a>
         </div>
 
         <div class="trust-row">
@@ -355,6 +498,13 @@
             <strong>Spreman za integraciju</strong>
             <span>Docker, CI/CD, javni endpoint, docs i demo interfejs već rade.</span>
           </div>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi"><strong>7</strong><span>tipova PII entiteta</span></div>
+          <div class="kpi"><strong>3</strong><span>politike redakcije</span></div>
+          <div class="kpi"><strong>API</strong><span>demo + docs spremni</span></div>
+          <div class="kpi"><strong>CI/CD</strong><span>GitHub + Render deploy</span></div>
         </div>
       </div>
 
@@ -376,29 +526,60 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="use-cases">
       <div class="section-header">
-        <h2>Šta servis radi</h2>
+        <h2>Za koga je namenjeno</h2>
         <p>
-          Prepoznaje osetljive podatke u tekstu, primenjuje izabranu politiku redakcije
-          i vraća bezbedniju verziju sadržaja zajedno sa pregledom detekcija i audit informacijama.
+          Proizvod je namenjen timovima koji pre slanja ili obrade teksta moraju da uklone osetljive podatke
+          i zadrže kontrolu nad sadržajem.
         </p>
       </div>
 
       <div class="grid-3">
         <div class="card feature">
-          <h3>Pre deljenja dokumenata</h3>
-          <p>Koristi se kada dokumente ili sadržaj treba poslati eksternim saradnicima, klijentima ili trećim stranama.</p>
+          <h3>Pravne službe</h3>
+          <p>Redakcija identifikatora pre slanja ugovora, dopisa, izjava, zahteva i druge dokumentacije trećim stranama.</p>
         </div>
 
         <div class="card feature">
-          <h3>Pre AI obrade</h3>
-          <p>Pomaže da se pre slanja ka LLM ili internim AI tokovima uklone ili zamaskiraju osetljivi identifikatori.</p>
+          <h3>Računovodstvo i finansije</h3>
+          <p>Maskiranje PIB-a, matičnog broja, IBAN-a i brojeva kartica pre deljenja sadržaja sa eksternim sistemima i partnerima.</p>
         </div>
 
         <div class="card feature">
-          <h3>Za internu standardizaciju</h3>
-          <p>Jedinstvena API tačka za redakciju pre arhiviranja, logovanja, testiranja i razmene tekstualnih podataka.</p>
+          <h3>AI i automatizacija</h3>
+          <p>Čišćenje teksta pre slanja ka LLM alatima, internim AI tokovima, ticketing sistemima i automatizovanim pipeline-ovima.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Šta rešava</h2>
+        <p>
+          Umesto ručnog traženja i zamračivanja podataka, servis radi standardizovanu redakciju kroz jednu API tačku.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card list-card">
+          <h3>Tipični problemi</h3>
+          <ul class="list">
+            <li>Dokumenti se dele bez dosledne provere osetljivih podataka.</li>
+            <li>Timovi ručno brišu JMBG, PIB, email ili telefone iz teksta.</li>
+            <li>Pre slanja podataka AI sistemima ne postoji standardni privacy sloj.</li>
+            <li>Nema jedinstvenog načina za maskiranje, hash ili uklanjanje vrednosti.</li>
+          </ul>
+        </div>
+
+        <div class="card list-card">
+          <h3>Rezultat</h3>
+          <ul class="list">
+            <li>Brža priprema teksta za deljenje i obradu.</li>
+            <li>Manje rizika od slučajnog otkrivanja podataka.</li>
+            <li>Jedinstven API za više tipova osetljivih informacija.</li>
+            <li>Jasan demo i API dokumentacija spremni za integraciju.</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -421,13 +602,47 @@
       </div>
     </section>
 
+    <section class="section" id="how-it-works">
+      <div class="section-header">
+        <h2>Kako radi</h2>
+        <p>
+          Demo i API rade nad istim backend-om. Tok je jednostavan i spreman za internu upotrebu ili integraciju.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Unos teksta</h4>
+          <p>Korisnik ili sistem šalje tekst koji treba očistiti pre deljenja ili dalje obrade.</p>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Detekcija entiteta</h4>
+          <p>Servis prepoznaje podržane tipove kao što su JMBG, PIB, IBAN, email, telefon i drugi.</p>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <h4>Primena politike</h4>
+          <p>Za svaki pronađeni entitet primenjuje se maskiranje, hash zamena ili potpuno uklanjanje.</p>
+        </div>
+
+        <div class="step">
+          <div class="num">4</div>
+          <h4>Povrat rezultata</h4>
+          <p>API vraća redigovani tekst, detections listu i audit metapodatke bez čuvanja sirovog teksta.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="card cta-final">
         <div>
-          <h3>Spremno za prikaz klijentima i testiranje</h3>
+          <h3>Spremno za demo i prvu integraciju</h3>
           <p>
-            Otvori demo interfejs za praktičnu proveru rada sistema ili pristupi API dokumentaciji
-            za direktnu integraciju u postojeće procese i aplikacije.
+            Isprobaj interaktivni demo u browseru ili otvori Swagger dokumentaciju za direktno testiranje endpointa.
           </p>
         </div>
 
@@ -438,8 +653,49 @@
       </div>
     </section>
 
+    <section class="section" id="contact">
+      <div class="section-header">
+        <h2>Kontakt i sledeći korak</h2>
+        <p>
+          Ako želiš pilot projekat, internu demonstraciju ili prilagođavanje za svoj tim, ovde može da stoji direktan CTA.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="card contact-card">
+          <h3>Zakaži demo ili razgovor</h3>
+          <p>
+            Ovde možeš postaviti svoj pravi kontakt, email adresu, link ka formi, Calendly ili direktan prodajni upit.
+          </p>
+
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="mailto:rastkosutic@gmail.com?subject=PII%20Redaction%20API%20demo">Pošalji email</a>
+            <a class="btn btn-secondary" href="/demo">Isprobaj demo</a>
+            <a class="btn btn-tertiary" href="/docs">Pogledaj API docs</a>
+          </div>
+
+          <div class="note">
+            Zameni <strong>rastkosutic@gmail.com</strong> svojim pravim kontakt emailom pre javne promocije.
+          </div>
+        </div>
+
+        <div class="card contact-card">
+          <h3>Tipični sledeći koraci sa klijentom</h3>
+          <p>
+            Ovaj deo možeš koristiti u prodajnom razgovoru i na landing stranici kao jasan proces saradnje.
+          </p>
+          <ul class="list">
+            <li>Kratak demo sa realnim primerima teksta.</li>
+            <li>Dogovor oko podržanih entiteta i politike redakcije.</li>
+            <li>Testni API key za pilot upotrebu.</li>
+            <li>Integracija u postojeći workflow ili AI tok.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <div class="footer">
-      PII Redaction API • Demo i landing strana rade iz istog FastAPI servisa.
+      PII Redaction API • Landing, demo i API rade iz istog FastAPI servisa.
     </div>
   </div>
 </body>
