@@ -68,6 +68,12 @@
       font-size: 14px;
     }
 
+    #lang-select {
+      width: auto !important;
+      max-width: 220px;
+      cursor: pointer;
+    }
+
     .card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -206,33 +212,37 @@
     <div class="nav">
       <div class="brand">PII Redaction API Admin</div>
       <div class="nav-links">
-        <a class="nav-link" href="/">Landing</a>
-        <a class="nav-link" href="/offer">Offer</a>
-        <a class="nav-link" href="/demo">Demo</a>
-        <a class="nav-link" href="/docs">API Docs</a>
+        <a class="nav-link" href="/" data-i18n="nav_landing">Landing</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Offer</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_api_docs">API Docs</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
       </div>
     </div>
 
     <section class="card">
-      <h1>Admin Console</h1>
-      <p class="lead">Manage clients with local file-based onboarding and existing admin routes.</p>
+      <h1 data-i18n="admin_console_h1">Admin Console</h1>
+      <p class="lead" data-i18n="admin_console_lead">Manage clients with local file-based onboarding and existing admin routes.</p>
       <div class="row">
         <div style="width: 100%;">
-          <label for="admin-key">Admin Key (x-admin-key)</label>
+          <label for="admin-key" data-i18n="admin_key_label">Admin Key (x-admin-key)</label>
           <input id="admin-key" type="password" placeholder="Enter x-admin-key" />
         </div>
       </div>
       <div class="actions">
-        <button id="load-clients" class="primary" type="button">Load clients</button>
-        <button id="load-usage" type="button">Load usage</button>
-        <button id="reload-clients" class="warn" type="button">Reload clients</button>
+        <button id="load-clients" class="primary" type="button" data-i18n="admin_btn_load_clients">Load clients</button>
+        <button id="load-usage" type="button" data-i18n="admin_btn_load_usage">Load usage</button>
+        <button id="reload-clients" class="warn" type="button" data-i18n="admin_btn_reload_clients">Reload clients</button>
       </div>
     </section>
 
     <section class="grid-2">
       <div class="card">
-        <h2>Create client</h2>
-        <p class="sub">A new API key is generated automatically and shown once.</p>
+        <h2 data-i18n="admin_create_h2">Create client</h2>
+        <p class="sub" data-i18n="admin_create_sub">A new API key is generated automatically and shown once.</p>
         <label for="create-client-id">client_id</label>
         <input id="create-client-id" type="text" />
 
@@ -258,13 +268,13 @@
         <input id="create-entities" type="text" value="*" />
 
         <div class="actions">
-          <button id="create-client" class="primary" type="button">Create client</button>
+          <button id="create-client" class="primary" type="button" data-i18n="admin_btn_create_client">Create client</button>
         </div>
       </div>
 
       <div class="card">
-        <h2>Update client</h2>
-        <p class="sub">Patch only fields you want to change.</p>
+        <h2 data-i18n="admin_update_h2">Update client</h2>
+        <p class="sub" data-i18n="admin_update_sub">Patch only fields you want to change.</p>
         <label for="update-client-id">client_id</label>
         <input id="update-client-id" type="text" />
 
@@ -291,14 +301,14 @@
         <input id="update-entities" type="text" placeholder="optional" />
 
         <div class="actions">
-          <button id="update-client" type="button">Update client</button>
+          <button id="update-client" type="button" data-i18n="admin_btn_update_client">Update client</button>
         </div>
       </div>
     </section>
 
     <section class="card">
-      <h2>Rotate client key</h2>
-      <p class="sub">Generates a new key and invalidates the old key for that client.</p>
+      <h2 data-i18n="admin_rotate_h2">Rotate client key</h2>
+      <p class="sub" data-i18n="admin_rotate_sub">Generates a new key and invalidates the old key for that client.</p>
       <div class="row">
         <div style="width: 100%;">
           <label for="rotate-client-id">client_id</label>
@@ -306,7 +316,7 @@
         </div>
       </div>
       <div class="actions">
-        <button id="rotate-key" class="warn" type="button">Rotate key</button>
+        <button id="rotate-key" class="warn" type="button" data-i18n="admin_btn_rotate_key">Rotate key</button>
       </div>
     </section>
 
@@ -317,6 +327,109 @@
 
   <script>
     (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_landing: "Početna",
+          nav_offer: "Ponuda",
+          nav_demo: "Demo",
+          nav_api_docs: "API dokumentacija",
+          nav_admin: "Admin",
+          admin_console_h1: "Admin konzola",
+          admin_console_lead: "Upravljanje klijentima kroz lokalnu datoteku i postojeće admin rute.",
+          admin_key_label: "Admin ključ (x-admin-key)",
+          admin_btn_load_clients: "Učitaj klijente",
+          admin_btn_load_usage: "Učitaj upotrebu",
+          admin_btn_reload_clients: "Ponovo učitaj klijente",
+          admin_create_h2: "Kreiraj klijenta",
+          admin_create_sub: "Novi API ključ se generiše automatski i prikazuje se samo jednom.",
+          admin_btn_create_client: "Kreiraj klijenta",
+          admin_update_h2: "Ažuriraj klijenta",
+          admin_update_sub: "Ažuriraj samo polja koja želiš da promeniš.",
+          admin_btn_update_client: "Ažuriraj",
+          admin_rotate_h2: "Rotiraj ključ klijenta",
+          admin_rotate_sub: "Generiše novi ključ i poništava stari ključ za taj klijent.",
+          admin_btn_rotate_key: "Rotiraj ključ",
+          admin_status_admin_key_required: "Admin ključ je obavezan.",
+          admin_status_loading: "Učitavanje...",
+          admin_status_request_successful: "Zahtev uspešan.",
+          admin_status_network_error: "Greška mreže. Pokušajte ponovo.",
+          admin_status_request_failed_fallback: "Zahtev nije uspeo.",
+          admin_status_client_id_required_update: "client_id je obavezan za ažuriranje.",
+          admin_status_client_id_required_rotate:
+            "client_id je obavezan za rotaciju ključa.",
+          admin_generated_api_key_prefix: "Generisan API ključ (prikazan jednom): ",
+        },
+        en: {
+          nav_landing: "Landing",
+          nav_offer: "Offer",
+          nav_demo: "Demo",
+          nav_api_docs: "API Docs",
+          nav_admin: "Admin",
+          admin_console_h1: "Admin Console",
+          admin_console_lead: "Manage clients with local file-based onboarding and existing admin routes.",
+          admin_key_label: "Admin Key (x-admin-key)",
+          admin_btn_load_clients: "Load clients",
+          admin_btn_load_usage: "Load usage",
+          admin_btn_reload_clients: "Reload clients",
+          admin_create_h2: "Create client",
+          admin_create_sub: "A new API key is generated automatically and shown once.",
+          admin_btn_create_client: "Create client",
+          admin_update_h2: "Update client",
+          admin_update_sub: "Patch only fields you want to change.",
+          admin_btn_update_client: "Update client",
+          admin_rotate_h2: "Rotate client key",
+          admin_rotate_sub: "Generates a new key and invalidates the old key for that client.",
+          admin_btn_rotate_key: "Rotate key",
+          admin_status_admin_key_required: "Admin key is required.",
+          admin_status_loading: "Loading...",
+          admin_status_request_successful: "Request successful.",
+          admin_status_network_error: "Network error. Please try again.",
+          admin_status_request_failed_fallback: "Request failed.",
+          admin_status_client_id_required_update: "client_id is required for update.",
+          admin_status_client_id_required_rotate: "client_id is required for key rotation.",
+          admin_generated_api_key_prefix: "Generated API key (shown once): ",
+        },
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.textContent = value;
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+
+      function t(key) {
+        return I18N[currentLang]?.[key] || "";
+      }
+
       const keyInput = document.getElementById("admin-key");
       const statusEl = document.getElementById("status");
       const resultEl = document.getElementById("result");
@@ -336,7 +449,7 @@
           return;
         }
         keyHighlight.style.display = "block";
-        keyHighlight.textContent = "Generated API key (shown once): " + apiKey;
+        keyHighlight.textContent = t("admin_generated_api_key_prefix") + apiKey;
       }
 
       function formatJson(value) {
@@ -352,7 +465,7 @@
       async function callApi(path, method, payload) {
         const adminKey = (keyInput.value || "").trim();
         if (!adminKey) {
-          setStatus("err", "Admin key is required.");
+          setStatus("err", t("admin_status_admin_key_required"));
           return null;
         }
 
@@ -361,7 +474,7 @@
           headers["Content-Type"] = "application/json";
         }
 
-        setStatus("", "Loading...");
+        setStatus("", t("admin_status_loading"));
         showApiKey(null);
 
         try {
@@ -381,7 +494,7 @@
           resultEl.textContent = formatJson(data);
 
           if (!res.ok) {
-            const msg = data?.error?.message || "Request failed.";
+            const msg = data?.error?.message || t("admin_status_request_failed_fallback");
             setStatus("err", msg);
             return null;
           }
@@ -389,10 +502,10 @@
           if (data && data.api_key) {
             showApiKey(data.api_key);
           }
-          setStatus("ok", "Request successful.");
+          setStatus("ok", t("admin_status_request_successful"));
           return data;
         } catch (_e) {
-          setStatus("err", "Network error. Please try again.");
+          setStatus("err", t("admin_status_network_error"));
           return null;
         }
       }
@@ -425,7 +538,7 @@
       document.getElementById("update-client").addEventListener("click", function () {
         const clientId = (document.getElementById("update-client-id").value || "").trim();
         if (!clientId) {
-          setStatus("err", "client_id is required for update.");
+          setStatus("err", t("admin_status_client_id_required_update"));
           return;
         }
 
@@ -450,7 +563,7 @@
       document.getElementById("rotate-key").addEventListener("click", function () {
         const clientId = (document.getElementById("rotate-client-id").value || "").trim();
         if (!clientId) {
-          setStatus("err", "client_id is required for key rotation.");
+          setStatus("err", t("admin_status_client_id_required_rotate"));
           return;
         }
         callApi("/api/admin/clients/" + encodeURIComponent(clientId) + "/rotate-key", "POST");

@@ -180,6 +180,20 @@
       margin-bottom: 12px;
     }
 
+    .lang-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .lang-select {
+      width: auto;
+      max-width: 220px;
+    }
+
     .small {
       font-size: 12px;
       color: var(--muted);
@@ -199,9 +213,16 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="badge">PII Redaction API Demo</div>
-    <h1>Redakcija osetljivih podataka</h1>
-    <p class="lead">
+    <div class="lang-wrap">
+      <div class="badge" data-i18n="demo_badge">PII Redaction API Demo</div>
+      <select id="lang-select" class="lang-select" aria-label="Language">
+        <option value="sr">SR</option>
+        <option value="en">EN</option>
+      </select>
+    </div>
+
+    <h1 data-i18n="demo_title">Redakcija osetljivih podataka</h1>
+    <p class="lead" data-i18n="demo_lead">
       Unesi tekst, izaberi politiku i tipove entiteta, pa klikni na dugme za redakciju.
       Demo koristi isti backend servis i poziva <code>/api/v1/redact</code>.
     </p>
@@ -209,12 +230,12 @@
     <div class="grid">
       <div class="card">
         <div class="row">
-          <label for="apiKey">API key</label>
+          <label for="apiKey" data-i18n="demo_label_api_key">API key</label>
           <input id="apiKey" type="password" placeholder="Unesi API key" />
         </div>
 
         <div class="row">
-          <label for="policy">Politika redakcije</label>
+          <label for="policy" data-i18n="demo_label_policy">Politika redakcije</label>
           <select id="policy">
             <option value="mask">mask</option>
             <option value="hash">hash</option>
@@ -223,7 +244,7 @@
         </div>
 
         <div class="row">
-          <label>Tipovi entiteta</label>
+          <label data-i18n="demo_label_entities">Tipovi entiteta</label>
           <div class="entities">
             <label class="entity"><input type="checkbox" value="JMBG" checked> JMBG</label>
             <label class="entity"><input type="checkbox" value="PIB" checked> PIB</label>
@@ -236,13 +257,13 @@
         </div>
 
         <div class="row">
-          <label for="text">Ulazni tekst</label>
+          <label for="text" data-i18n="demo_label_input_text">Ulazni tekst</label>
           <textarea id="text">JMBG 0101990712345; PIB 100000049; matični broj 17580175; email kontakt@example.rs; telefon +381 64 123 4567; IBAN RS69 1234 5678 9012 3456 78; kartica 4111 1111 1111 1111</textarea>
         </div>
 
         <div class="actions">
-          <button class="primary" id="runBtn">Redact</button>
-          <button class="secondary" id="resetBtn" type="button">Vrati primer</button>
+          <button class="primary" id="runBtn" data-i18n="demo_btn_redact">Redact</button>
+          <button class="secondary" id="resetBtn" type="button" data-i18n="demo_btn_reset">Vrati primer</button>
         </div>
 
         <div id="status" class="status"></div>
@@ -250,23 +271,23 @@
 
       <div class="card">
         <div class="row">
-          <label>Redacted text</label>
+          <label data-i18n="demo_label_redacted_text">Redacted text</label>
           <div id="redactedText" class="result-box"></div>
         </div>
 
         <div class="meta">
           <div>
-            <label>Detections</label>
+            <label data-i18n="demo_label_detections">Detections</label>
             <div class="result-box"><pre id="detections"></pre></div>
           </div>
 
           <div>
-            <label>Audit</label>
+            <label data-i18n="demo_label_audit">Audit</label>
             <div class="result-box"><pre id="audit"></pre></div>
           </div>
 
           <div class="small">
-            Napomena: API key se koristi samo za ovaj zahtev u browseru. Za javni komercijalni frontend sledeći korak je posebna autentikacija bez izlaganja API ključa krajnjem korisniku.
+            <span data-i18n="demo_note">Napomena: API key se koristi samo za ovaj zahtev u browseru. Za javni komercijalni frontend sledeći korak je posebna autentikacija bez izlaganja API ključa krajnjem korisniku.</span>
           </div>
         </div>
       </div>
@@ -274,6 +295,95 @@
   </div>
 
   <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          demo_badge: "PII Redaction API Demo",
+          demo_title: "Redakcija osetljivih podataka",
+          demo_lead:
+            "Unesi tekst, izaberi politiku i tipove entiteta, pa klikni na dugme za redakciju. Demo koristi isti backend servis i poziva <code>/api/v1/redact</code>.",
+          demo_label_api_key: "API key",
+          demo_label_policy: "Politika redakcije",
+          demo_label_entities: "Tipovi entiteta",
+          demo_label_input_text: "Ulazni tekst",
+          demo_label_redacted_text: "Redigovani tekst",
+          demo_btn_redact: "Redakcija",
+          demo_btn_reset: "Vrati primer",
+          demo_label_detections: "Detekcije",
+          demo_label_audit: "Audit",
+          demo_note:
+            "Napomena: API key se koristi samo za ovaj zahtev u browseru. Za javni komercijalni frontend sledeći korak je posebna autentikacija bez izlaganja API ključa krajnjem korisniku.",
+          demo_status_api_key_missing: "Unesi API key.",
+          demo_status_text_missing: "Unesi tekst za obradu.",
+          demo_status_sending: "Slanje zahteva...",
+          demo_status_error_prefix: "Greška:",
+          demo_status_error_fallback: "Request failed",
+          demo_status_success: "Uspešno obrađeno.",
+        },
+        en: {
+          demo_badge: "PII Redaction API Demo",
+          demo_title: "Redaction of sensitive data",
+          demo_lead:
+            "Enter text, pick a policy and entity types, then click the redaction button. The demo uses the same backend service and calls <code>/api/v1/redact</code>.",
+          demo_label_api_key: "API key",
+          demo_label_policy: "Redaction policy",
+          demo_label_entities: "Entity types",
+          demo_label_input_text: "Input text",
+          demo_label_redacted_text: "Redacted text",
+          demo_btn_redact: "Redact",
+          demo_btn_reset: "Reset sample",
+          demo_label_detections: "Detections",
+          demo_label_audit: "Audit",
+          demo_note:
+            "Note: API key is used only for this request in the browser. For a public commercial frontend, the next step is a special authentication layer that avoids exposing API keys to end users.",
+          demo_status_api_key_missing: "Enter API key.",
+          demo_status_text_missing: "Enter text to process.",
+          demo_status_sending: "Sending request...",
+          demo_status_error_prefix: "Error:",
+          demo_status_error_fallback: "Request failed",
+          demo_status_success: "Redaction successful.",
+        },
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.innerHTML = value;
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+
+      function t(key) {
+        return I18N[currentLang]?.[key] || "";
+      }
+
     const sampleText = 'JMBG 0101990712345; PIB 100000049; matični broj 17580175; email kontakt@example.rs; telefon +381 64 123 4567; IBAN RS69 1234 5678 9012 3456 78; kartica 4111 1111 1111 1111';
 
     const apiKeyEl = document.getElementById('apiKey');
@@ -311,16 +421,16 @@
       clearResult();
 
       if (!apiKey) {
-        setStatus('Unesi API key.');
+        setStatus(t('demo_status_api_key_missing'));
         return;
       }
 
       if (!text.trim()) {
-        setStatus('Unesi tekst za obradu.');
+        setStatus(t('demo_status_text_missing'));
         return;
       }
 
-      setStatus('Slanje zahteva...');
+      setStatus(t('demo_status_sending'));
 
       try {
         const response = await fetch('/api/v1/redact', {
@@ -339,7 +449,11 @@
         const data = await response.json();
 
         if (!response.ok) {
-          setStatus(`Greška: ${data?.error?.message || 'Request failed'}`);
+          setStatus(
+            `${t('demo_status_error_prefix')} ${
+              data?.error?.message || t('demo_status_error_fallback')
+            }`
+          );
           redactedTextEl.textContent = JSON.stringify(data, null, 2);
           return;
         }
@@ -347,9 +461,9 @@
         redactedTextEl.textContent = data.redacted_text || '';
         detectionsEl.textContent = JSON.stringify(data.detections || [], null, 2);
         auditEl.textContent = JSON.stringify(data.audit || {}, null, 2);
-        setStatus('Uspešno obrađeno.', true);
+        setStatus(t('demo_status_success'), true);
       } catch (error) {
-        setStatus(`Greška: ${error.message}`);
+        setStatus(`${t('demo_status_error_prefix')} ${error.message}`);
       }
     }
 
@@ -364,6 +478,7 @@
       clearResult();
       setStatus('');
     });
+    })();
   </script>
 </body>
 </html>

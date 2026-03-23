@@ -75,6 +75,13 @@
       font-size: 14px;
     }
 
+    select.nav-link {
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
     .hero {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -516,29 +523,33 @@
     <div class="nav">
       <div class="brand">PII Redaction API</div>
       <div class="nav-links">
-        <a class="nav-link" href="#use-cases">Use cases</a>
-        <a class="nav-link" href="#how-it-works">Kako radi</a>
-        <a class="nav-link" href="/demo">Demo</a>
-        <a class="nav-link" href="/docs">API Docs</a>
-        <a class="nav-link" href="/offer">Offer</a>
-        <a class="nav-link" href="/admin">Admin</a>
-        <a class="nav-link" href="#contact">Kontakt</a>
+        <a class="nav-link" href="#use-cases" data-i18n="nav_use_cases">Upotrebe</a>
+        <a class="nav-link" href="#how-it-works" data-i18n="nav_how_it_works">Kako radi</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_api_docs">API dokumentacija</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Ponuda</a>
+        <a class="nav-link" href="/admin" data-i18n="nav_admin">Admin</a>
+        <a class="nav-link" href="#contact" data-i18n="nav_contact">Kontakt</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
       </div>
     </div>
 
     <section class="hero">
       <div class="card hero-main">
-        <div class="badge">Production-ready v1.2 • FastAPI • Docker • Render</div>
-        <h1>Redakcija osetljivih podataka pre deljenja, arhiviranja i AI obrade</h1>
-        <p class="lead">
+        <div class="badge" data-i18n="hero_badge">Spremno za produkciju v1.2 • FastAPI • Docker • Render</div>
+        <h1 data-i18n="hero_title">Redakcija osetljivih podataka pre deljenja, arhiviranja i AI obrade</h1>
+        <p class="lead" data-i18n="hero_lead">
           Servis za automatsku redakciju osetljivih podataka u tekstu. Namenjen za firme,
           pravne timove, računovodstvo, internu dokumentaciju i pripremu sadržaja za AI sisteme.
         </p>
 
         <div class="cta-row">
-          <a class="btn btn-primary" href="/demo">Otvori demo</a>
-          <a class="btn btn-secondary" href="/docs">Pogledaj API dokumentaciju</a>
-          <a class="btn btn-tertiary" href="#contact">Zakaži razgovor</a>
+          <a class="btn btn-primary" href="/demo" data-i18n="cta_open_demo">Otvori demo</a>
+          <a class="btn btn-secondary" href="/docs" data-i18n="cta_view_docs">Pogledaj API dokumentaciju</a>
+          <a class="btn btn-tertiary" href="#contact" data-i18n="cta_schedule_call">Zakaži razgovor</a>
         </div>
 
         <div class="trust-row">
@@ -584,8 +595,8 @@
 
     <section class="section" id="use-cases">
       <div class="section-header">
-        <h2>Za koga je namenjeno</h2>
-        <p>
+        <h2 data-i18n="section_use_for">Za koga je namenjeno</h2>
+        <p data-i18n="section_use_for_p">
           Proizvod je namenjen timovima koji pre slanja ili obrade teksta moraju da uklone osetljive podatke
           i zadrže kontrolu nad sadržajem.
         </p>
@@ -611,8 +622,8 @@
 
     <section class="section">
       <div class="section-header">
-        <h2>Šta rešava</h2>
-        <p>
+        <h2 data-i18n="section_solves">Šta rešava</h2>
+        <p data-i18n="section_solves_p">
           Umesto ručnog traženja i zamračivanja podataka, servis radi standardizovanu redakciju kroz jednu API tačku.
         </p>
       </div>
@@ -642,8 +653,10 @@
 
     <section class="section">
       <div class="section-header">
-        <h2>Podržani tipovi podataka</h2>
-        <p>Aktuelna verzija je fokusirana na tipove koji mogu da daju visoku pouzdanost u praktičnoj upotrebi.</p>
+        <h2 data-i18n="section_supported_types">Podržani tipovi podataka</h2>
+        <p data-i18n="section_supported_types_p">
+          Aktuelna verzija je fokusirana na tipove koji mogu da daju visoku pouzdanost u praktičnoj upotrebi.
+        </p>
       </div>
 
       <div class="types">
@@ -660,8 +673,8 @@
 
     <section class="section" id="how-it-works">
       <div class="section-header">
-        <h2>Kako radi</h2>
-        <p>
+        <h2 data-i18n="section_how_it_works">Kako radi</h2>
+        <p data-i18n="section_how_it_works_p">
           Demo i API rade nad istim backend-om. Tok je jednostavan i spreman za internu upotrebu ili integraciju.
         </p>
       </div>
@@ -696,8 +709,8 @@
     <section class="section">
       <div class="card cta-final">
         <div>
-          <h3>Spremno za demo i prvu integraciju</h3>
-          <p>
+          <h3 data-i18n="cta_final_title">Spremno za demo i prvu integraciju</h3>
+          <p data-i18n="cta_final_p">
             Isprobaj interaktivni demo u browseru ili otvori Swagger dokumentaciju za direktno testiranje endpointa.
           </p>
         </div>
@@ -711,48 +724,48 @@
 
     <section class="section" id="contact">
       <div class="section-header">
-        <h2>Kontakt i sledeći korak</h2>
-        <p>
+        <h2 data-i18n="contact_h2">Kontakt i sledeći korak</h2>
+        <p data-i18n="contact_p">
           Ako želiš pilot projekat, internu demonstraciju ili prilagođavanje za svoj tim, ovde može da stoji direktan CTA.
         </p>
       </div>
 
       <div class="contact-grid">
         <div class="card contact-card">
-          <h3>Zakaži demo ili razgovor</h3>
-          <p>
+          <h3 data-i18n="contact_card_title">Zakaži demo ili razgovor</h3>
+          <p data-i18n="contact_card_p">
             Ovde možeš postaviti svoj pravi kontakt, email adresu, link ka formi, Calendly ili direktan prodajni upit.
           </p>
 
           <div class="contact-actions">
-            <a class="btn btn-secondary" href="/demo">Isprobaj demo</a>
-            <a class="btn btn-tertiary" href="/docs">Pogledaj API docs</a>
+            <a class="btn btn-secondary" href="/demo" data-i18n="contact_btn_demo">Isprobaj demo</a>
+            <a class="btn btn-tertiary" href="/docs" data-i18n="contact_btn_docs">Pogledaj API docs</a>
           </div>
 
           <form id="contact-form" class="contact-form">
             <div class="form-row">
-              <label for="full_name">Ime i prezime</label>
+              <label for="full_name" data-i18n="contact_label_full_name">Ime i prezime</label>
               <input id="full_name" name="full_name" type="text" autocomplete="name" required />
             </div>
 
             <div class="form-row">
-              <label for="email">Email</label>
+              <label for="email" data-i18n="contact_label_email">Email</label>
               <input id="email" name="email" type="email" autocomplete="email" required />
             </div>
 
             <div class="form-row">
-              <label for="company">Kompanija (opciono)</label>
+              <label for="company" data-i18n="contact_label_company">Kompanija (opciono)</label>
               <input id="company" name="company" type="text" autocomplete="organization" />
             </div>
 
             <div class="form-row">
-              <label for="message">Poruka</label>
+              <label for="message" data-i18n="contact_label_message">Poruka</label>
               <textarea id="message" name="message" required></textarea>
             </div>
 
             <div class="form-row" style="margin-top: 16px;">
               <button id="contact-submit" class="btn btn-primary" type="submit">
-                Pošalji upit
+                <span data-i18n="contact_btn_submit">Pošalji upit</span>
               </button>
             </div>
 
@@ -760,7 +773,7 @@
           </form>
 
           <div class="note">
-            Upit se zabeležava za evidenciju u backend-u. Odgovor ćemo poslati na navedeni email.
+            <span data-i18n="contact_note">Upit se zabeležava za evidenciju u backend-u. Odgovor ćemo poslati na navedeni email.</span>
           </div>
         </div>
 
@@ -784,6 +797,150 @@
     </div>
   <script>
     (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_use_cases: "Upotrebe",
+          nav_how_it_works: "Kako radi",
+          nav_demo: "Demo",
+          nav_api_docs: "API dokumentacija",
+          nav_offer: "Ponuda",
+          nav_admin: "Admin",
+          nav_contact: "Kontakt",
+          hero_badge: "Spremno za produkciju v1.2 • FastAPI • Docker • Render",
+          hero_title: "Redakcija osetljivih podataka pre deljenja, arhiviranja i AI obrade",
+          hero_lead:
+            "Servis za automatsku redakciju osetljivih podataka u tekstu. Namenjen za firme, pravne timove, računovodstvo, internu dokumentaciju i pripremu sadržaja za AI sisteme.",
+          cta_open_demo: "Otvori demo",
+          cta_view_docs: "Pogledaj API dokumentaciju",
+          cta_schedule_call: "Zakaži razgovor",
+          section_use_for: "Za koga je namenjeno",
+          section_use_for_p:
+            "Proizvod je namenjen timovima koji pre slanja ili obrade teksta moraju da uklone osetljive podatke i zadrže kontrolu nad sadržajem.",
+          section_solves: "Šta rešava",
+          section_solves_p:
+            "Umesto ručnog traženja i zamračivanja podataka, servis radi standardizovanu redakciju kroz jednu API tačku.",
+          section_supported_types: "Podržani tipovi podataka",
+          section_supported_types_p:
+            "Aktuelna verzija je fokusirana na tipove koji mogu da daju visoku pouzdanost u praktičnoj upotrebi.",
+          section_how_it_works: "Kako radi",
+          section_how_it_works_p:
+            "Demo i API rade nad istim backend-om. Tok je jednostavan i spreman za internu upotrebu ili integraciju.",
+          cta_final_title: "Spremno za demo i prvu integraciju",
+          cta_final_p:
+            "Isprobaj interaktivni demo u browseru ili otvori Swagger dokumentaciju za direktno testiranje endpointa.",
+          contact_h2: "Kontakt i sledeći korak",
+          contact_p:
+            "Ako želiš pilot projekat, internu demonstraciju ili prilagođavanje za svoj tim, ovde može da stoji direktan CTA.",
+          contact_card_title: "Zakaži demo ili razgovor",
+          contact_card_p:
+            "Ovde možeš postaviti svoj pravi kontakt, email adresu, link ka formi, Calendly ili direktan prodajni upit.",
+          contact_btn_demo: "Isprobaj demo",
+          contact_btn_docs: "Pogledaj API docs",
+          contact_label_full_name: "Ime i prezime",
+          contact_label_email: "Email",
+          contact_label_company: "Kompanija (opciono)",
+          contact_label_message: "Poruka",
+          contact_btn_submit: "Pošalji upit",
+          contact_note:
+            "Upit se zabeležava za evidenciju u backend-u. Odgovor ćemo poslati na navedeni email.",
+          contact_status_success: "Uspešno poslato. Hvala!",
+          contact_status_error:
+            "Neuspešno slanje upita. Proveri polja i pokušaj ponovo.",
+          contact_status_error_network:
+            "Neuspešno slanje upita. Proveri konekciju i pokušaj ponovo.",
+        },
+        en: {
+          nav_use_cases: "Use cases",
+          nav_how_it_works: "How it works",
+          nav_demo: "Demo",
+          nav_api_docs: "API docs",
+          nav_offer: "Offer",
+          nav_admin: "Admin",
+          nav_contact: "Contact",
+          hero_badge: "Production-ready v1.2 • FastAPI • Docker • Render",
+          hero_title:
+            "Redaction of sensitive data before sharing, archiving and AI processing",
+          hero_lead:
+            "A service for automatic redaction of sensitive data in text. Designed for companies, legal teams, accounting, internal documentation, and preparing content for AI systems.",
+          cta_open_demo: "Open demo",
+          cta_view_docs: "View API documentation",
+          cta_schedule_call: "Schedule a call",
+          section_use_for: "Who it is for",
+          section_use_for_p:
+            "The product is designed for teams that must remove sensitive data before sending or processing text, while keeping full control over the content.",
+          section_solves: "What it solves",
+          section_solves_p:
+            "Instead of manually searching and masking data, the service delivers consistent redaction through one API endpoint.",
+          section_supported_types: "Supported sensitive data types",
+          section_supported_types_p:
+            "The current version focuses on data types that provide high reliability in real usage.",
+          section_how_it_works: "How it works",
+          section_how_it_works_p:
+            "The demo and API run on the same backend. The flow is simple and ready for internal use or integration.",
+          cta_final_title: "Ready for the demo and your first integration",
+          cta_final_p:
+            "Try the interactive demo in your browser or open Swagger docs for direct endpoint testing.",
+          contact_h2: "Contact & next step",
+          contact_p:
+            "If you want a pilot project, an internal demo, or an adaptation for your team, you can place a direct CTA here.",
+          contact_card_title: "Book a demo or a call",
+          contact_card_p:
+            "Put your real contact details, email, a link to your form/Calendly, or a direct sales request here.",
+          contact_btn_demo: "Try demo",
+          contact_btn_docs: "View API docs",
+          contact_label_full_name: "Full name",
+          contact_label_email: "Email",
+          contact_label_company: "Company (optional)",
+          contact_label_message: "Message",
+          contact_btn_submit: "Send request",
+          contact_note:
+            "Your request is stored for backend tracking. We will respond to the email you provide.",
+          contact_status_success: "Sent successfully. Thank you!",
+          contact_status_error: "Failed to send request. Check fields and try again.",
+          contact_status_error_network:
+            "Failed to send request. Check your connection and try again.",
+        },
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.textContent = value;
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+
+      function t(key) {
+        return I18N[currentLang]?.[key] || "";
+      }
+
       const form = document.getElementById("contact-form");
       if (!form) return;
 
@@ -828,15 +985,15 @@
 
             const msg =
               data?.error?.message ||
-              "Neuspešno slanje upita. Proveri polja i pokušaj ponovo.";
+              t("contact_status_error");
             setStatus(false, msg);
             return;
           }
 
-          setStatus(true, "Uspešno poslato. Hvala!");
+          setStatus(true, t("contact_status_success"));
           form.reset();
         } catch (_e) {
-          setStatus(false, "Neuspešno slanje upita. Proveri konekciju i pokušaj ponovo.");
+          setStatus(false, t("contact_status_error_network"));
         } finally {
           if (submitBtn) submitBtn.disabled = false;
         }

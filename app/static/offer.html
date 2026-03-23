@@ -354,16 +354,20 @@
     <div class="nav">
       <div class="brand">PII Redaction API</div>
       <div class="nav-links">
-        <a class="nav-link" href="/">Landing</a>
-        <a class="nav-link" href="/demo">Demo</a>
-        <a class="nav-link" href="/docs">API Docs</a>
-        <a class="nav-link" href="/admin">Admin</a>
+        <a class="nav-link" href="/" data-i18n="nav_landing">Landing</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_api_docs">API Docs</a>
+        <a class="nav-link" href="/admin" data-i18n="nav_admin">Admin</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
       </div>
     </div>
 
     <section class="card hero">
-      <h1>Commercial Offer for First Clients</h1>
-      <p class="lead">
+      <h1 data-i18n="offer_title">Commercial Offer for First Clients</h1>
+      <p class="lead" data-i18n="offer_lead">
         A practical privacy layer for teams that must redact sensitive data before sharing text with
         partners, vendors, internal systems, or AI tools. This offer is designed for fast onboarding,
         measurable risk reduction, and minimal integration overhead.
@@ -372,76 +376,76 @@
 
     <section class="section">
       <div class="head">
-        <h2>Who It Is For</h2>
-        <p>Teams handling client, employee, or financial documents where consistent redaction is required.</p>
+        <h2 data-i18n="offer_who_h2">Who It Is For</h2>
+        <p data-i18n="offer_who_p">Teams handling client, employee, or financial documents where consistent redaction is required.</p>
       </div>
       <div class="grid-3">
         <div class="box">
-          <h3>Legal and Compliance</h3>
-          <p>Redact regulated identifiers before sharing contracts, case files, and evidence bundles.</p>
+          <h3 data-i18n="offer_who_legal_h3">Legal and Compliance</h3>
+          <p data-i18n="offer_who_legal_p">Redact regulated identifiers before sharing contracts, case files, and evidence bundles.</p>
         </div>
         <div class="box">
-          <h3>Finance and Operations</h3>
-          <p>Protect accounting and payment data in invoices, reports, and operational communication.</p>
+          <h3 data-i18n="offer_who_fin_h3">Finance and Operations</h3>
+          <p data-i18n="offer_who_fin_p">Protect accounting and payment data in invoices, reports, and operational communication.</p>
         </div>
         <div class="box">
-          <h3>AI and Automation Teams</h3>
-          <p>Sanitize text before using LLMs and automation workflows to avoid accidental data exposure.</p>
+          <h3 data-i18n="offer_who_ai_h3">AI and Automation Teams</h3>
+          <p data-i18n="offer_who_ai_p">Sanitize text before using LLMs and automation workflows to avoid accidental data exposure.</p>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="head">
-        <h2>Supported Sensitive Data Types</h2>
-        <p>Current coverage focuses on commonly exposed identifiers in day-to-day business operations.</p>
+        <h2 data-i18n="offer_supported_h2">Supported Sensitive Data Types</h2>
+        <p data-i18n="offer_supported_p">Current coverage focuses on commonly exposed identifiers in day-to-day business operations.</p>
       </div>
       <div class="types">
-        <div class="type"><strong>JMBG</strong>Personal ID</div>
-        <div class="type"><strong>PIB</strong>Tax identifier</div>
-        <div class="type"><strong>MB_COMPANY</strong>Company registration</div>
-        <div class="type"><strong>EMAIL</strong>Email addresses</div>
-        <div class="type"><strong>PHONE</strong>Phone numbers</div>
-        <div class="type"><strong>IBAN</strong>Bank accounts</div>
-        <div class="type"><strong>CARD_NUMBER</strong>Payment cards</div>
-        <div class="type"><strong>mask / hash / rm</strong>Redaction policies</div>
+        <div class="type"><strong>JMBG</strong> <span data-i18n="offer_type_jmbg">Personal ID</span></div>
+        <div class="type"><strong>PIB</strong> <span data-i18n="offer_type_pib">Tax identifier</span></div>
+        <div class="type"><strong>MB_COMPANY</strong> <span data-i18n="offer_type_mb_company">Company registration</span></div>
+        <div class="type"><strong>EMAIL</strong> <span data-i18n="offer_type_email">Email addresses</span></div>
+        <div class="type"><strong>PHONE</strong> <span data-i18n="offer_type_phone">Phone numbers</span></div>
+        <div class="type"><strong>IBAN</strong> <span data-i18n="offer_type_iban">Bank accounts</span></div>
+        <div class="type"><strong>CARD_NUMBER</strong> <span data-i18n="offer_type_card_number">Payment cards</span></div>
+        <div class="type"><strong>mask / hash / rm</strong> <span data-i18n="offer_type_policies">Redaction policies</span></div>
       </div>
     </section>
 
     <section class="section">
       <div class="head">
-        <h2>Plans: Demo / Pilot / Business</h2>
-        <p>Start quickly, validate impact, then scale based on usage and governance requirements.</p>
+        <h2 data-i18n="offer_plans_h2">Plans: Demo / Pilot / Business</h2>
+        <p data-i18n="offer_plans_p">Start quickly, validate impact, then scale based on usage and governance requirements.</p>
       </div>
       <div class="plans">
         <div class="plan">
-          <h3>Demo</h3>
-          <div class="tag">Fast evaluation</div>
+          <h3 data-i18n="offer_plan_demo_h3">Demo</h3>
+          <div class="tag" data-i18n="offer_plan_demo_tag">Fast evaluation</div>
           <ul>
-            <li>Access to demo UI and API docs</li>
-            <li>Representative sample redaction scenarios</li>
-            <li>Basic support for technical validation</li>
-            <li>Best for first internal review</li>
+            <li data-i18n="offer_plan_demo_li1">Access to demo UI and API docs</li>
+            <li data-i18n="offer_plan_demo_li2">Representative sample redaction scenarios</li>
+            <li data-i18n="offer_plan_demo_li3">Basic support for technical validation</li>
+            <li data-i18n="offer_plan_demo_li4">Best for first internal review</li>
           </ul>
         </div>
         <div class="plan">
-          <h3>Pilot</h3>
-          <div class="tag">Controlled real-world test</div>
+          <h3 data-i18n="offer_plan_pilot_h3">Pilot</h3>
+          <div class="tag" data-i18n="offer_plan_pilot_tag">Controlled real-world test</div>
           <ul>
-            <li>Dedicated API key and usage tracking</li>
-            <li>Agreed pilot scope and success criteria</li>
-            <li>Regular feedback and tuning sessions</li>
-            <li>Best for proving ROI in one workflow</li>
+            <li data-i18n="offer_plan_pilot_li1">Dedicated API key and usage tracking</li>
+            <li data-i18n="offer_plan_pilot_li2">Agreed pilot scope and success criteria</li>
+            <li data-i18n="offer_plan_pilot_li3">Regular feedback and tuning sessions</li>
+            <li data-i18n="offer_plan_pilot_li4">Best for proving ROI in one workflow</li>
           </ul>
         </div>
         <div class="plan">
-          <h3>Business</h3>
-          <div class="tag">Production rollout</div>
+          <h3 data-i18n="offer_plan_business_h3">Business</h3>
+          <div class="tag" data-i18n="offer_plan_business_tag">Production rollout</div>
           <ul>
-            <li>Multi-team operational usage</li>
-            <li>SLA and support model alignment</li>
-            <li>Governance and periodic review cadence</li>
-            <li>Best for long-term integration</li>
+            <li data-i18n="offer_plan_business_li1">Multi-team operational usage</li>
+            <li data-i18n="offer_plan_business_li2">SLA and support model alignment</li>
+            <li data-i18n="offer_plan_business_li3">Governance and periodic review cadence</li>
+            <li data-i18n="offer_plan_business_li4">Best for long-term integration</li>
           </ul>
         </div>
       </div>
@@ -449,46 +453,46 @@
 
     <section class="section">
       <div class="head">
-        <h2>Onboarding Process</h2>
-        <p>Designed for fast start and low friction with your current stack.</p>
+        <h2 data-i18n="offer_onboarding_h2">Onboarding Process</h2>
+        <p data-i18n="offer_onboarding_p">Designed for fast start and low friction with your current stack.</p>
       </div>
       <div class="steps">
         <div class="step">
           <div class="num">1</div>
-          <h4>Discovery</h4>
-          <p>Define use cases, risk profile, and target documents or channels.</p>
+          <h4 data-i18n="offer_onb_1_h4">Discovery</h4>
+          <p data-i18n="offer_onb_1_p">Define use cases, risk profile, and target documents or channels.</p>
         </div>
         <div class="step">
           <div class="num">2</div>
-          <h4>Setup</h4>
-          <p>Provide API access, key management, and initial usage constraints.</p>
+          <h4 data-i18n="offer_onb_2_h4">Setup</h4>
+          <p data-i18n="offer_onb_2_p">Provide API access, key management, and initial usage constraints.</p>
         </div>
         <div class="step">
           <div class="num">3</div>
-          <h4>Validation</h4>
-          <p>Run real samples, measure coverage, and verify operational fit.</p>
+          <h4 data-i18n="offer_onb_3_h4">Validation</h4>
+          <p data-i18n="offer_onb_3_p">Run real samples, measure coverage, and verify operational fit.</p>
         </div>
         <div class="step">
           <div class="num">4</div>
-          <h4>Go-live</h4>
-          <p>Formalize process ownership and move pilot workload into production.</p>
+          <h4 data-i18n="offer_onb_4_h4">Go-live</h4>
+          <p data-i18n="offer_onb_4_p">Formalize process ownership and move pilot workload into production.</p>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="head">
-        <h2>Implementation Flow</h2>
-        <p>Typical integration pattern used by first clients.</p>
+        <h2 data-i18n="offer_flow_h2">Implementation Flow</h2>
+        <p data-i18n="offer_flow_p">Typical integration pattern used by first clients.</p>
       </div>
       <div class="grid-2">
         <div class="box">
-          <h3>Before</h3>
-          <p>Raw text from documents, tickets, emails, or customer interactions enters downstream tools directly.</p>
+          <h3 data-i18n="offer_flow_before_h3">Before</h3>
+          <p data-i18n="offer_flow_before_p">Raw text from documents, tickets, emails, or customer interactions enters downstream tools directly.</p>
         </div>
         <div class="box">
-          <h3>After</h3>
-          <p>All text passes through the redaction API first, then only sanitized content reaches external systems.</p>
+          <h3 data-i18n="offer_flow_after_h3">After</h3>
+          <p data-i18n="offer_flow_after_p">All text passes through the redaction API first, then only sanitized content reaches external systems.</p>
         </div>
       </div>
     </section>
@@ -496,37 +500,37 @@
     <section class="section">
       <div class="card cta">
         <div>
-          <h3>Next Step</h3>
-          <p>Choose the best path for your team and we will define the first milestone within one call.</p>
+          <h3 data-i18n="offer_cta_h3">Next Step</h3>
+          <p data-i18n="offer_cta_p">Choose the best path for your team and we will define the first milestone within one call.</p>
         </div>
         <div class="cta-actions">
-          <a class="btn btn-primary" href="/#contact">Request pilot</a>
-          <a class="btn btn-secondary" href="/demo">Book demo</a>
-          <a class="btn btn-tertiary" href="/#contact">Contact</a>
+          <a class="btn btn-primary" href="/#contact" data-i18n="offer_cta_btn_pilot">Request pilot</a>
+          <a class="btn btn-secondary" href="/demo" data-i18n="offer_cta_btn_demo">Book demo</a>
+          <a class="btn btn-tertiary" href="/#contact" data-i18n="offer_cta_btn_contact">Contact</a>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="head">
-        <h2>FAQ</h2>
+        <h2 data-i18n="offer_faq_h2">FAQ</h2>
       </div>
       <div class="faq">
         <div class="qa">
-          <h4>How quickly can we start?</h4>
-          <p>Most teams can begin a scoped pilot within days once use cases and owners are confirmed.</p>
+          <h4 data-i18n="offer_faq_q1">How quickly can we start?</h4>
+          <p data-i18n="offer_faq_a1">Most teams can begin a scoped pilot within days once use cases and owners are confirmed.</p>
         </div>
         <div class="qa">
-          <h4>Do we need new infrastructure?</h4>
-          <p>No. The service is API-first and integrates with your existing applications and workflows.</p>
+          <h4 data-i18n="offer_faq_q2">Do we need new infrastructure?</h4>
+          <p data-i18n="offer_faq_a2">No. The service is API-first and integrates with your existing applications and workflows.</p>
         </div>
         <div class="qa">
-          <h4>Can we start with one process only?</h4>
-          <p>Yes. Pilot engagement is intended for one high-value process before broader rollout.</p>
+          <h4 data-i18n="offer_faq_q3">Can we start with one process only?</h4>
+          <p data-i18n="offer_faq_a3">Yes. Pilot engagement is intended for one high-value process before broader rollout.</p>
         </div>
         <div class="qa">
-          <h4>What does success look like?</h4>
-          <p>Reduced manual redaction effort, fewer privacy incidents, and stable operational adoption.</p>
+          <h4 data-i18n="offer_faq_q4">What does success look like?</h4>
+          <p data-i18n="offer_faq_a4">Reduced manual redaction effort, fewer privacy incidents, and stable operational adoption.</p>
         </div>
       </div>
     </section>
@@ -535,5 +539,230 @@
       PII Redaction API • Offer page for initial commercial conversations.
     </div>
   </div>
+  <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_landing: "Početna",
+          nav_demo: "Demo",
+          nav_api_docs: "API dokumentacija",
+          nav_admin: "Admin",
+          offer_title: "Komercijalna ponuda za prve klijente",
+          offer_lead:
+            "Praktičan privacy sloj za timove kojima je potrebna redakcija osetljivih podataka pre deljenja teksta partnerima, dobavljačima, internim sistemima ili AI alatima. Ponuda je dizajnirana za brz onboarding, merljivo smanjenje rizika i minimalan trošak integracije.",
+          offer_who_h2: "Za koga je ponuda",
+          offer_who_p:
+            "Timovi koji obrađuju klijentsku, zaposleničku ili finansijsku dokumentaciju gde je potrebna dosledna redakcija.",
+          offer_who_legal_h3: "Pravo i usklađenost",
+          offer_who_legal_p:
+            "Redakcija regulisanih identifikatora pre deljenja ugovora, case files i dokaza u paketima.",
+          offer_who_fin_h3: "Finansije i operacije",
+          offer_who_fin_p:
+            "Zaštitite računovodstvene i platne podatke u fakturama, izveštajima i operativnoj komunikaciji.",
+          offer_who_ai_h3: "AI i automatizacija",
+          offer_who_ai_p:
+            "Sanitizujte tekst pre korišćenja LLM-ova i automatizovanih workflow-a da biste izbegli nenamerno izlaganje podataka.",
+          offer_supported_h2: "Podržani tipovi osetljivih podataka",
+          offer_supported_p:
+            "Trenutna pokrivenost se fokusira na identifikatore koji se najčešće izlažu u svakodnevnim poslovnim procesima.",
+          offer_type_jmbg: "Lični identifikator",
+          offer_type_pib: "Poreski identifikator",
+          offer_type_mb_company: "Registracija kompanije",
+          offer_type_email: "Email adrese",
+          offer_type_phone: "Telefonski brojevi",
+          offer_type_iban: "Bankovni računi",
+          offer_type_card_number: "Brojevi kartica",
+          offer_type_policies: "Politike redakcije",
+          offer_plans_h2: "Planovi: Demo / Pilot / Business",
+          offer_plans_p:
+            "Krenite brzo, proverite uticaj, a zatim skalirajte na osnovu upotrebe i zahteva governance-a.",
+          offer_plan_demo_h3: "Demo",
+          offer_plan_demo_tag: "Brza evaluacija",
+          offer_plan_demo_li1: "Pristup demo UI i API dokumentaciji",
+          offer_plan_demo_li2: "Reprezentativni primeri scenarija redakcije",
+          offer_plan_demo_li3: "Osnovna podrška za tehničku validaciju",
+          offer_plan_demo_li4: "Najbolje za prvu internu proveru",
+          offer_plan_pilot_h3: "Pilot",
+          offer_plan_pilot_tag: "Kontrolisano realno testiranje",
+          offer_plan_pilot_li1: "Dodeljeni API ključ i praćenje upotrebe",
+          offer_plan_pilot_li2: "Dogovoren obim pilota i kriterijumi uspeha",
+          offer_plan_pilot_li3: "Redovne povratne informacije i tuning sesije",
+          offer_plan_pilot_li4: "Najbolje za dokaz ROI u jednom workflow-u",
+          offer_plan_business_h3: "Business",
+          offer_plan_business_tag: "Produkcijsko uvođenje",
+          offer_plan_business_li1: "Operativna upotreba u više timova",
+          offer_plan_business_li2: "Usklađivanje SLA i modela podrške",
+          offer_plan_business_li3: "Governance i periodični pregled",
+          offer_plan_business_li4: "Najbolje za dugoročnu integraciju",
+          offer_onboarding_h2: "Proces onboarding-a",
+          offer_onboarding_p:
+            "Dizajnirano da start bude brz i bez trenja sa vašim postojećim sistemima.",
+          offer_onb_1_h4: "Dijagnostika",
+          offer_onb_1_p: "Definišite use case-ove, profil rizika i ciljne dokumente ili kanale.",
+          offer_onb_2_h4: "Postavljanje",
+          offer_onb_2_p: "Obezbedite API pristup, upravljanje ključevima i početna ograničenja upotrebe.",
+          offer_onb_3_h4: "Validacija",
+          offer_onb_3_p: "Pokrenite realne primere, izmerite pokrivenost i proverite operativni fit.",
+          offer_onb_4_h4: "Go-live",
+          offer_onb_4_p:
+            "Formalizujte vlasništvo nad procesom i prebacite pilot workload u produkciju.",
+          offer_flow_h2: "Implementacioni tok",
+          offer_flow_p: "Tipičan obrazac integracije koji koriste prvi klijenti.",
+          offer_flow_before_h3: "Pre",
+          offer_flow_before_p:
+            "Sirovi tekst iz dokumenata, tiketa, emailova ili korisničkih interakcija ide direktno u downstream alate.",
+          offer_flow_after_h3: "Posle",
+          offer_flow_after_p:
+            "Sav tekst prvo prolazi kroz redakcioni API, a zatim samo sanitizovan sadržaj ide u eksterne sisteme.",
+          offer_cta_h3: "Sledeći korak",
+          offer_cta_p:
+            "Izaberite najbolji put za vaš tim i definisaćemo prvi milestone u jednom pozivu.",
+          offer_cta_btn_pilot: "Zatraži pilot",
+          offer_cta_btn_demo: "Zakaži demo",
+          offer_cta_btn_contact: "Kontakt",
+          offer_faq_h2: "FAQ",
+          offer_faq_q1: "Koliko brzo možemo da krenemo?",
+          offer_faq_a1:
+            "Većina timova može da započne ograničen pilot u roku od nekoliko dana kada su use case-ovi i odgovorni tim potvrđeni.",
+          offer_faq_q2: "Da li nam treba nova infrastruktura?",
+          offer_faq_a2:
+            "Ne. Servis je API-first i integriše se u vaše postojeće aplikacije i workflow-e.",
+          offer_faq_q3: "Možemo li da krenemo samo sa jednim procesom?",
+          offer_faq_a3:
+            "Da. Pilot angažman je namenjen jednom high-value procesu pre šireg uvođenja.",
+          offer_faq_q4: "Kako izgleda uspeh?",
+          offer_faq_a4:
+            "Manje ručnog redigovanja, manje privacy incidenata i stabilno operativno usvajanje.",
+        },
+        en: {
+          nav_landing: "Landing",
+          nav_demo: "Demo",
+          nav_api_docs: "API Docs",
+          nav_admin: "Admin",
+          offer_title: "Commercial Offer for First Clients",
+          offer_lead:
+            "A practical privacy layer for teams that must redact sensitive data before sharing text with partners, vendors, internal systems, or AI tools. This offer is designed for fast onboarding, measurable risk reduction, and minimal integration overhead.",
+          offer_who_h2: "Who It Is For",
+          offer_who_p:
+            "Teams handling client, employee, or financial documents where consistent redaction is required.",
+          offer_who_legal_h3: "Legal and Compliance",
+          offer_who_legal_p:
+            "Redact regulated identifiers before sharing contracts, case files, and evidence bundles.",
+          offer_who_fin_h3: "Finance and Operations",
+          offer_who_fin_p:
+            "Protect accounting and payment data in invoices, reports, and operational communication.",
+          offer_who_ai_h3: "AI and Automation Teams",
+          offer_who_ai_p:
+            "Sanitize text before using LLMs and automation workflows to avoid accidental data exposure.",
+          offer_supported_h2: "Supported Sensitive Data Types",
+          offer_supported_p:
+            "Current coverage focuses on commonly exposed identifiers in day-to-day business operations.",
+          offer_type_jmbg: "Personal ID",
+          offer_type_pib: "Tax identifier",
+          offer_type_mb_company: "Company registration",
+          offer_type_email: "Email addresses",
+          offer_type_phone: "Phone numbers",
+          offer_type_iban: "Bank accounts",
+          offer_type_card_number: "Payment cards",
+          offer_type_policies: "Redaction policies",
+          offer_plans_h2: "Plans: Demo / Pilot / Business",
+          offer_plans_p:
+            "Start quickly, validate impact, then scale based on usage and governance requirements.",
+          offer_plan_demo_h3: "Demo",
+          offer_plan_demo_tag: "Fast evaluation",
+          offer_plan_demo_li1: "Access to demo UI and API docs",
+          offer_plan_demo_li2: "Representative sample redaction scenarios",
+          offer_plan_demo_li3: "Basic support for technical validation",
+          offer_plan_demo_li4: "Best for first internal review",
+          offer_plan_pilot_h3: "Pilot",
+          offer_plan_pilot_tag: "Controlled real-world test",
+          offer_plan_pilot_li1: "Dedicated API key and usage tracking",
+          offer_plan_pilot_li2: "Agreed pilot scope and success criteria",
+          offer_plan_pilot_li3: "Regular feedback and tuning sessions",
+          offer_plan_pilot_li4: "Best for proving ROI in one workflow",
+          offer_plan_business_h3: "Business",
+          offer_plan_business_tag: "Production rollout",
+          offer_plan_business_li1: "Multi-team operational usage",
+          offer_plan_business_li2: "SLA and support model alignment",
+          offer_plan_business_li3: "Governance and periodic review cadence",
+          offer_plan_business_li4: "Best for long-term integration",
+          offer_onboarding_h2: "Onboarding Process",
+          offer_onboarding_p:
+            "Designed for fast start and low friction with your current stack.",
+          offer_onb_1_h4: "Discovery",
+          offer_onb_1_p: "Define use cases, risk profile, and target documents or channels.",
+          offer_onb_2_h4: "Setup",
+          offer_onb_2_p: "Provide API access, key management, and initial usage constraints.",
+          offer_onb_3_h4: "Validation",
+          offer_onb_3_p: "Run real samples, measure coverage, and verify operational fit.",
+          offer_onb_4_h4: "Go-live",
+          offer_onb_4_p:
+            "Formalize process ownership and move pilot workload into production.",
+          offer_flow_h2: "Implementation Flow",
+          offer_flow_p: "Typical integration pattern used by first clients.",
+          offer_flow_before_h3: "Before",
+          offer_flow_before_p:
+            "Raw text from documents, tickets, emails, or customer interactions enters downstream tools directly.",
+          offer_flow_after_h3: "After",
+          offer_flow_after_p:
+            "All text passes through the redaction API first, then only sanitized content reaches external systems.",
+          offer_cta_h3: "Next Step",
+          offer_cta_p:
+            "Choose the best path for your team and we will define the first milestone within one call.",
+          offer_cta_btn_pilot: "Request pilot",
+          offer_cta_btn_demo: "Book demo",
+          offer_cta_btn_contact: "Contact",
+          offer_faq_h2: "FAQ",
+          offer_faq_q1: "How quickly can we start?",
+          offer_faq_a1:
+            "Most teams can begin a scoped pilot within days once use cases and owners are confirmed.",
+          offer_faq_q2: "Do we need new infrastructure?",
+          offer_faq_a2:
+            "No. The service is API-first and integrates with your existing applications and workflows.",
+          offer_faq_q3: "Can we start with one process only?",
+          offer_faq_a3:
+            "Yes. Pilot engagement is intended for one high-value process before broader rollout.",
+          offer_faq_q4: "What does success look like?",
+          offer_faq_a4:
+            "Reduced manual redaction effort, fewer privacy incidents, and stable operational adoption.",
+        },
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.textContent = value;
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
