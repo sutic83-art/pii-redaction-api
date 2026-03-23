@@ -1,17 +1,24 @@
-from pathlib import Path
 import os
 import time
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import List, Optional
 from uuid import uuid4
 
 from fastapi import FastAPI, Header, HTTPException, Request, Response
-from fastapi.responses import FileResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.audit import audit_event
+from app.client_registry import (
+    get_client_by_api_key,
+    list_clients_safe,
+    reload_clients,
+    sanitize_client,
+)
 from app.errors import (
     http_exception_handler,
     unhandled_exception_handler,
@@ -19,7 +26,9 @@ from app.errors import (
 )
 from app.policy import apply_policy
 from app.rate_limit import enforce_rate_limit
-from app.rec_sr import find_entities
+from app.rec_sr import DEFAULT_ENTITIES, find_entities
+from app.usage_store import append_usage_event, get_monthly_request_count, get_usage_summary
+
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -37,7 +46,7 @@ def _get_cors_origins() -> List[str]:
 
 app = FastAPI(
     title="PII Redaction API MVP",
-    version="3.1.0",
+    version="4.0.0",
     docs_url="/docs",
     redoc_url=None,
     openapi_url="/openapi.json",
@@ -55,7 +64,7 @@ if cors_origins:
         allow_credentials=False if cors_origins == ["*"] else True,
         allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["*"],
-        expose_headers=["x-request-id", "x-response-time-ms"],
+        expose_headers=["x-request-id", "x-response-time-ms", "x-client-id", "x-client-plan"],
     )
 
 
@@ -79,17 +88,63 @@ class RedactResponse(BaseModel):
     audit: dict
 
 
-def _get_allowed_api_keys():
-    raw = os.getenv("API_KEYS", "")
-    return {item.strip() for item in raw.split(",") if item.strip()}
+def _get_admin_api_key() -> str:
+    return os.getenv("ADMIN_API_KEY", "").strip()
 
 
-def _check_api_key(x_api_key: Optional[str]):
-    allowed = _get_allowed_api_keys()
-    if not allowed:
-        return
-    if not x_api_key or x_api_key not in allowed:
+def _check_admin_key(x_admin_key: Optional[str]):
+    expected = _get_admin_api_key()
+
+    if not expected:
+        raise HTTPException(status_code=503, detail="Admin key is not configured")
+
+    if not x_admin_key or x_admin_key != expected:
         raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+def _authenticate_client(x_api_key: Optional[str]) -> dict:
+    if not x_api_key:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    client = get_client_by_api_key(x_api_key)
+    if not client:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    if client.get("status") != "active":
+        raise HTTPException(status_code=403, detail="Client is disabled")
+
+    return client
+
+
+def _resolve_entities(requested_entities: Optional[List[str]], client: dict) -> List[str]:
+    allowed_entities = client.get("allowed_entities", ["*"])
+
+    if "*" in allowed_entities:
+        return requested_entities or DEFAULT_ENTITIES
+
+    if requested_entities:
+        requested = [str(item).strip().upper() for item in requested_entities if str(item).strip()]
+        filtered = [item for item in requested if item in allowed_entities]
+
+        if not filtered:
+            raise HTTPException(
+                status_code=403,
+                detail="Requested entities are not allowed for this client",
+            )
+
+        return filtered
+
+    return allowed_entities
+
+
+def _check_monthly_quota(client: dict):
+    monthly_quota = int(client.get("monthly_quota", 0) or 0)
+    if monthly_quota <= 0:
+        return
+
+    used = get_monthly_request_count(client["client_id"])
+    if used >= monthly_quota:
+        raise HTTPException(status_code=429, detail="Monthly quota exceeded")
 
 
 def redact_text(text: str, results: List[dict], policy: str) -> str:
@@ -118,6 +173,7 @@ async def add_request_id(request: Request, call_next):
 def landing():
     return FileResponse(BASE_DIR / "static" / "landing.html")
 
+
 @app.get("/api", include_in_schema=False)
 def api_info():
     return {
@@ -129,32 +185,43 @@ def api_info():
         "demo": "/demo",
         "redact": "/redact",
         "api_v1_redact": "/api/v1/redact",
+        "admin_clients": "/api/admin/clients",
+        "admin_usage_summary": "/api/admin/usage-summary",
+        "admin_reload_clients": "/api/admin/reload-clients",
     }
+
+
+@app.get("/demo", include_in_schema=False)
+def demo():
+    return FileResponse(BASE_DIR / "static" / "index.html")
+
 
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     return Response(status_code=204)
 
+
 @app.get("/health")
 def health():
     return {"status": "ok", "version": app.version}
 
-@app.get("/demo", include_in_schema=False)
-def demo():
-    return FileResponse(BASE_DIR / "static" / "index.html")
 
 @app.post("/redact", response_model=RedactResponse)
 @app.post("/api/v1/redact", response_model=RedactResponse)
 def redact(
     req: RedactRequest,
     request: Request,
+    response: Response,
     x_api_key: Optional[str] = Header(default=None),
 ):
-    enforce_rate_limit(request)
-    _check_api_key(x_api_key)
+    client = _authenticate_client(x_api_key)
+    enforce_rate_limit(client["client_id"], client.get("rate_limit_per_minute", 30))
+    _check_monthly_quota(client)
+
+    effective_entities = _resolve_entities(req.entities, client)
 
     try:
-        results = find_entities(req.text, req.entities)
+        results = find_entities(req.text, effective_entities)
         redacted = redact_text(req.text, results, req.policy)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -171,9 +238,53 @@ def redact(
         for r in results
     ]
 
+    append_usage_event(
+        {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "request_id": getattr(request.state, "request_id", None),
+            "client_id": client["client_id"],
+            "client_name": client["client_name"],
+            "plan": client["plan"],
+            "route": str(request.url.path),
+            "policy": req.policy,
+            "requested_entities": req.entities or [],
+            "effective_entities": effective_entities,
+            "detections_count": len(results),
+            "detected_entity_types": sorted(list({item["entity_type"] for item in results})),
+            "input_length": len(req.text),
+            "output_length": len(redacted),
+            "success": True,
+        }
+    )
+
+    response.headers["x-client-id"] = client["client_id"]
+    response.headers["x-client-plan"] = client["plan"]
+
     return RedactResponse(
         redacted_text=redacted,
         policy=req.policy,
         detections=detections,
         audit=audit,
     )
+
+
+@app.get("/api/admin/clients")
+def admin_clients(x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    return {"clients": list_clients_safe()}
+
+
+@app.get("/api/admin/usage-summary")
+def admin_usage_summary(
+    client_id: Optional[str] = None,
+    x_admin_key: Optional[str] = Header(default=None),
+):
+    _check_admin_key(x_admin_key)
+    return get_usage_summary(client_id=client_id)
+
+
+@app.post("/api/admin/reload-clients")
+def admin_reload_clients(x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    clients = reload_clients()
+    return {"status": "ok", "count": len(clients)}

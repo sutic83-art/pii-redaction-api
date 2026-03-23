@@ -1,0 +1,34 @@
+{
+  "clients": [
+    {
+      "client_id": "demo-local",
+      "client_name": "Demo Local",
+      "api_key": "demo-local-key-123",
+      "status": "active",
+      "plan": "demo",
+      "rate_limit_per_minute": 200,
+      "monthly_quota": 10000,
+      "allowed_entities": ["*"]
+    },
+    {
+      "client_id": "finance-pilot",
+      "client_name": "Finance Pilot",
+      "api_key": "finance-pilot-key-123",
+      "status": "active",
+      "plan": "pilot",
+      "rate_limit_per_minute": 60,
+      "monthly_quota": 3000,
+      "allowed_entities": ["PIB", "MB_COMPANY", "IBAN", "CARD_NUMBER"]
+    },
+    {
+      "client_id": "disabled-client",
+      "client_name": "Disabled Client",
+      "api_key": "disabled-key-123",
+      "status": "disabled",
+      "plan": "demo",
+      "rate_limit_per_minute": 10,
+      "monthly_quota": 100,
+      "allowed_entities": ["*"]
+    }
+  ]
+}

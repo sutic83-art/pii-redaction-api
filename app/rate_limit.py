@@ -1,43 +1,30 @@
-import os
 import time
 from collections import defaultdict, deque
 from threading import Lock
 
-from fastapi import HTTPException, Request
+from fastapi import HTTPException
 
 
 _BUCKETS = defaultdict(deque)
 _LOCK = Lock()
 
 
-def _limit_per_minute() -> int:
-    raw = os.getenv("RATE_LIMIT_PER_MINUTE", "30").strip()
+def _normalize_limit(limit, default: int = 30) -> int:
     try:
-        value = int(raw)
+        value = int(limit)
         return max(1, value)
-    except ValueError:
-        return 30
+    except (TypeError, ValueError):
+        return default
 
 
-def _client_key(request: Request) -> str:
-    api_key = request.headers.get("x-api-key")
-    if api_key:
-        return f"api_key:{api_key}"
-
-    if request.client and request.client.host:
-        return f"ip:{request.client.host}"
-
-    return "ip:unknown"
-
-
-def enforce_rate_limit(request: Request):
-    key = _client_key(request)
+def enforce_rate_limit(subject: str, limit: int):
+    subject = subject or "unknown"
+    limit = _normalize_limit(limit)
     now = time.time()
     window_seconds = 60
-    limit = _limit_per_minute()
 
     with _LOCK:
-        bucket = _BUCKETS[key]
+        bucket = _BUCKETS[subject]
 
         while bucket and (now - bucket[0]) > window_seconds:
             bucket.popleft()
