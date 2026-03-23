@@ -234,6 +234,11 @@ def admin():
     return FileResponse(BASE_DIR / "static" / "admin.html")
 
 
+@app.get("/offer", include_in_schema=False)
+def offer():
+    return FileResponse(BASE_DIR / "static" / "offer.html")
+
+
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     return Response(status_code=204)

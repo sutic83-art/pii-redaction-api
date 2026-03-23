@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API - Commercial Offer</title>
+  <meta name="description" content="Commercial offer for first clients: Demo, Pilot, and Business plans for PII Redaction API." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --warn: #ffd166;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 70px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: bold;
+      font-size: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 34px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 44px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 18px;
+      max-width: 920px;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .section .head {
+      margin-bottom: 14px;
+    }
+
+    .section .head h2 {
+      margin: 0 0 8px;
+      font-size: 29px;
+    }
+
+    .section .head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .box {
+      padding: 20px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .box h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .box p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .types {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .type {
+      padding: 14px;
+      text-align: center;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .type strong {
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .plan {
+      padding: 20px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .plan h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .plan .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .plan ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      padding: 16px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .step .num {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #1a2c53;
+      color: var(--accent-2);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .step h4 {
+      margin: 0 0 7px;
+      font-size: 16px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .cta {
+      margin-top: 26px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cta h3 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .cta p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 700px;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 17px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #08111f;
+      border-color: transparent;
+    }
+
+    .btn-secondary {
+      background: #162747;
+      color: var(--text);
+    }
+
+    .btn-tertiary {
+      background: #102038;
+      color: var(--accent-2);
+      border-color: #214a57;
+    }
+
+    .faq {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .qa {
+      padding: 18px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .qa h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .qa p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1020px) {
+      .grid-3,
+      .grid-2,
+      .types,
+      .plans,
+      .steps,
+      .faq {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Landing</a>
+        <a class="nav-link" href="/demo">Demo</a>
+        <a class="nav-link" href="/docs">API Docs</a>
+        <a class="nav-link" href="/admin">Admin</a>
+      </div>
+    </div>
+
+    <section class="card hero">
+      <h1>Commercial Offer for First Clients</h1>
+      <p class="lead">
+        A practical privacy layer for teams that must redact sensitive data before sharing text with
+        partners, vendors, internal systems, or AI tools. This offer is designed for fast onboarding,
+        measurable risk reduction, and minimal integration overhead.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="head">
+        <h2>Who It Is For</h2>
+        <p>Teams handling client, employee, or financial documents where consistent redaction is required.</p>
+      </div>
+      <div class="grid-3">
+        <div class="box">
+          <h3>Legal and Compliance</h3>
+          <p>Redact regulated identifiers before sharing contracts, case files, and evidence bundles.</p>
+        </div>
+        <div class="box">
+          <h3>Finance and Operations</h3>
+          <p>Protect accounting and payment data in invoices, reports, and operational communication.</p>
+        </div>
+        <div class="box">
+          <h3>AI and Automation Teams</h3>
+          <p>Sanitize text before using LLMs and automation workflows to avoid accidental data exposure.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head">
+        <h2>Supported Sensitive Data Types</h2>
+        <p>Current coverage focuses on commonly exposed identifiers in day-to-day business operations.</p>
+      </div>
+      <div class="types">
+        <div class="type"><strong>JMBG</strong>Personal ID</div>
+        <div class="type"><strong>PIB</strong>Tax identifier</div>
+        <div class="type"><strong>MB_COMPANY</strong>Company registration</div>
+        <div class="type"><strong>EMAIL</strong>Email addresses</div>
+        <div class="type"><strong>PHONE</strong>Phone numbers</div>
+        <div class="type"><strong>IBAN</strong>Bank accounts</div>
+        <div class="type"><strong>CARD_NUMBER</strong>Payment cards</div>
+        <div class="type"><strong>mask / hash / rm</strong>Redaction policies</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head">
+        <h2>Plans: Demo / Pilot / Business</h2>
+        <p>Start quickly, validate impact, then scale based on usage and governance requirements.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <h3>Demo</h3>
+          <div class="tag">Fast evaluation</div>
+          <ul>
+            <li>Access to demo UI and API docs</li>
+            <li>Representative sample redaction scenarios</li>
+            <li>Basic support for technical validation</li>
+            <li>Best for first internal review</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <h3>Pilot</h3>
+          <div class="tag">Controlled real-world test</div>
+          <ul>
+            <li>Dedicated API key and usage tracking</li>
+            <li>Agreed pilot scope and success criteria</li>
+            <li>Regular feedback and tuning sessions</li>
+            <li>Best for proving ROI in one workflow</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <h3>Business</h3>
+          <div class="tag">Production rollout</div>
+          <ul>
+            <li>Multi-team operational usage</li>
+            <li>SLA and support model alignment</li>
+            <li>Governance and periodic review cadence</li>
+            <li>Best for long-term integration</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head">
+        <h2>Onboarding Process</h2>
+        <p>Designed for fast start and low friction with your current stack.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h4>Discovery</h4>
+          <p>Define use cases, risk profile, and target documents or channels.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h4>Setup</h4>
+          <p>Provide API access, key management, and initial usage constraints.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h4>Validation</h4>
+          <p>Run real samples, measure coverage, and verify operational fit.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h4>Go-live</h4>
+          <p>Formalize process ownership and move pilot workload into production.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head">
+        <h2>Implementation Flow</h2>
+        <p>Typical integration pattern used by first clients.</p>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <h3>Before</h3>
+          <p>Raw text from documents, tickets, emails, or customer interactions enters downstream tools directly.</p>
+        </div>
+        <div class="box">
+          <h3>After</h3>
+          <p>All text passes through the redaction API first, then only sanitized content reaches external systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card cta">
+        <div>
+          <h3>Next Step</h3>
+          <p>Choose the best path for your team and we will define the first milestone within one call.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/#contact">Request pilot</a>
+          <a class="btn btn-secondary" href="/demo">Book demo</a>
+          <a class="btn btn-tertiary" href="/#contact">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="head">
+        <h2>FAQ</h2>
+      </div>
+      <div class="faq">
+        <div class="qa">
+          <h4>How quickly can we start?</h4>
+          <p>Most teams can begin a scoped pilot within days once use cases and owners are confirmed.</p>
+        </div>
+        <div class="qa">
+          <h4>Do we need new infrastructure?</h4>
+          <p>No. The service is API-first and integrates with your existing applications and workflows.</p>
+        </div>
+        <div class="qa">
+          <h4>Can we start with one process only?</h4>
+          <p>Yes. Pilot engagement is intended for one high-value process before broader rollout.</p>
+        </div>
+        <div class="qa">
+          <h4>What does success look like?</h4>
+          <p>Reduced manual redaction effort, fewer privacy incidents, and stable operational adoption.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      PII Redaction API • Offer page for initial commercial conversations.
+    </div>
+  </div>
+</body>
+</html>
