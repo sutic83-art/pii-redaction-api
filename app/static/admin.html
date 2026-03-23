@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API Admin</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --warn: #ffd166;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 980px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    p.lead {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 10px 0 14px;
+    }
+
+    label {
+      font-size: 14px;
+      color: var(--muted);
+      min-width: 86px;
+    }
+
+    input[type="password"] {
+      flex: 1 1 280px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #08111f;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button {
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #162747;
+      color: var(--text);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #08111f;
+      border-color: transparent;
+    }
+
+    button.warn {
+      background: #2f1e28;
+      border-color: #5c2c3f;
+      color: #ffd7e7;
+    }
+
+    .status {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .status.ok { color: var(--accent-2); }
+    .status.err { color: var(--warn); }
+
+    .result {
+      margin-top: 14px;
+      background: #0b1428;
+      border: 1px solid #223965;
+      border-radius: 14px;
+      padding: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 140px;
+      color: #d8e7ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API Admin</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Landing</a>
+        <a class="nav-link" href="/demo">Demo</a>
+        <a class="nav-link" href="/docs">API Docs</a>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1>Admin Console</h1>
+      <p class="lead">Use your admin key to query existing admin endpoints.</p>
+
+      <div class="row">
+        <label for="admin-key">Admin Key</label>
+        <input id="admin-key" type="password" placeholder="Enter x-admin-key" />
+      </div>
+
+      <div class="actions">
+        <button id="load-clients" class="primary" type="button">Load clients</button>
+        <button id="load-usage" type="button">Load usage</button>
+        <button id="reload-clients" class="warn" type="button">Reload clients</button>
+      </div>
+
+      <div id="status" class="status" aria-live="polite"></div>
+      <pre id="result" class="result">{}</pre>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const keyInput = document.getElementById("admin-key");
+      const statusEl = document.getElementById("status");
+      const resultEl = document.getElementById("result");
+
+      function setStatus(kind, message) {
+        statusEl.textContent = message || "";
+        statusEl.classList.remove("ok", "err");
+        if (kind === "ok") statusEl.classList.add("ok");
+        if (kind === "err") statusEl.classList.add("err");
+      }
+
+      function formatJson(value) {
+        return JSON.stringify(value, null, 2);
+      }
+
+      async function callApi(path, method) {
+        const adminKey = (keyInput.value || "").trim();
+        if (!adminKey) {
+          setStatus("err", "Admin key is required.");
+          return;
+        }
+
+        setStatus("", "Loading...");
+        try {
+          const res = await fetch(path, {
+            method: method,
+            headers: {
+              "x-admin-key": adminKey
+            }
+          });
+
+          let data = null;
+          try {
+            data = await res.json();
+          } catch (_e) {
+            data = { message: "No JSON response body" };
+          }
+
+          resultEl.textContent = formatJson(data);
+
+          if (!res.ok) {
+            const msg = data?.error?.message || "Request failed.";
+            setStatus("err", msg);
+            return;
+          }
+
+          setStatus("ok", "Request successful.");
+        } catch (_e) {
+          setStatus("err", "Network error. Please try again.");
+        }
+      }
+
+      document.getElementById("load-clients").addEventListener("click", function () {
+        callApi("/api/admin/clients", "GET");
+      });
+
+      document.getElementById("load-usage").addEventListener("click", function () {
+        callApi("/api/admin/usage-summary", "GET");
+      });
+
+      document.getElementById("reload-clients").addEventListener("click", function () {
+        callApi("/api/admin/reload-clients", "POST");
+      });
+    })();
+  </script>
+</body>
+</html>
