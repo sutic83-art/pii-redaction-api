@@ -17,7 +17,6 @@ from app.client_registry import (
     get_client_by_api_key,
     list_clients_safe,
     reload_clients,
-    sanitize_client,
 )
 from app.errors import (
     http_exception_handler,
