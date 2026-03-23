@@ -9,9 +9,10 @@ from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.contact_store import append_contact_request
 from app.audit import audit_event
 from app.client_registry import (
     get_client_by_api_key,
@@ -71,6 +72,39 @@ class RedactRequest(BaseModel):
     text: str = Field(..., min_length=1, max_length=20000)
     policy: str = Field(default="mask")
     entities: Optional[List[str]] = None
+
+
+class ContactRequest(BaseModel):
+    full_name: str = Field(..., min_length=1, max_length=200)
+    email: str = Field(..., min_length=1, max_length=320)
+    company: Optional[str] = Field(default=None, max_length=200)
+    message: str = Field(..., min_length=1, max_length=8000)
+
+    @field_validator("full_name", "email", "message", mode="before")
+    @classmethod
+    def _strip_and_require(cls, value: object) -> object:
+        if value is None:
+            return value
+
+        if isinstance(value, str):
+            stripped = value.strip()
+            if not stripped:
+                raise ValueError("must not be blank")
+            return stripped
+
+        return value
+
+    @field_validator("company", mode="before")
+    @classmethod
+    def _strip_optional(cls, value: object) -> object:
+        if value is None:
+            return None
+
+        if isinstance(value, str):
+            stripped = value.strip()
+            return stripped or None
+
+        return value
 
 
 class DetectionItem(BaseModel):
@@ -203,6 +237,18 @@ def favicon():
 @app.get("/health")
 def health():
     return {"status": "ok", "version": app.version}
+
+
+@app.post("/api/contact")
+def submit_contact(req: ContactRequest, request: Request):
+    append_contact_request(
+        full_name=req.full_name,
+        email=req.email,
+        company=req.company,
+        message=req.message,
+        request_id=getattr(request.state, "request_id", None),
+    )
+    return {"success": {"status": "ok"}}
 
 
 @app.post("/redact", response_model=RedactResponse)

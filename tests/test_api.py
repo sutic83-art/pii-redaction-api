@@ -1,4 +1,5 @@
 # ruff: noqa: E402
+import json
 import os
 from pathlib import Path
 
@@ -9,6 +10,7 @@ os.environ["CLIENTS_FILE"] = "data/clients.json"
 os.environ["USAGE_LOG_FILE"] = "data/test_usage_events.jsonl"
 
 Path(os.environ["USAGE_LOG_FILE"]).unlink(missing_ok=True)
+Path("data/contact_requests.jsonl").unlink(missing_ok=True)
 
 from fastapi.testclient import TestClient
 from app.main import app
@@ -173,6 +175,46 @@ def test_validation_error_shape():
         "/api/v1/redact",
         headers={"x-api-key": DEMO_KEY},
         json={"policy": "mask"},
+    )
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "validation_error"
+
+
+def test_contact_endpoint_success_stores_jsonl():
+    payload = {
+        "full_name": "Jane Doe",
+        "email": "jane@example.com",
+        "company": "ACME",
+        "message": "Hello, I'd like to talk.",
+    }
+
+    response = client.post("/api/contact", json=payload)
+    assert response.status_code == 200
+    assert response.json() == {"success": {"status": "ok"}}
+
+    path = Path("data/contact_requests.jsonl")
+    assert path.exists()
+
+    lines = path.read_text(encoding="utf-8").splitlines()
+    assert lines
+    last = json.loads(lines[-1])
+
+    assert last["full_name"] == payload["full_name"]
+    assert last["email"] == payload["email"]
+    assert last["company"] == payload["company"]
+    assert last["message"] == payload["message"]
+    assert "ts" in last
+    assert "request_id" in last
+
+
+def test_contact_endpoint_validation_error_shape():
+    response = client.post(
+        "/api/contact",
+        json={
+            "email": "jane@example.com",
+            "company": "ACME",
+            # missing full_name and message
+        },
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "validation_error"
