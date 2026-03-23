@@ -15,9 +15,13 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.contact_store import append_contact_request
 from app.audit import audit_event
 from app.client_registry import (
+    create_client,
     get_client_by_api_key,
     list_clients_safe,
     reload_clients,
+    rotate_client_key,
+    sanitize_client,
+    update_client,
 )
 from app.errors import (
     http_exception_handler,
@@ -119,6 +123,25 @@ class RedactResponse(BaseModel):
     policy: str
     detections: List[DetectionItem]
     audit: dict
+
+
+class ClientCreateRequest(BaseModel):
+    client_id: str = Field(..., min_length=1, max_length=80)
+    client_name: str = Field(..., min_length=1, max_length=120)
+    plan: str = Field(default="standard", min_length=1, max_length=60)
+    status: str = Field(default="active", min_length=1, max_length=30)
+    rate_limit_per_minute: int = Field(default=30, ge=1, le=100000)
+    monthly_quota: int = Field(default=0, ge=0, le=1000000000)
+    allowed_entities: List[str] = Field(default_factory=lambda: ["*"])
+
+
+class ClientPatchRequest(BaseModel):
+    client_name: Optional[str] = Field(default=None, min_length=1, max_length=120)
+    plan: Optional[str] = Field(default=None, min_length=1, max_length=60)
+    status: Optional[str] = Field(default=None, min_length=1, max_length=30)
+    rate_limit_per_minute: Optional[int] = Field(default=None, ge=1, le=100000)
+    monthly_quota: Optional[int] = Field(default=None, ge=0, le=1000000000)
+    allowed_entities: Optional[List[str]] = None
 
 
 def _get_admin_api_key() -> str:
@@ -343,3 +366,44 @@ def admin_reload_clients(x_admin_key: Optional[str] = Header(default=None)):
     _check_admin_key(x_admin_key)
     clients = reload_clients()
     return {"status": "ok", "count": len(clients)}
+
+
+@app.post("/api/admin/clients")
+def admin_create_client(req: ClientCreateRequest, x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    try:
+        created = create_client(req.model_dump())
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return {"client": sanitize_client(created), "api_key": created["api_key"]}
+
+
+@app.patch("/api/admin/clients/{client_id}")
+def admin_patch_client(
+    client_id: str,
+    req: ClientPatchRequest,
+    x_admin_key: Optional[str] = Header(default=None),
+):
+    _check_admin_key(x_admin_key)
+    patch = {k: v for k, v in req.model_dump().items() if v is not None}
+    if not patch:
+        raise HTTPException(status_code=400, detail="No fields provided for update")
+    try:
+        updated = update_client(client_id, patch)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Client not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return {"client": sanitize_client(updated)}
+
+
+@app.post("/api/admin/clients/{client_id}/rotate-key")
+def admin_rotate_client_key(client_id: str, x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    try:
+        updated = rotate_client_key(client_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Client not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return {"client": sanitize_client(updated), "api_key": updated["api_key"]}

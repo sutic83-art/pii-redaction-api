@@ -16,7 +16,7 @@
       --warn: #ffd166;
       --border: #26385f;
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-      --max: 980px;
+      --max: 1120px;
     }
 
     * { box-sizing: border-box; }
@@ -74,15 +74,21 @@
       border-radius: 20px;
       box-shadow: var(--shadow);
       padding: 22px;
+      margin-bottom: 16px;
     }
 
     h1 {
       margin: 0 0 8px;
-      font-size: 32px;
+      font-size: 30px;
     }
 
-    p.lead {
-      margin: 0 0 16px;
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    p.lead, p.sub {
+      margin: 0 0 14px;
       color: var(--muted);
       line-height: 1.6;
     }
@@ -92,36 +98,46 @@
       gap: 12px;
       align-items: center;
       flex-wrap: wrap;
-      margin: 10px 0 14px;
+      margin: 10px 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
     label {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
-      min-width: 86px;
+      display: block;
+      margin-bottom: 6px;
     }
 
-    input[type="password"] {
-      flex: 1 1 280px;
-      padding: 12px 14px;
-      border-radius: 12px;
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       background: #08111f;
       color: var(--text);
       outline: none;
       font-size: 14px;
+      font-family: inherit;
     }
+
+    textarea { min-height: 74px; resize: vertical; }
 
     .actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     button {
-      padding: 11px 14px;
-      border-radius: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       background: #162747;
       color: var(--text);
@@ -151,8 +167,20 @@
     .status.ok { color: var(--accent-2); }
     .status.err { color: var(--warn); }
 
+    .highlight {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #335a64;
+      background: #10232b;
+      color: #aef3cc;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      display: none;
+    }
+
     .result {
-      margin-top: 14px;
+      margin-top: 12px;
       background: #0b1428;
       border: 1px solid #223965;
       border-radius: 14px;
@@ -162,8 +190,14 @@
       font-family: Consolas, monospace;
       font-size: 13px;
       line-height: 1.5;
-      min-height: 140px;
+      min-height: 160px;
       color: #d8e7ff;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -173,6 +207,7 @@
       <div class="brand">PII Redaction API Admin</div>
       <div class="nav-links">
         <a class="nav-link" href="/">Landing</a>
+        <a class="nav-link" href="/offer">Offer</a>
         <a class="nav-link" href="/demo">Demo</a>
         <a class="nav-link" href="/docs">API Docs</a>
       </div>
@@ -180,22 +215,104 @@
 
     <section class="card">
       <h1>Admin Console</h1>
-      <p class="lead">Use your admin key to query existing admin endpoints.</p>
-
+      <p class="lead">Manage clients with local file-based onboarding and existing admin routes.</p>
       <div class="row">
-        <label for="admin-key">Admin Key</label>
-        <input id="admin-key" type="password" placeholder="Enter x-admin-key" />
+        <div style="width: 100%;">
+          <label for="admin-key">Admin Key (x-admin-key)</label>
+          <input id="admin-key" type="password" placeholder="Enter x-admin-key" />
+        </div>
       </div>
-
       <div class="actions">
         <button id="load-clients" class="primary" type="button">Load clients</button>
         <button id="load-usage" type="button">Load usage</button>
         <button id="reload-clients" class="warn" type="button">Reload clients</button>
       </div>
-
-      <div id="status" class="status" aria-live="polite"></div>
-      <pre id="result" class="result">{}</pre>
     </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2>Create client</h2>
+        <p class="sub">A new API key is generated automatically and shown once.</p>
+        <label for="create-client-id">client_id</label>
+        <input id="create-client-id" type="text" />
+
+        <label for="create-client-name">client_name</label>
+        <input id="create-client-name" type="text" />
+
+        <label for="create-plan">plan</label>
+        <input id="create-plan" type="text" value="standard" />
+
+        <label for="create-status">status</label>
+        <select id="create-status">
+          <option value="active">active</option>
+          <option value="disabled">disabled</option>
+        </select>
+
+        <label for="create-rpm">rate_limit_per_minute</label>
+        <input id="create-rpm" type="number" value="30" min="1" />
+
+        <label for="create-quota">monthly_quota</label>
+        <input id="create-quota" type="number" value="0" min="0" />
+
+        <label for="create-entities">allowed_entities (comma-separated, or * for all)</label>
+        <input id="create-entities" type="text" value="*" />
+
+        <div class="actions">
+          <button id="create-client" class="primary" type="button">Create client</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Update client</h2>
+        <p class="sub">Patch only fields you want to change.</p>
+        <label for="update-client-id">client_id</label>
+        <input id="update-client-id" type="text" />
+
+        <label for="update-client-name">client_name</label>
+        <input id="update-client-name" type="text" placeholder="optional" />
+
+        <label for="update-plan">plan</label>
+        <input id="update-plan" type="text" placeholder="optional" />
+
+        <label for="update-status">status</label>
+        <select id="update-status">
+          <option value="">(no change)</option>
+          <option value="active">active</option>
+          <option value="disabled">disabled</option>
+        </select>
+
+        <label for="update-rpm">rate_limit_per_minute</label>
+        <input id="update-rpm" type="number" min="1" placeholder="optional" />
+
+        <label for="update-quota">monthly_quota</label>
+        <input id="update-quota" type="number" min="0" placeholder="optional" />
+
+        <label for="update-entities">allowed_entities (comma-separated)</label>
+        <input id="update-entities" type="text" placeholder="optional" />
+
+        <div class="actions">
+          <button id="update-client" type="button">Update client</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Rotate client key</h2>
+      <p class="sub">Generates a new key and invalidates the old key for that client.</p>
+      <div class="row">
+        <div style="width: 100%;">
+          <label for="rotate-client-id">client_id</label>
+          <input id="rotate-client-id" type="text" />
+        </div>
+      </div>
+      <div class="actions">
+        <button id="rotate-key" class="warn" type="button">Rotate key</button>
+      </div>
+    </section>
+
+    <div id="status" class="status" aria-live="polite"></div>
+    <div id="api-key-highlight" class="highlight"></div>
+    <pre id="result" class="result">{}</pre>
   </div>
 
   <script>
@@ -203,6 +320,7 @@
       const keyInput = document.getElementById("admin-key");
       const statusEl = document.getElementById("status");
       const resultEl = document.getElementById("result");
+      const keyHighlight = document.getElementById("api-key-highlight");
 
       function setStatus(kind, message) {
         statusEl.textContent = message || "";
@@ -211,24 +329,46 @@
         if (kind === "err") statusEl.classList.add("err");
       }
 
+      function showApiKey(apiKey) {
+        if (!apiKey) {
+          keyHighlight.style.display = "none";
+          keyHighlight.textContent = "";
+          return;
+        }
+        keyHighlight.style.display = "block";
+        keyHighlight.textContent = "Generated API key (shown once): " + apiKey;
+      }
+
       function formatJson(value) {
         return JSON.stringify(value, null, 2);
       }
 
-      async function callApi(path, method) {
+      function parseEntities(value) {
+        const raw = (value || "").trim();
+        if (!raw) return [];
+        return raw.split(",").map(function (item) { return item.trim(); }).filter(Boolean);
+      }
+
+      async function callApi(path, method, payload) {
         const adminKey = (keyInput.value || "").trim();
         if (!adminKey) {
           setStatus("err", "Admin key is required.");
-          return;
+          return null;
+        }
+
+        const headers = { "x-admin-key": adminKey };
+        if (payload !== undefined) {
+          headers["Content-Type"] = "application/json";
         }
 
         setStatus("", "Loading...");
+        showApiKey(null);
+
         try {
           const res = await fetch(path, {
             method: method,
-            headers: {
-              "x-admin-key": adminKey
-            }
+            headers: headers,
+            body: payload !== undefined ? JSON.stringify(payload) : undefined
           });
 
           let data = null;
@@ -243,12 +383,17 @@
           if (!res.ok) {
             const msg = data?.error?.message || "Request failed.";
             setStatus("err", msg);
-            return;
+            return null;
           }
 
+          if (data && data.api_key) {
+            showApiKey(data.api_key);
+          }
           setStatus("ok", "Request successful.");
+          return data;
         } catch (_e) {
           setStatus("err", "Network error. Please try again.");
+          return null;
         }
       }
 
@@ -262,6 +407,53 @@
 
       document.getElementById("reload-clients").addEventListener("click", function () {
         callApi("/api/admin/reload-clients", "POST");
+      });
+
+      document.getElementById("create-client").addEventListener("click", function () {
+        const payload = {
+          client_id: document.getElementById("create-client-id").value,
+          client_name: document.getElementById("create-client-name").value,
+          plan: document.getElementById("create-plan").value || "standard",
+          status: document.getElementById("create-status").value || "active",
+          rate_limit_per_minute: Number(document.getElementById("create-rpm").value || 30),
+          monthly_quota: Number(document.getElementById("create-quota").value || 0),
+          allowed_entities: parseEntities(document.getElementById("create-entities").value || "*")
+        };
+        callApi("/api/admin/clients", "POST", payload);
+      });
+
+      document.getElementById("update-client").addEventListener("click", function () {
+        const clientId = (document.getElementById("update-client-id").value || "").trim();
+        if (!clientId) {
+          setStatus("err", "client_id is required for update.");
+          return;
+        }
+
+        const payload = {};
+        const name = (document.getElementById("update-client-name").value || "").trim();
+        const plan = (document.getElementById("update-plan").value || "").trim();
+        const status = (document.getElementById("update-status").value || "").trim();
+        const rpm = (document.getElementById("update-rpm").value || "").trim();
+        const quota = (document.getElementById("update-quota").value || "").trim();
+        const entitiesRaw = (document.getElementById("update-entities").value || "").trim();
+
+        if (name) payload.client_name = name;
+        if (plan) payload.plan = plan;
+        if (status) payload.status = status;
+        if (rpm) payload.rate_limit_per_minute = Number(rpm);
+        if (quota) payload.monthly_quota = Number(quota);
+        if (entitiesRaw) payload.allowed_entities = parseEntities(entitiesRaw);
+
+        callApi("/api/admin/clients/" + encodeURIComponent(clientId), "PATCH", payload);
+      });
+
+      document.getElementById("rotate-key").addEventListener("click", function () {
+        const clientId = (document.getElementById("rotate-client-id").value || "").trim();
+        if (!clientId) {
+          setStatus("err", "client_id is required for key rotation.");
+          return;
+        }
+        callApi("/api/admin/clients/" + encodeURIComponent(clientId) + "/rotate-key", "POST");
       });
     })();
   </script>

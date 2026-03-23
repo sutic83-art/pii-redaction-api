@@ -1,16 +1,21 @@
 # ruff: noqa: E402
 import json
 import os
+import shutil
 from pathlib import Path
 
 os.environ["HASH_SALT"] = "test-salt"
 os.environ["RATE_LIMIT_PER_MINUTE"] = "200"
 os.environ["ADMIN_API_KEY"] = "admin-key-123"
-os.environ["CLIENTS_FILE"] = "data/clients.json"
+TEST_CLIENTS_FILE = "data/test_clients.json"
+shutil.copyfile("data/clients.json", TEST_CLIENTS_FILE)
+os.environ["CLIENTS_FILE"] = TEST_CLIENTS_FILE
 os.environ["USAGE_LOG_FILE"] = "data/test_usage_events.jsonl"
 
 Path(os.environ["USAGE_LOG_FILE"]).unlink(missing_ok=True)
 Path("data/contact_requests.jsonl").unlink(missing_ok=True)
+Path(TEST_CLIENTS_FILE).unlink(missing_ok=True)
+shutil.copyfile("data/clients.json", TEST_CLIENTS_FILE)
 
 from fastapi.testclient import TestClient
 from app.main import app
@@ -218,3 +223,71 @@ def test_contact_endpoint_validation_error_shape():
     )
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "validation_error"
+
+
+def test_admin_create_client_returns_api_key_once():
+    response = client.post(
+        "/api/admin/clients",
+        headers={"x-admin-key": ADMIN_KEY},
+        json={
+            "client_id": "new-client",
+            "client_name": "New Client",
+            "plan": "pilot",
+            "status": "active",
+            "rate_limit_per_minute": 55,
+            "monthly_quota": 1234,
+            "allowed_entities": ["EMAIL", "PHONE"],
+        },
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert "client" in body
+    assert "api_key" in body
+    assert body["client"]["client_id"] == "new-client"
+    assert "api_key" not in body["client"]
+    assert len(body["api_key"]) >= 20
+
+
+def test_admin_patch_client_updates_plan_and_limits():
+    response = client.patch(
+        "/api/admin/clients/finance-pilot",
+        headers={"x-admin-key": ADMIN_KEY},
+        json={
+            "plan": "business",
+            "rate_limit_per_minute": 77,
+            "allowed_entities": ["*"],
+        },
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["client"]["plan"] == "business"
+    assert body["client"]["rate_limit_per_minute"] == 77
+    assert body["client"]["allowed_entities"] == ["*"]
+
+
+def test_admin_rotate_key_changes_key_for_client():
+    before = client.get("/api/admin/clients", headers={"x-admin-key": ADMIN_KEY})
+    assert before.status_code == 200
+    old_hint = next(
+        item["api_key_hint"]
+        for item in before.json()["clients"]
+        if item["client_id"] == "demo-local"
+    )
+
+    rotate = client.post(
+        "/api/admin/clients/demo-local/rotate-key",
+        headers={"x-admin-key": ADMIN_KEY},
+    )
+    assert rotate.status_code == 200
+    body = rotate.json()
+    assert "api_key" in body
+    assert body["client"]["client_id"] == "demo-local"
+
+    after = client.get("/api/admin/clients", headers={"x-admin-key": ADMIN_KEY})
+    assert after.status_code == 200
+    new_hint = next(
+        item["api_key_hint"]
+        for item in after.json()["clients"]
+        if item["client_id"] == "demo-local"
+    )
+    assert new_hint != old_hint
