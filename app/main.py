@@ -275,6 +275,11 @@ def offer_print():
     return FileResponse(BASE_DIR / "static" / "offer-print.html")
 
 
+@app.get("/release-notes", include_in_schema=False)
+def release_notes():
+    return FileResponse(BASE_DIR / "static" / "release-notes.html")
+
+
 @app.get("/ops", include_in_schema=False)
 def ops():
     return FileResponse(BASE_DIR / "static" / "ops.html")

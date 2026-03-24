@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API - Release Notes V1</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --warn: #ffd166;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .status-strip {
+      background: rgba(30, 45, 80, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status-badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(25, 40, 70, 0.8);
+      border: 1px solid var(--border);
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      background: rgba(35, 55, 90, 0.9);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .status-badge::before {
+      content: '●';
+      font-size: 8px;
+      color: var(--accent-2);
+    }
+
+    .status-text {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    #lang-select {
+      width: auto !important;
+      max-width: 220px;
+      cursor: pointer;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    p.lead, p.sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .version-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .feature-item {
+      background: rgba(25, 40, 70, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .feature-item h4 {
+      margin: 0 0 8px;
+      color: var(--accent-2);
+      font-size: 16px;
+    }
+
+    .feature-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .tech-item {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(120, 168, 255, 0.2);
+      border: 1px solid rgba(120, 168, 255, 0.3);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .limitations {
+      background: rgba(255, 209, 102, 0.1);
+      border: 1px solid rgba(255, 209, 102, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .limitations h4 {
+      margin: 0 0 8px;
+      color: var(--warn);
+    }
+
+    .limitations ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .limitations li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="status-strip">
+      <div class="status-badges">
+        <a href="/demo" class="status-badge" data-i18n="status_demo">Live demo</a>
+        <a href="/docs" class="status-badge" data-i18n="status_docs">API docs</a>
+        <span class="status-badge" style="cursor: default;" data-i18n="status_bilingual">Bilingual UI</span>
+      </div>
+      <div class="status-text" data-i18n="status_ready">Production Ready V1</div>
+    </div>
+
+    <div class="nav">
+      <div class="brand">PII Redaction API</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/" data-i18n="nav_landing">Landing</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Offer</a>
+        <a class="nav-link" href="/ops" data-i18n="nav_ops">Ops</a>
+        <a class="nav-link" href="/admin" data-i18n="nav_admin">Admin</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_api_docs">API Docs</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="card">
+      <div class="version-badge" data-i18n="version_badge">Version 1.2.0</div>
+      <h1 data-i18n="release_h1">Release Notes V1</h1>
+      <p class="lead" data-i18n="release_lead">Production-ready PII redaction API with comprehensive admin capabilities and bilingual support.</p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="public_pages_h2">Public Pages</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4 data-i18n="landing_feature">Landing Page</h4>
+          <p data-i18n="landing_feature_desc">Marketing page with product overview, use cases, and demo access.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="demo_feature">Interactive Demo</h4>
+          <p data-i18n="demo_feature_desc">Live testing interface with real-time PII detection and redaction.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="offer_feature">Commercial Offer</h4>
+          <p data-i18n="offer_feature_desc">Business proposal with pricing tiers and integration details.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="onboarding_feature">Client Onboarding</h4>
+          <p data-i18n="onboarding_feature_desc">Step-by-step integration guide and pilot process.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="contact_feature">Contact Form</h4>
+          <p data-i18n="contact_feature_desc">Lead capture with company information and requirements.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="legal_feature">Legal Pages</h4>
+          <p data-i18n="legal_feature_desc">Privacy policy, terms of service, and security documentation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="admin_pages_h2">Admin & Internal Pages</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4 data-i18n="admin_console_feature">Admin Console</h4>
+          <p data-i18n="admin_console_feature_desc">Client management, API key rotation, and usage monitoring.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="ops_dashboard_feature">Ops Dashboard</h4>
+          <p data-i18n="ops_dashboard_feature_desc">System health, deployment status, and operational metrics.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="api_docs_feature">API Documentation</h4>
+          <p data-i18n="api_docs_feature_desc">Interactive OpenAPI docs with request/response examples.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="csv_export_feature">CSV Export</h4>
+          <p data-i18n="csv_export_feature_desc">Download contact leads and usage data for analysis.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="core_api_h2">Core API Capabilities</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4 data-i18n="redaction_feature">Text Redaction</h4>
+          <p data-i18n="redaction_feature_desc">Multiple policies: mask, remove, replace with placeholders.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="entity_detection_feature">Entity Detection</h4>
+          <p data-i18n="entity_detection_feature_desc">High-accuracy PII identification with confidence scores.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="rate_limiting_feature">Rate Limiting</h4>
+          <p data-i18n="rate_limiting_feature_desc">Per-client rate limits and monthly quota enforcement.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="audit_trail_feature">Audit Trail</h4>
+          <p data-i18n="audit_trail_feature_desc">Complete request logging with timestamps and metadata.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="supported_pii_h2">Supported PII Types</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4>JMBG</h4>
+          <p data-i18n="jmbg_desc">Serbian national identification number</p>
+        </div>
+        <div class="feature-item">
+          <h4>PIB</h4>
+          <p data-i18n="pib_desc">Tax identification number</p>
+        </div>
+        <div class="feature-item">
+          <h4>MB</h4>
+          <p data-i18n="mb_desc">Company registration number</p>
+        </div>
+        <div class="feature-item">
+          <h4>EMAIL</h4>
+          <p data-i18n="email_desc">Email addresses</p>
+        </div>
+        <div class="feature-item">
+          <h4>PHONE</h4>
+          <p data-i18n="phone_desc">Phone numbers (international format)</p>
+        </div>
+        <div class="feature-item">
+          <h4>IBAN</h4>
+          <p data-i18n="iban_desc">International bank account numbers</p>
+        </div>
+        <div class="feature-item">
+          <h4>CARD</h4>
+          <p data-i18n="card_desc">Credit/debit card numbers</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="client_access_h2">Client Access & Plans</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4 data-i18n="api_keys_feature">API Key Authentication</h4>
+          <p data-i18n="api_keys_feature_desc">Secure client authentication with unique API keys.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="tiered_plans_feature">Tiered Plans</h4>
+          <p data-i18n="tiered_plans_feature_desc">Standard, business, and enterprise pricing tiers.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="usage_quotas_feature">Usage Quotas</h4>
+          <p data-i18n="usage_quotas_feature_desc">Monthly request limits and rate limiting per client.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="entity_whitelist_feature">Entity Whitelisting</h4>
+          <p data-i18n="entity_whitelist_feature_desc">Per-client control over which PII types to detect.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="deployment_stack_h2">Deployment Stack</h2>
+      <div class="tech-stack">
+        <span class="tech-item">FastAPI 4.0.0</span>
+        <span class="tech-item">Python 3.11+</span>
+        <span class="tech-item">Docker</span>
+        <span class="tech-item">GitHub Actions</span>
+        <span class="tech-item">Render</span>
+        <span class="tech-item">File-based Storage</span>
+        <span class="tech-item">JSONL Format</span>
+        <span class="tech-item">No Database Required</span>
+      </div>
+      <p class="sub" data-i18n="deployment_desc">Containerized deployment with automated CI/CD pipeline and zero database dependencies.</p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="current_limitations_h2">Current Limitations</h2>
+      <div class="limitations">
+        <h4 data-i18n="limitations_title">Intentionally Not Included in V1</h4>
+        <ul>
+          <li data-i18n="limitation_1">No database - file-based storage for simplicity and reliability</li>
+          <li data-i18n="limitation_2">No user accounts - API key based authentication only</li>
+          <li data-i18n="limitation_3">No real-time processing - batch processing for optimal accuracy</li>
+          <li data-i18n="limitation_4">No custom model training - uses pre-trained Serbian language models</li>
+          <li data-i18n="limitation_5">No document processing - text-only API (no PDF/Word/image support)</li>
+          <li data-i18n="limitation_6">No streaming API - request/response pattern only</li>
+          <li data-i18n="limitation_7">No multi-tenant UI - single deployment per customer</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="contact_info_h2">Contact & Support</h2>
+      <p class="lead" data-i18n="contact_desc">For integration support, custom requirements, or enterprise deployments, contact our team.</p>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <h4 data-i18n="contact_form_title">Contact Form</h4>
+          <p data-i18n="contact_form_desc">Submit inquiries through our online contact form.</p>
+        </div>
+        <div class="feature-item">
+          <h4 data-i18n="lead_management_title">Lead Management</h4>
+          <p data-i18n="lead_management_desc">All contact requests tracked and exportable via admin panel.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          status_demo: "Live demo",
+          status_docs: "API dokumentacija",
+          status_bilingual: "Dvojezični UI",
+          status_ready: "Spremno za produkciju V1",
+          nav_landing: "Početna",
+          nav_offer: "Ponuda",
+          nav_ops: "Ops",
+          nav_admin: "Admin",
+          nav_demo: "Demo",
+          nav_api_docs: "API dokumentacija",
+          version_badge: "Verzija 1.2.0",
+          release_h1: "Napomene o izdanju V1",
+          release_lead: "PII redakcija API spremna za produkciju sa kompletnim admin mogućnostima i dvojezičnom podrškom.",
+          public_pages_h2: "Javne stranice",
+          landing_feature: "Početna stranica",
+          landing_feature_desc: "Marketing stranica sa pregledom proizvoda, primerima upotrebe i pristup demou.",
+          demo_feature: "Interaktivni demo",
+          demo_feature_desc: "Testiranje u stvarnom vremenu sa detekcijom i redakcijom PII podataka.",
+          offer_feature: "Komercijalna ponuda",
+          offer_feature_desc: "Poslovna ponuda sa cenovnim nivoima i detaljima integracije.",
+          onboarding_feature: "Onboarding klijenata",
+          onboarding_feature_desc: "Vodič korak po korak za integraciju i pilot proces.",
+          contact_feature: "Kontakt forma",
+          contact_feature_desc: "Prikupljanje leadova sa informacijama o kompaniji i zahtevima.",
+          legal_feature: "Legalne stranice",
+          legal_feature_desc: "Politika privatnosti, uslovi korišćenja i bezbednosna dokumentacija.",
+          admin_pages_h2: "Admin i interne stranice",
+          admin_console_feature: "Admin konzola",
+          admin_console_feature_desc: "Upravljanje klijentima, rotacija API ključeva, praćenje upotrebe.",
+          ops_dashboard_feature: "Ops kontrolna ploča",
+          ops_dashboard_feature_desc: "Zdravlje sistema, status deploymenta, operativne metrike.",
+          api_docs_feature: "API dokumentacija",
+          api_docs_feature_desc: "Interaktivna OpenAPI dokumentacija sa primerima zahteva/odgovora.",
+          csv_export_feature: "CSV izvoz",
+          csv_export_feature_desc: "Preuzimanje kontakata i podataka o upotrebi za analizu.",
+          core_api_h2: "Mogućnosti core API-ja",
+          redaction_feature: "Redakcija teksta",
+          redaction_feature_desc: "Više politika: maskiranje, uklanjanje, zamena placeholderima.",
+          entity_detection_feature: "Detekcija entiteta",
+          entity_detection_feature_desc: "Visoka preciznost identifikacije PII sa skorovima pouzdanosti.",
+          rate_limiting_feature: "Ograničavanje zahteva",
+          rate_limiting_feature_desc: "Po-klijentski limiti i mesečna kvota zahteva.",
+          audit_trail_feature: "Audit zapis",
+          audit_trail_feature_desc: "Kompletno logovanje zahteva sa vremenskim oznakama i metapodacima.",
+          supported_pii_h2: "Podržani PII tipovi",
+          jmbg_desc: "Jedinstveni matični broj građana",
+          pib_desc: "Porezni identifikacioni broj",
+          mb_desc: "Matični broj preduzeća",
+          email_desc: "Email adrese",
+          phone_desc: "Telefonski brojevi (međunarodni format)",
+          iban_desc: "Međunarodni broj bankovnog računa",
+          card_desc: "Brojevi kreditnih/debitnih kartica",
+          client_access_h2: "Pristup klijenata i planovi",
+          api_keys_feature: "API ključ autentikacija",
+          api_keys_feature_desc: "Sigurna autentikacija klijenata sa jedinstvenim API ključevima.",
+          tiered_plans_feature: "Nivoisani planovi",
+          tiered_plans_feature_desc: "Standard, business i enterprise cenovni nivoi.",
+          usage_quotas_feature: "Kvote upotrebe",
+          usage_quotas_feature_desc: "Mesečni limiti zahteva i ograničavanje po klijentu.",
+          entity_whitelist_feature: "Whitelist entiteta",
+          entity_whitelist_feature_desc: "Po-klijentska kontrola nad tipovima PII za detekciju.",
+          deployment_stack_h2: "Deployment stack",
+          deployment_desc: "Kontejnerizovani deployment sa automatskim CI/CD pipeline-om i bez zavisnosti od baze podataka.",
+          current_limitations_h2: "Trenutna ograničenja",
+          limitations_title: "Namerno nije uključeno u V1",
+          limitation_1: "Nema baze podataka - skladištenje zasnovano na fajlovima za jednostavnost i pouzdanost",
+          limitation_2: "Nema korisničkih nalogova - samo autentikacija preko API ključeva",
+          limitation_3: "Nema real-time obrade - batch obrada za optimalnu preciznost",
+          limitation_4: "Nema treniranja custom modela - koristi pre-trained modele za srpski jezik",
+          limitation_5: "Nema obrade dokumenata - samo tekst API (bez PDF/Word/slika podrške)",
+          limitation_6: "Nema streaming API-ja - samo request/response obrazac",
+          limitation_7: "Nema multi-tenant UI - jedno deployment po klijentu",
+          contact_info_h2: "Kontakt i podrška",
+          contact_desc: "Za podršku pri integraciji, custom zahteve ili enterprise deploymente, kontaktirajte naš tim.",
+          contact_form_title: "Kontakt forma",
+          contact_form_desc: "Pošaljite upite kroz našu online kontakt formu.",
+          lead_management_title: "Upravljanje leadovima",
+          lead_management_desc: "Svi kontakt zahtevi se prate i mogu se izvoziti preko admin panela.",
+        },
+        en: {
+          status_demo: "Live demo",
+          status_docs: "API docs",
+          status_bilingual: "Bilingual UI",
+          status_ready: "Production Ready V1",
+          nav_landing: "Landing",
+          nav_offer: "Offer",
+          nav_ops: "Ops",
+          nav_admin: "Admin",
+          nav_demo: "Demo",
+          nav_api_docs: "API Docs",
+          version_badge: "Version 1.2.0",
+          release_h1: "Release Notes V1",
+          release_lead: "Production-ready PII redaction API with comprehensive admin capabilities and bilingual support.",
+          public_pages_h2: "Public Pages",
+          landing_feature: "Landing Page",
+          landing_feature_desc: "Marketing page with product overview, use cases, and demo access.",
+          demo_feature: "Interactive Demo",
+          demo_feature_desc: "Live testing interface with real-time PII detection and redaction.",
+          offer_feature: "Commercial Offer",
+          offer_feature_desc: "Business proposal with pricing tiers and integration details.",
+          onboarding_feature: "Client Onboarding",
+          onboarding_feature_desc: "Step-by-step integration guide and pilot process.",
+          contact_feature: "Contact Form",
+          contact_feature_desc: "Lead capture with company information and requirements.",
+          legal_feature: "Legal Pages",
+          legal_feature_desc: "Privacy policy, terms of service, and security documentation.",
+          admin_pages_h2: "Admin & Internal Pages",
+          admin_console_feature: "Admin Console",
+          admin_console_feature_desc: "Client management, API key rotation, and usage monitoring.",
+          ops_dashboard_feature: "Ops Dashboard",
+          ops_dashboard_feature_desc: "System health, deployment status, and operational metrics.",
+          api_docs_feature: "API Documentation",
+          api_docs_feature_desc: "Interactive OpenAPI docs with request/response examples.",
+          csv_export_feature: "CSV Export",
+          csv_export_feature_desc: "Download contact leads and usage data for analysis.",
+          core_api_h2: "Core API Capabilities",
+          redaction_feature: "Text Redaction",
+          redaction_feature_desc: "Multiple policies: mask, remove, replace with placeholders.",
+          entity_detection_feature: "Entity Detection",
+          entity_detection_feature_desc: "High-accuracy PII identification with confidence scores.",
+          rate_limiting_feature: "Rate Limiting",
+          rate_limiting_desc: "Per-client rate limits and monthly quota enforcement.",
+          audit_trail_feature: "Audit Trail",
+          audit_trail_feature_desc: "Complete request logging with timestamps and metadata.",
+          supported_pii_h2: "Supported PII Types",
+          jmbg_desc: "Serbian national identification number",
+          pib_desc: "Tax identification number",
+          mb_desc: "Company registration number",
+          email_desc: "Email addresses",
+          phone_desc: "Phone numbers (international format)",
+          iban_desc: "International bank account numbers",
+          card_desc: "Credit/debit card numbers",
+          client_access_h2: "Client Access & Plans",
+          api_keys_feature: "API Key Authentication",
+          api_keys_feature_desc: "Secure client authentication with unique API keys.",
+          tiered_plans_feature: "Tiered Plans",
+          tiered_plans_feature_desc: "Standard, business, and enterprise pricing tiers.",
+          usage_quotas_feature: "Usage Quotas",
+          usage_quotas_feature_desc: "Monthly request limits and rate limiting per client.",
+          entity_whitelist_feature: "Entity Whitelisting",
+          entity_whitelist_feature_desc: "Per-client control over which PII types to detect.",
+          deployment_stack_h2: "Deployment Stack",
+          deployment_desc: "Containerized deployment with automated CI/CD pipeline and zero database dependencies.",
+          current_limitations_h2: "Current Limitations",
+          limitations_title: "Intentionally Not Included in V1",
+          limitation_1: "No database - file-based storage for simplicity and reliability",
+          limitation_2: "No user accounts - API key based authentication only",
+          limitation_3: "No real-time processing - batch processing for optimal accuracy",
+          limitation_4: "No custom model training - uses pre-trained Serbian language models",
+          limitation_5: "No document processing - text-only API (no PDF/Word/image support)",
+          limitation_6: "No streaming API - request/response pattern only",
+          limitation_7: "No multi-tenant UI - single deployment per customer",
+          contact_info_h2: "Contact & Support",
+          contact_desc: "For integration support, custom requirements, or enterprise deployments, contact our team.",
+          contact_form_title: "Contact Form",
+          contact_form_desc: "Submit inquiries through our online contact form.",
+          lead_management_title: "Lead Management",
+          lead_management_desc: "All contact requests tracked and exportable via admin panel.",
+        },
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.textContent = value;
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
