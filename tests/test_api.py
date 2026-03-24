@@ -265,6 +265,48 @@ def test_admin_patch_client_updates_plan_and_limits():
     assert body["client"]["allowed_entities"] == ["*"]
 
 
+def test_admin_contact_requests_endpoint():
+    # First, create a contact request
+    payload = {
+        "full_name": "John Doe",
+        "email": "john@example.com", 
+        "company": "Test Corp",
+        "message": "Test message for admin view",
+    }
+    response = client.post("/api/contact", json=payload)
+    assert response.status_code == 200
+
+    # Then retrieve via admin API
+    response = client.get(
+        "/api/admin/contact-requests",
+        headers={"x-admin-key": ADMIN_KEY},
+    )
+    assert response.status_code == 200
+
+    body = response.json()
+    assert "contact_requests" in body
+    assert len(body["contact_requests"]) >= 1
+    
+    # Check the structure of the first request
+    request = body["contact_requests"][0]
+    assert "ts" in request
+    assert "full_name" in request
+    assert "email" in request
+    assert "company" in request
+    assert "message" in request
+    assert "request_id" in request
+    
+    # Verify it's in reverse chronological order (newest first)
+    assert request["full_name"] == "John Doe"
+    assert request["email"] == "john@example.com"
+
+
+def test_admin_contact_requests_endpoint_unauthorized():
+    response = client.get("/api/admin/contact-requests")
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "unauthorized"
+
+
 def test_admin_rotate_key_changes_key_for_client():
     before = client.get("/api/admin/clients", headers={"x-admin-key": ADMIN_KEY})
     assert before.status_code == 200

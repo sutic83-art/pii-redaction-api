@@ -236,6 +236,7 @@
       <div class="actions">
         <button id="load-clients" class="primary" type="button" data-i18n="admin_btn_load_clients">Load clients</button>
         <button id="load-usage" type="button" data-i18n="admin_btn_load_usage">Load usage</button>
+        <button id="load-contact-requests" type="button" data-i18n="admin_btn_load_contact_requests">Load contact requests</button>
         <button id="reload-clients" class="warn" type="button" data-i18n="admin_btn_reload_clients">Reload clients</button>
       </div>
     </section>
@@ -321,6 +322,14 @@
       </div>
     </section>
 
+    <section class="card">
+      <h2 data-i18n="admin_contact_requests_h2">Contact Requests (Leads)</h2>
+      <p class="sub" data-i18n="admin_contact_requests_sub">View contact form submissions in reverse chronological order.</p>
+      <div class="actions">
+        <button id="load-contact-requests-2" class="primary" type="button" data-i18n="admin_btn_load_contact_requests">Load contact requests</button>
+      </div>
+    </section>
+
     <div id="status" class="status" aria-live="polite"></div>
     <div id="api-key-highlight" class="highlight"></div>
     <pre id="result" class="result">{}</pre>
@@ -367,6 +376,9 @@
           admin_rotate_h2: "Rotiraj ključ klijenta",
           admin_rotate_sub: "Generiše novi ključ i poništava stari ključ za taj klijent.",
           admin_btn_rotate_key: "Rotiraj ključ",
+          admin_btn_load_contact_requests: "Učitaj kontakt zahteve",
+          admin_contact_requests_h2: "Kontakt zahtevi (Lead-ovi)",
+          admin_contact_requests_sub: "Pogledajte podneske sa kontakt forme u obrnutom hronološkom redosledu.",
           admin_status_admin_key_required: "Admin ključ je obavezan.",
           admin_status_loading: "Učitavanje...",
           admin_status_request_successful: "Zahtev uspešan.",
@@ -412,6 +424,9 @@
           admin_rotate_h2: "Rotate client key",
           admin_rotate_sub: "Generates a new key and invalidates the old key for that client.",
           admin_btn_rotate_key: "Rotate key",
+          admin_btn_load_contact_requests: "Load contact requests",
+          admin_contact_requests_h2: "Contact Requests (Leads)",
+          admin_contact_requests_sub: "View contact form submissions in reverse chronological order.",
           admin_status_admin_key_required: "Admin key is required.",
           admin_status_loading: "Loading...",
           admin_status_request_successful: "Request successful.",
@@ -551,6 +566,14 @@
 
       document.getElementById("load-usage").addEventListener("click", function () {
         callApi("/api/admin/usage-summary", "GET");
+      });
+
+      document.getElementById("load-contact-requests").addEventListener("click", function () {
+        callApi("/api/admin/contact-requests", "GET");
+      });
+
+      document.getElementById("load-contact-requests-2").addEventListener("click", function () {
+        callApi("/api/admin/contact-requests", "GET");
       });
 
       document.getElementById("reload-clients").addEventListener("click", function () {

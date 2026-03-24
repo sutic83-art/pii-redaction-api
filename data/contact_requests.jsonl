@@ -1,1 +1,2 @@
-{"ts": "2026-03-24T09:46:29.011843+00:00", "full_name": "Jane Doe", "email": "jane@example.com", "company": "ACME", "message": "Hello, I'd like to talk.", "request_id": "c1e14c4a-66b6-469c-94d7-55b34590444b"}
+{"ts": "2026-03-24T11:52:52.740373+00:00", "full_name": "Jane Doe", "email": "jane@example.com", "company": "ACME", "message": "Hello, I'd like to talk.", "request_id": "d640bb2a-fa9b-4f33-b369-d2510ed44416"}
+{"ts": "2026-03-24T11:52:52.781574+00:00", "full_name": "John Doe", "email": "john@example.com", "company": "Test Corp", "message": "Test message for admin view", "request_id": "8745a803-917b-4cec-9fa8-5d536197037e"}

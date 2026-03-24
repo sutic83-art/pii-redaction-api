@@ -40,6 +40,57 @@
       padding: 28px 20px 60px;
     }
 
+    .status-strip {
+      background: rgba(30, 45, 80, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status-badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(25, 40, 70, 0.8);
+      border: 1px solid var(--border);
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .status-badge:hover {
+      background: rgba(35, 55, 90, 0.9);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .status-badge::before {
+      content: '●';
+      font-size: 8px;
+      color: var(--accent-2);
+    }
+
+    .status-text {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .nav {
       display: flex;
       align-items: center;
@@ -172,6 +223,15 @@
 </head>
 <body>
   <div class="wrap">
+    <div class="status-strip">
+      <div class="status-badges">
+        <a href="/demo" class="status-badge" data-i18n="status_demo">Live demo</a>
+        <a href="/docs" class="status-badge" data-i18n="status_docs">API docs</a>
+        <span class="status-badge" style="cursor: default;" data-i18n="status_bilingual">Bilingual UI</span>
+      </div>
+      <div class="status-text" data-i18n="status_ready">Ready for integration</div>
+    </div>
+
     <div class="nav">
       <div class="brand">PII Redaction API</div>
       <div class="nav-links">
@@ -293,6 +353,10 @@
 
       const I18N = {
         sr: {
+          status_demo: "Live demo",
+          status_docs: "API docs",
+          status_bilingual: "Bilingual UI",
+          status_ready: "Ready for integration",
           nav_landing: "Početna",
           nav_offer: "Ponuda",
           nav_offer_print: "Ponuda za štampu",
@@ -332,6 +396,10 @@
           footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
         en: {
+          status_demo: "Live demo",
+          status_docs: "API docs",
+          status_bilingual: "Bilingual UI",
+          status_ready: "Ready for integration",
           nav_landing: "Landing",
           nav_offer: "Offer",
           nav_offer_print: "Printable offer",

@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field, field_validator
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.contact_store import append_contact_request
+from app.contact_store_admin import read_contact_requests
 from app.audit import audit_event
 from app.client_registry import (
     create_client,
@@ -425,6 +426,13 @@ def admin_patch_client(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     return {"client": sanitize_client(updated)}
+
+
+@app.get("/api/admin/contact-requests")
+def admin_contact_requests(x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    requests = read_contact_requests()
+    return {"contact_requests": requests}
 
 
 @app.post("/api/admin/clients/{client_id}/rotate-key")
