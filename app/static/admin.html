@@ -230,7 +230,7 @@
       <div class="row">
         <div style="width: 100%;">
           <label for="admin-key" data-i18n="admin_key_label">Admin Key (x-admin-key)</label>
-          <input id="admin-key" type="password" placeholder="Enter x-admin-key" />
+          <input id="admin-key" type="password" data-i18n-placeholder="admin_key_placeholder" placeholder="Enter x-admin-key" />
         </div>
       </div>
       <div class="actions">
@@ -244,28 +244,28 @@
       <div class="card">
         <h2 data-i18n="admin_create_h2">Create client</h2>
         <p class="sub" data-i18n="admin_create_sub">A new API key is generated automatically and shown once.</p>
-        <label for="create-client-id">client_id</label>
+        <label for="create-client-id" data-i18n="admin_label_client_id">client_id</label>
         <input id="create-client-id" type="text" />
 
-        <label for="create-client-name">client_name</label>
+        <label for="create-client-name" data-i18n="admin_label_client_name">client_name</label>
         <input id="create-client-name" type="text" />
 
-        <label for="create-plan">plan</label>
+        <label for="create-plan" data-i18n="admin_label_plan">plan</label>
         <input id="create-plan" type="text" value="standard" />
 
-        <label for="create-status">status</label>
+        <label for="create-status" data-i18n="admin_label_status">status</label>
         <select id="create-status">
-          <option value="active">active</option>
-          <option value="disabled">disabled</option>
+          <option value="active" data-i18n="admin_status_active">active</option>
+          <option value="disabled" data-i18n="admin_status_disabled">disabled</option>
         </select>
 
-        <label for="create-rpm">rate_limit_per_minute</label>
+        <label for="create-rpm" data-i18n="admin_label_rpm">rate_limit_per_minute</label>
         <input id="create-rpm" type="number" value="30" min="1" />
 
-        <label for="create-quota">monthly_quota</label>
+        <label for="create-quota" data-i18n="admin_label_quota">monthly_quota</label>
         <input id="create-quota" type="number" value="0" min="0" />
 
-        <label for="create-entities">allowed_entities (comma-separated, or * for all)</label>
+        <label for="create-entities" data-i18n="admin_label_entities_create">allowed_entities (comma-separated, or * for all)</label>
         <input id="create-entities" type="text" value="*" />
 
         <div class="actions">
@@ -276,30 +276,30 @@
       <div class="card">
         <h2 data-i18n="admin_update_h2">Update client</h2>
         <p class="sub" data-i18n="admin_update_sub">Patch only fields you want to change.</p>
-        <label for="update-client-id">client_id</label>
+        <label for="update-client-id" data-i18n="admin_label_client_id">client_id</label>
         <input id="update-client-id" type="text" />
 
-        <label for="update-client-name">client_name</label>
-        <input id="update-client-name" type="text" placeholder="optional" />
+        <label for="update-client-name" data-i18n="admin_label_client_name">client_name</label>
+        <input id="update-client-name" type="text" data-i18n-placeholder="admin_placeholder_optional" placeholder="optional" />
 
-        <label for="update-plan">plan</label>
-        <input id="update-plan" type="text" placeholder="optional" />
+        <label for="update-plan" data-i18n="admin_label_plan">plan</label>
+        <input id="update-plan" type="text" data-i18n-placeholder="admin_placeholder_optional" placeholder="optional" />
 
-        <label for="update-status">status</label>
+        <label for="update-status" data-i18n="admin_label_status">status</label>
         <select id="update-status">
-          <option value="">(no change)</option>
-          <option value="active">active</option>
-          <option value="disabled">disabled</option>
+          <option value="" data-i18n="admin_status_no_change">(no change)</option>
+          <option value="active" data-i18n="admin_status_active">active</option>
+          <option value="disabled" data-i18n="admin_status_disabled">disabled</option>
         </select>
 
-        <label for="update-rpm">rate_limit_per_minute</label>
-        <input id="update-rpm" type="number" min="1" placeholder="optional" />
+        <label for="update-rpm" data-i18n="admin_label_rpm">rate_limit_per_minute</label>
+        <input id="update-rpm" type="number" min="1" data-i18n-placeholder="admin_placeholder_optional" placeholder="optional" />
 
-        <label for="update-quota">monthly_quota</label>
-        <input id="update-quota" type="number" min="0" placeholder="optional" />
+        <label for="update-quota" data-i18n="admin_label_quota">monthly_quota</label>
+        <input id="update-quota" type="number" min="0" data-i18n-placeholder="admin_placeholder_optional" placeholder="optional" />
 
-        <label for="update-entities">allowed_entities (comma-separated)</label>
-        <input id="update-entities" type="text" placeholder="optional" />
+        <label for="update-entities" data-i18n="admin_label_entities_update">allowed_entities (comma-separated)</label>
+        <input id="update-entities" type="text" data-i18n-placeholder="admin_placeholder_optional" placeholder="optional" />
 
         <div class="actions">
           <button id="update-client" type="button" data-i18n="admin_btn_update_client">Update client</button>
@@ -312,7 +312,7 @@
       <p class="sub" data-i18n="admin_rotate_sub">Generates a new key and invalidates the old key for that client.</p>
       <div class="row">
         <div style="width: 100%;">
-          <label for="rotate-client-id">client_id</label>
+          <label for="rotate-client-id" data-i18n="admin_label_client_id">client_id</label>
           <input id="rotate-client-id" type="text" />
         </div>
       </div>
@@ -342,11 +342,24 @@
           admin_console_h1: "Admin konzola",
           admin_console_lead: "Upravljanje klijentima kroz lokalnu datoteku i postojeće admin rute.",
           admin_key_label: "Admin ključ (x-admin-key)",
+          admin_key_placeholder: "Unesi x-admin-key",
           admin_btn_load_clients: "Učitaj klijente",
           admin_btn_load_usage: "Učitaj upotrebu",
           admin_btn_reload_clients: "Ponovo učitaj klijente",
           admin_create_h2: "Kreiraj klijenta",
           admin_create_sub: "Novi API ključ se generiše automatski i prikazuje se samo jednom.",
+          admin_label_client_id: "client_id",
+          admin_label_client_name: "client_name",
+          admin_label_plan: "plan",
+          admin_label_status: "status",
+          admin_label_rpm: "rate_limit_per_minute",
+          admin_label_quota: "monthly_quota",
+          admin_label_entities_create: "allowed_entities (zarezom odvojeno, ili * za sve)",
+          admin_label_entities_update: "allowed_entities (zarezom odvojeno)",
+          admin_status_active: "active",
+          admin_status_disabled: "disabled",
+          admin_status_no_change: "(bez promene)",
+          admin_placeholder_optional: "opciono",
           admin_btn_create_client: "Kreiraj klijenta",
           admin_update_h2: "Ažuriraj klijenta",
           admin_update_sub: "Ažuriraj samo polja koja želiš da promeniš.",
@@ -374,11 +387,24 @@
           admin_console_h1: "Admin Console",
           admin_console_lead: "Manage clients with local file-based onboarding and existing admin routes.",
           admin_key_label: "Admin Key (x-admin-key)",
+          admin_key_placeholder: "Enter x-admin-key",
           admin_btn_load_clients: "Load clients",
           admin_btn_load_usage: "Load usage",
           admin_btn_reload_clients: "Reload clients",
           admin_create_h2: "Create client",
           admin_create_sub: "A new API key is generated automatically and shown once.",
+          admin_label_client_id: "client_id",
+          admin_label_client_name: "client_name",
+          admin_label_plan: "plan",
+          admin_label_status: "status",
+          admin_label_rpm: "rate_limit_per_minute",
+          admin_label_quota: "monthly_quota",
+          admin_label_entities_create: "allowed_entities (comma-separated, or * for all)",
+          admin_label_entities_update: "allowed_entities (comma-separated)",
+          admin_status_active: "active",
+          admin_status_disabled: "disabled",
+          admin_status_no_change: "(no change)",
+          admin_placeholder_optional: "optional",
           admin_btn_create_client: "Create client",
           admin_update_h2: "Update client",
           admin_update_sub: "Patch only fields you want to change.",
@@ -415,6 +441,12 @@
           const key = el.getAttribute("data-i18n");
           const value = I18N[lang]?.[key];
           if (value !== undefined) el.textContent = value;
+        });
+
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n-placeholder");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.setAttribute("placeholder", value);
         });
       }
 

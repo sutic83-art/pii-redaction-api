@@ -556,40 +556,40 @@
 
         <div class="trust-row">
           <div class="mini">
-            <strong>7 podržanih tipova</strong>
-            <span>JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice.</span>
+            <strong data-i18n="trust_1_title">7 podržanih tipova</strong>
+            <span data-i18n="trust_1_desc">JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice.</span>
           </div>
           <div class="mini">
-            <strong>Tri politike</strong>
-            <span>Maskiranje, hash zamena ili potpuno uklanjanje vrednosti iz teksta.</span>
+            <strong data-i18n="trust_2_title">Tri politike</strong>
+            <span data-i18n="trust_2_desc">Maskiranje, hash zamena ili potpuno uklanjanje vrednosti iz teksta.</span>
           </div>
           <div class="mini">
-            <strong>Spreman za integraciju</strong>
-            <span>Docker, CI/CD, javni endpoint, docs i demo interfejs već rade.</span>
+            <strong data-i18n="trust_3_title">Spreman za integraciju</strong>
+            <span data-i18n="trust_3_desc">Docker, CI/CD, javni endpoint, docs i demo interfejs već rade.</span>
           </div>
         </div>
 
         <div class="kpis">
-          <div class="kpi"><strong>7</strong><span>tipova PII entiteta</span></div>
-          <div class="kpi"><strong>3</strong><span>politike redakcije</span></div>
-          <div class="kpi"><strong>API</strong><span>demo + docs spremni</span></div>
-          <div class="kpi"><strong>CI/CD</strong><span>GitHub + Render deploy</span></div>
+          <div class="kpi"><strong>7</strong><span data-i18n="kpi_1">tipova PII entiteta</span></div>
+          <div class="kpi"><strong>3</strong><span data-i18n="kpi_2">politike redakcije</span></div>
+          <div class="kpi"><strong>API</strong><span data-i18n="kpi_3">demo + docs spremni</span></div>
+          <div class="kpi"><strong>CI/CD</strong><span data-i18n="kpi_4">GitHub + Render deploy</span></div>
         </div>
       </div>
 
       <div class="card hero-side">
         <div class="side-panel">
-          <div class="side-title">Primer ulaza</div>
+          <div class="side-title" data-i18n="side_input_title">Primer ulaza</div>
           <div class="code-box">JMBG 0101990712345; PIB 100000049; matični broj 17580175; email kontakt@example.rs; telefon +381 64 123 4567; IBAN RS69 1234 5678 9012 3456 78; kartica 4111 1111 1111 1111</div>
         </div>
 
         <div class="side-panel">
-          <div class="side-title">Primer izlaza</div>
+          <div class="side-title" data-i18n="side_output_title">Primer izlaza</div>
           <div class="code-box">JMBG *************; PIB *********; matični broj ********; email ******************; telefon ****************; IBAN ***************************; kartica *******************</div>
         </div>
 
         <div class="side-panel">
-          <div class="side-title">Glavna ruta</div>
+          <div class="side-title" data-i18n="side_route_title">Glavna ruta</div>
           <div class="code-box">POST /api/v1/redact</div>
         </div>
       </div>
@@ -606,18 +606,18 @@
 
       <div class="grid-3">
         <div class="card feature">
-          <h3>Pravne službe</h3>
-          <p>Redakcija identifikatora pre slanja ugovora, dopisa, izjava, zahteva i druge dokumentacije trećim stranama.</p>
+          <h3 data-i18n="use_1_h3">Pravne službe</h3>
+          <p data-i18n="use_1_p">Redakcija identifikatora pre slanja ugovora, dopisa, izjava, zahteva i druge dokumentacije trećim stranama.</p>
         </div>
 
         <div class="card feature">
-          <h3>Računovodstvo i finansije</h3>
-          <p>Maskiranje PIB-a, matičnog broja, IBAN-a i brojeva kartica pre deljenja sadržaja sa eksternim sistemima i partnerima.</p>
+          <h3 data-i18n="use_2_h3">Računovodstvo i finansije</h3>
+          <p data-i18n="use_2_p">Maskiranje PIB-a, matičnog broja, IBAN-a i brojeva kartica pre deljenja sadržaja sa eksternim sistemima i partnerima.</p>
         </div>
 
         <div class="card feature">
-          <h3>AI i automatizacija</h3>
-          <p>Čišćenje teksta pre slanja ka LLM alatima, internim AI tokovima, ticketing sistemima i automatizovanim pipeline-ovima.</p>
+          <h3 data-i18n="use_3_h3">AI i automatizacija</h3>
+          <p data-i18n="use_3_p">Čišćenje teksta pre slanja ka LLM alatima, internim AI tokovima, ticketing sistemima i automatizovanim pipeline-ovima.</p>
         </div>
       </div>
     </section>
@@ -632,22 +632,22 @@
 
       <div class="grid-2">
         <div class="card list-card">
-          <h3>Tipični problemi</h3>
+          <h3 data-i18n="problems_h3">Tipični problemi</h3>
           <ul class="list">
-            <li>Dokumenti se dele bez dosledne provere osetljivih podataka.</li>
-            <li>Timovi ručno brišu JMBG, PIB, email ili telefone iz teksta.</li>
-            <li>Pre slanja podataka AI sistemima ne postoji standardni privacy sloj.</li>
-            <li>Nema jedinstvenog načina za maskiranje, hash ili uklanjanje vrednosti.</li>
+            <li data-i18n="problem_1">Dokumenti se dele bez dosledne provere osetljivih podataka.</li>
+            <li data-i18n="problem_2">Timovi ručno brišu JMBG, PIB, email ili telefone iz teksta.</li>
+            <li data-i18n="problem_3">Pre slanja podataka AI sistemima ne postoji standardni privacy sloj.</li>
+            <li data-i18n="problem_4">Nema jedinstvenog načina za maskiranje, hash ili uklanjanje vrednosti.</li>
           </ul>
         </div>
 
         <div class="card list-card">
-          <h3>Rezultat</h3>
+          <h3 data-i18n="result_h3">Rezultat</h3>
           <ul class="list">
-            <li>Brža priprema teksta za deljenje i obradu.</li>
-            <li>Manje rizika od slučajnog otkrivanja podataka.</li>
-            <li>Jedinstven API za više tipova osetljivih informacija.</li>
-            <li>Jasan demo i API dokumentacija spremni za integraciju.</li>
+            <li data-i18n="result_1">Brža priprema teksta za deljenje i obradu.</li>
+            <li data-i18n="result_2">Manje rizika od slučajnog otkrivanja podataka.</li>
+            <li data-i18n="result_3">Jedinstven API za više tipova osetljivih informacija.</li>
+            <li data-i18n="result_4">Jasan demo i API dokumentacija spremni za integraciju.</li>
           </ul>
         </div>
       </div>
@@ -662,14 +662,14 @@
       </div>
 
       <div class="types">
-        <div class="type-box"><strong>JMBG</strong><span>Fizička lica</span></div>
-        <div class="type-box"><strong>PIB</strong><span>Pravna lica</span></div>
-        <div class="type-box"><strong>MB_COMPANY</strong><span>Matični broj firme</span></div>
-        <div class="type-box"><strong>EMAIL</strong><span>Email adrese</span></div>
-        <div class="type-box"><strong>PHONE</strong><span>Telefonski brojevi</span></div>
-        <div class="type-box"><strong>IBAN</strong><span>Računi i platni podaci</span></div>
-        <div class="type-box"><strong>CARD_NUMBER</strong><span>Brojevi kartica</span></div>
-        <div class="type-box"><strong>mask / hash / rm</strong><span>Politike redakcije</span></div>
+        <div class="type-box"><strong>JMBG</strong><span data-i18n="type_jmbg">Fizička lica</span></div>
+        <div class="type-box"><strong>PIB</strong><span data-i18n="type_pib">Pravna lica</span></div>
+        <div class="type-box"><strong>MB_COMPANY</strong><span data-i18n="type_mb_company">Matični broj firme</span></div>
+        <div class="type-box"><strong>EMAIL</strong><span data-i18n="type_email">Email adrese</span></div>
+        <div class="type-box"><strong>PHONE</strong><span data-i18n="type_phone">Telefonski brojevi</span></div>
+        <div class="type-box"><strong>IBAN</strong><span data-i18n="type_iban">Računi i platni podaci</span></div>
+        <div class="type-box"><strong>CARD_NUMBER</strong><span data-i18n="type_card">Brojevi kartica</span></div>
+        <div class="type-box"><strong>mask / hash / rm</strong><span data-i18n="type_policies">Politike redakcije</span></div>
       </div>
     </section>
 
@@ -684,26 +684,26 @@
       <div class="steps">
         <div class="step">
           <div class="num">1</div>
-          <h4>Unos teksta</h4>
-          <p>Korisnik ili sistem šalje tekst koji treba očistiti pre deljenja ili dalje obrade.</p>
+          <h4 data-i18n="step_1_h4">Unos teksta</h4>
+          <p data-i18n="step_1_p">Korisnik ili sistem šalje tekst koji treba očistiti pre deljenja ili dalje obrade.</p>
         </div>
 
         <div class="step">
           <div class="num">2</div>
-          <h4>Detekcija entiteta</h4>
-          <p>Servis prepoznaje podržane tipove kao što su JMBG, PIB, IBAN, email, telefon i drugi.</p>
+          <h4 data-i18n="step_2_h4">Detekcija entiteta</h4>
+          <p data-i18n="step_2_p">Servis prepoznaje podržane tipove kao što su JMBG, PIB, IBAN, email, telefon i drugi.</p>
         </div>
 
         <div class="step">
           <div class="num">3</div>
-          <h4>Primena politike</h4>
-          <p>Za svaki pronađeni entitet primenjuje se maskiranje, hash zamena ili potpuno uklanjanje.</p>
+          <h4 data-i18n="step_3_h4">Primena politike</h4>
+          <p data-i18n="step_3_p">Za svaki pronađeni entitet primenjuje se maskiranje, hash zamena ili potpuno uklanjanje.</p>
         </div>
 
         <div class="step">
           <div class="num">4</div>
-          <h4>Povrat rezultata</h4>
-          <p>API vraća redigovani tekst, detections listu i audit metapodatke bez čuvanja sirovog teksta.</p>
+          <h4 data-i18n="step_4_h4">Povrat rezultata</h4>
+          <p data-i18n="step_4_p">API vraća redigovani tekst, detections listu i audit metapodatke bez čuvanja sirovog teksta.</p>
         </div>
       </div>
     </section>
@@ -718,8 +718,8 @@
         </div>
 
         <div class="cta-row">
-          <a class="btn btn-primary" href="/demo">Pokreni demo</a>
-          <a class="btn btn-secondary" href="/docs">Otvori docs</a>
+          <a class="btn btn-primary" href="/demo" data-i18n="cta_final_btn_demo">Pokreni demo</a>
+          <a class="btn btn-secondary" href="/docs" data-i18n="cta_final_btn_docs">Otvori docs</a>
         </div>
       </div>
     </section>
@@ -780,15 +780,13 @@
         </div>
 
         <div class="card contact-card">
-          <h3>Tipični sledeći koraci sa klijentom</h3>
-          <p>
-            Ovaj deo možeš koristiti u prodajnom razgovoru i na landing stranici kao jasan proces saradnje.
-          </p>
+          <h3 data-i18n="next_steps_h3">Tipični sledeći koraci sa klijentom</h3>
+          <p data-i18n="next_steps_p">Ovaj deo možeš koristiti u prodajnom razgovoru i na landing stranici kao jasan proces saradnje.</p>
           <ul class="list">
-            <li>Kratak demo sa realnim primerima teksta.</li>
-            <li>Dogovor oko podržanih entiteta i politike redakcije.</li>
-            <li>Testni API key za pilot upotrebu.</li>
-            <li>Integracija u postojeći workflow ili AI tok.</li>
+            <li data-i18n="next_step_1">Kratak demo sa realnim primerima teksta.</li>
+            <li data-i18n="next_step_2">Dogovor oko podržanih entiteta i politike redakcije.</li>
+            <li data-i18n="next_step_3">Testni API key za pilot upotrebu.</li>
+            <li data-i18n="next_step_4">Integracija u postojeći workflow ili AI tok.</li>
           </ul>
         </div>
       </div>
@@ -858,6 +856,59 @@
             "Neuspešno slanje upita. Proveri polja i pokušaj ponovo.",
           contact_status_error_network:
             "Neuspešno slanje upita. Proveri konekciju i pokušaj ponovo.",
+          trust_1_title: "7 podržanih tipova",
+          trust_1_desc: "JMBG, PIB, matični broj, email, telefon, IBAN i broj kartice.",
+          trust_2_title: "Tri politike",
+          trust_2_desc: "Maskiranje, hash zamena ili potpuno uklanjanje vrednosti iz teksta.",
+          trust_3_title: "Spreman za integraciju",
+          trust_3_desc: "Docker, CI/CD, javni endpoint, docs i demo interfejs već rade.",
+          kpi_1: "tipova PII entiteta",
+          kpi_2: "politike redakcije",
+          kpi_3: "demo + docs spremni",
+          kpi_4: "GitHub + Render deploy",
+          side_input_title: "Primer ulaza",
+          side_output_title: "Primer izlaza",
+          side_route_title: "Glavna ruta",
+          use_1_h3: "Pravne službe",
+          use_1_p: "Redakcija identifikatora pre slanja ugovora, dopisa, izjava, zahteva i druge dokumentacije trećim stranama.",
+          use_2_h3: "Računovodstvo i finansije",
+          use_2_p: "Maskiranje PIB-a, matičnog broja, IBAN-a i brojeva kartica pre deljenja sadržaja sa eksternim sistemima i partnerima.",
+          use_3_h3: "AI i automatizacija",
+          use_3_p: "Čišćenje teksta pre slanja ka LLM alatima, internim AI tokovima, ticketing sistemima i automatizovanim pipeline-ovima.",
+          problems_h3: "Tipični problemi",
+          problem_1: "Dokumenti se dele bez dosledne provere osetljivih podataka.",
+          problem_2: "Timovi ručno brišu JMBG, PIB, email ili telefone iz teksta.",
+          problem_3: "Pre slanja podataka AI sistemima ne postoji standardni privacy sloj.",
+          problem_4: "Nema jedinstvenog načina za maskiranje, hash ili uklanjanje vrednosti.",
+          result_h3: "Rezultat",
+          result_1: "Brža priprema teksta za deljenje i obradu.",
+          result_2: "Manje rizika od slučajnog otkrivanja podataka.",
+          result_3: "Jedinstven API za više tipova osetljivih informacija.",
+          result_4: "Jasan demo i API dokumentacija spremni za integraciju.",
+          type_jmbg: "Fizička lica",
+          type_pib: "Pravna lica",
+          type_mb_company: "Matični broj firme",
+          type_email: "Email adrese",
+          type_phone: "Telefonski brojevi",
+          type_iban: "Računi i platni podaci",
+          type_card: "Brojevi kartica",
+          type_policies: "Politike redakcije",
+          step_1_h4: "Unos teksta",
+          step_1_p: "Korisnik ili sistem šalje tekst koji treba očistiti pre deljenja ili dalje obrade.",
+          step_2_h4: "Detekcija entiteta",
+          step_2_p: "Servis prepoznaje podržane tipove kao što su JMBG, PIB, IBAN, email, telefon i drugi.",
+          step_3_h4: "Primena politike",
+          step_3_p: "Za svaki pronađeni entitet primenjuje se maskiranje, hash zamena ili potpuno uklanjanje.",
+          step_4_h4: "Povrat rezultata",
+          step_4_p: "API vraća redigovani tekst, detections listu i audit metapodatke bez čuvanja sirovog teksta.",
+          cta_final_btn_demo: "Pokreni demo",
+          cta_final_btn_docs: "Otvori docs",
+          next_steps_h3: "Tipični sledeći koraci sa klijentom",
+          next_steps_p: "Ovaj deo možeš koristiti u prodajnom razgovoru i na landing stranici kao jasan proces saradnje.",
+          next_step_1: "Kratak demo sa realnim primerima teksta.",
+          next_step_2: "Dogovor oko podržanih entiteta i politike redakcije.",
+          next_step_3: "Testni API key za pilot upotrebu.",
+          next_step_4: "Integracija u postojeći workflow ili AI tok.",
           footer_line_1: "PII Redaction API • Landing, demo i API rade iz istog FastAPI servisa.",
           footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
@@ -913,6 +964,59 @@
           contact_status_error: "Failed to send request. Check fields and try again.",
           contact_status_error_network:
             "Failed to send request. Check your connection and try again.",
+          trust_1_title: "7 supported types",
+          trust_1_desc: "JMBG, PIB, company ID, email, phone, IBAN, and card number.",
+          trust_2_title: "Three policies",
+          trust_2_desc: "Masking, hash replacement, or full removal of values from text.",
+          trust_3_title: "Ready to integrate",
+          trust_3_desc: "Docker, CI/CD, public endpoint, docs, and demo UI are available.",
+          kpi_1: "PII entity types",
+          kpi_2: "redaction policies",
+          kpi_3: "demo + docs ready",
+          kpi_4: "GitHub + Render deploy",
+          side_input_title: "Sample input",
+          side_output_title: "Sample output",
+          side_route_title: "Primary route",
+          use_1_h3: "Legal teams",
+          use_1_p: "Redact identifiers before sending contracts, letters, statements, requests, and other documents to third parties.",
+          use_2_h3: "Accounting & finance",
+          use_2_p: "Mask tax IDs, company IDs, IBANs, and card numbers before sharing content with external systems and partners.",
+          use_3_h3: "AI & automation",
+          use_3_p: "Clean text before sending to LLM tools, internal AI flows, ticketing systems, and automated pipelines.",
+          problems_h3: "Typical problems",
+          problem_1: "Documents are shared without consistent sensitive-data checks.",
+          problem_2: "Teams manually remove IDs, emails, or phone numbers from text.",
+          problem_3: "There is no standard privacy layer before sending data to AI systems.",
+          problem_4: "There is no single method for masking, hashing, or removing values.",
+          result_h3: "Outcome",
+          result_1: "Faster preparation of text for sharing and processing.",
+          result_2: "Lower risk of accidental data exposure.",
+          result_3: "One API for multiple types of sensitive information.",
+          result_4: "Clear demo and API documentation ready for integration.",
+          type_jmbg: "Personal ID",
+          type_pib: "Tax ID",
+          type_mb_company: "Company registration",
+          type_email: "Email addresses",
+          type_phone: "Phone numbers",
+          type_iban: "Bank and payment data",
+          type_card: "Card numbers",
+          type_policies: "Redaction policies",
+          step_1_h4: "Input text",
+          step_1_p: "A user or system sends text that must be cleaned before sharing or downstream processing.",
+          step_2_h4: "Entity detection",
+          step_2_p: "The service detects supported types such as IDs, IBAN, email, phone, and others.",
+          step_3_h4: "Apply policy",
+          step_3_p: "For each detected entity the service applies masking, hash replacement, or full removal.",
+          step_4_h4: "Return results",
+          step_4_p: "The API returns redacted text, a detections list, and audit metadata without needing to store raw text.",
+          cta_final_btn_demo: "Run demo",
+          cta_final_btn_docs: "Open docs",
+          next_steps_h3: "Typical next steps with a client",
+          next_steps_p: "Use this section in sales calls and on the landing page as a clear collaboration process.",
+          next_step_1: "Short demo with realistic text examples.",
+          next_step_2: "Agreement on supported entities and redaction policy.",
+          next_step_3: "Pilot API key for test usage.",
+          next_step_4: "Integration into an existing workflow or AI flow.",
           footer_line_1: "PII Redaction API • Landing, demo and API run from the same FastAPI service.",
           footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },

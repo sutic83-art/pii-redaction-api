@@ -231,7 +231,7 @@
       <div class="card">
         <div class="row">
           <label for="apiKey" data-i18n="demo_label_api_key">API key</label>
-          <input id="apiKey" type="password" placeholder="Unesi API key" />
+          <input id="apiKey" type="password" data-i18n-placeholder="demo_placeholder_api_key" placeholder="Unesi API key" />
         </div>
 
         <div class="row">
@@ -322,6 +322,7 @@
           demo_status_error_prefix: "Greška:",
           demo_status_error_fallback: "Request failed",
           demo_status_success: "Uspešno obrađeno.",
+          demo_placeholder_api_key: "Unesi API key",
         },
         en: {
           demo_badge: "PII Redaction API Demo",
@@ -345,6 +346,7 @@
           demo_status_error_prefix: "Error:",
           demo_status_error_fallback: "Request failed",
           demo_status_success: "Redaction successful.",
+          demo_placeholder_api_key: "Enter API key",
         },
       };
 
@@ -366,6 +368,12 @@
           const key = el.getAttribute("data-i18n");
           const value = I18N[lang]?.[key];
           if (value !== undefined) el.innerHTML = value;
+        });
+
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n-placeholder");
+          const value = I18N[lang]?.[key];
+          if (value !== undefined) el.setAttribute("placeholder", value);
         });
       }
 

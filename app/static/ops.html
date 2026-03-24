@@ -502,9 +502,9 @@ Best,
           nav_docs: "API dokumentacija",
           title: "Interni onboarding pack (Ops)",
           lead: "Interna radna stranica za onboarding prvih klijenata: planovi, checkliste, šta šaljemo i standardni pilot tok.",
-          pill_internal: "Internal only",
-          pill_no_db: "No DB",
-          pill_reusable: "Reusable templates",
+          pill_internal: "Interno",
+          pill_no_db: "Bez baze",
+          pill_reusable: "Šabloni poruka",
           plans_h2: "Planovi (kratko poređenje)",
           plan_demo_h3: "Demo",
           plan_demo_p: "Brza tehnička validacija i pregled UI/docs.",
@@ -537,15 +537,15 @@ Best,
           send_4: "Pilot okvir: obim, KPI i datum revizije",
           send_5: "Kontakt tačka za tehnička pitanja",
           links_h2: "Linkovi za slanje (copy)",
-          link_landing: "Landing",
-          link_offer: "Offer",
+          link_landing: "Početna",
+          link_offer: "Ponuda",
           link_onboarding: "Onboarding",
           link_demo: "Demo",
-          link_docs: "Docs",
+          link_docs: "Dokumentacija",
           copy_btn: "Kopiraj",
           copy_ok: "Kopirano u clipboard.",
           copy_err: "Kopiranje nije uspelo. Označi tekst i kopiraj ručno.",
-          criteria_h2: "Standardni pilot success criteria",
+          criteria_h2: "Standardni kriterijumi uspeha pilota",
           crit_1: "Integracija: prvi uspešan poziv iz klijentovog sistema",
           crit_2: "Kvalitet: pokrivenost dogovorenih entiteta u uzorcima",
           crit_3: "Operativno: stabilna latencija i bez grešaka u normalnom opterećenju",
@@ -554,22 +554,25 @@ Best,
           internal_steps_h2: "Standardni interni koraci (operativno)",
           ops_admin_h3: "U admin-u",
           ops_monitor_h3: "Tokom pilota",
-          ops_1: "Create client",
-          ops_2: "Assign plan",
-          ops_3: "Set limits (RPM, quota)",
-          ops_4: "Confirm allowed entities",
-          ops_5: "Send API key (one-time display)",
-          ops_6: "Monitor usage summary",
-          ops_7: "Review errors/feedback",
-          ops_8: "Rotate key if needed",
-          ops_9: "Update plan/limits after review",
-          templates_h2: "Copy blocks (templates)",
+          ops_1: "Kreiraj klijenta",
+          ops_2: "Dodeli plan",
+          ops_3: "Postavi limite (RPM, kvota)",
+          ops_4: "Potvrdi dozvoljene entitete",
+          ops_5: "Pošalji API ključ (prikazuje se jednom)",
+          ops_6: "Prati usage summary",
+          ops_7: "Pregledaj greške / feedback",
+          ops_8: "Rotiraj ključ po potrebi",
+          ops_9: "Ažuriraj plan/limite posle revizije",
+          templates_h2: "Šabloni poruka (copy blocks)",
           templates_p: "Koristi ove blokove kao email/Slack poruke. Popuni placeholders pre slanja.",
-          tpl_demo_h: "Demo invitation",
-          tpl_pilot_h: "Pilot onboarding message",
-          tpl_tech_h: "Technical integration message",
-          tpl_notes_h: "Internal notes",
-          tpl_notes_p: "Tip: Ako klijent traži ograničenje entiteta, postavi `allowed_entities` u admin-u (umesto `*`) i potvrdi listu pre slanja ključa."
+          tpl_demo_h: "Poziv na demo",
+          tpl_pilot_h: "Pilot onboarding poruka",
+          tpl_tech_h: "Poruka: tehnička integracija",
+          tpl_notes_h: "Interne beleške",
+          tpl_notes_p: "Tip: Ako klijent traži ograničenje entiteta, postavi `allowed_entities` u admin-u (umesto `*`) i potvrdi listu pre slanja ključa.",
+          tpl_demo_body: "Naslov: PII Redaction API — pristup demo-u\n\nZdravo {{name}},\n\nEvo linkova za brzu evaluaciju:\n- Početna: {{base_url}}/\n- Ponuda: {{base_url}}/offer\n- Demo: {{base_url}}/demo\n- API docs: {{base_url}}/docs\n\nAko želite, pošaljite 2–3 reprezentativna (sanitizovana) uzorka teksta i tipove entiteta koji su vam bitni, pa ćemo potvrditi pokrivenost.\n\nPozdrav,\n{{sender}}",
+          tpl_pilot_body: "Naslov: Pilot onboarding — PII Redaction API\n\nZdravo {{name}},\n\nSpremni smo da započnemo pilot. Obim i kriterijumi uspeha:\n- Proces/workflow: {{workflow}}\n- Trajanje: {{duration}}\n- Tipovi entiteta: {{entities}}\n- Politika: {{policy}}\n- KPI: pokrivenost dogovorenih entiteta + stabilna upotreba\n\nKljučni linkovi:\n- Onboarding: {{base_url}}/onboarding\n- API docs: {{base_url}}/docs\n\nSledeći korak: potvrdite tipove entiteta/politiku i osobu zaduženu za integraciju sa vaše strane.\n\nPozdrav,\n{{sender}}",
+          tpl_tech_body: "Naslov: Tehnička integracija — PII Redaction API\n\nZdravo {{name}},\n\nDetalji integracije:\n- Endpoint: POST {{base_url}}/api/v1/redact\n- Auth header: x-api-key: {{api_key}}\n- Body: { \"text\": \"...\", \"policy\": \"mask|hash|rm\", \"entities\": [\"JMBG\", \"PIB\", ...] }\n\nPreporučeni obrazac:\n1) Pozivajte redakcioni API server-side (ne izlagati API ključ u javnom frontendu).\n2) Ka downstream alatima/vendorima/LLM-ovima šaljite samo redigovan tekst.\n\nDocs: {{base_url}}/docs\nDemo (za brze primere): {{base_url}}/demo\n\nPozdrav,\n{{sender}}"
         },
         en: {
           nav_admin: "Admin",
@@ -647,7 +650,10 @@ Best,
           tpl_pilot_h: "Pilot onboarding message",
           tpl_tech_h: "Technical integration message",
           tpl_notes_h: "Internal notes",
-          tpl_notes_p: "Tip: If the client wants entity restrictions, set `allowed_entities` in admin (instead of `*`) and confirm the list before sending the key."
+          tpl_notes_p: "Tip: If the client wants entity restrictions, set `allowed_entities` in admin (instead of `*`) and confirm the list before sending the key.",
+          tpl_demo_body: "Subject: PII Redaction API — Demo access\n\nHi {{name}},\n\nHere are the links for a quick evaluation:\n- Landing: {{base_url}}/\n- Offer: {{base_url}}/offer\n- Demo: {{base_url}}/demo\n- API docs: {{base_url}}/docs\n\nIf you’d like, share 2–3 representative (sanitized) text samples and the entity types you care about, and we’ll confirm coverage.\n\nBest,\n{{sender}}",
+          tpl_pilot_body: "Subject: Pilot onboarding — PII Redaction API\n\nHi {{name}},\n\nWe’re ready to start the pilot. Scope and success criteria:\n- Process/workflow: {{workflow}}\n- Duration: {{duration}}\n- Entity types: {{entities}}\n- Policy: {{policy}}\n- KPI: redaction coverage on agreed entity types + stable usage\n\nKey links:\n- Onboarding: {{base_url}}/onboarding\n- API docs: {{base_url}}/docs\n\nNext step: please confirm the entity types/policy and the integration owner on your side.\n\nBest,\n{{sender}}",
+          tpl_tech_body: "Subject: Technical integration — PII Redaction API\n\nHi {{name}},\n\nIntegration details:\n- Endpoint: POST {{base_url}}/api/v1/redact\n- Auth header: x-api-key: {{api_key}}\n- Body: { \"text\": \"...\", \"policy\": \"mask|hash|rm\", \"entities\": [\"JMBG\", \"PIB\", ...] }\n\nRecommended pattern:\n1) Call the redaction API server-side (do not expose the API key in a public frontend).\n2) Send only redacted text to downstream tools/vendors/LLMs.\n\nDocs: {{base_url}}/docs\nDemo (for quick examples): {{base_url}}/demo\n\nBest,\n{{sender}}"
         }
       };
 
@@ -668,6 +674,13 @@ Best,
           const value = I18N[lang] && I18N[lang][key];
           if (value !== undefined) el.textContent = value;
         });
+
+        const demoTa = document.getElementById("tpl-demo");
+        const pilotTa = document.getElementById("tpl-pilot");
+        const techTa = document.getElementById("tpl-tech");
+        if (demoTa && I18N[lang]?.tpl_demo_body) demoTa.value = I18N[lang].tpl_demo_body;
+        if (pilotTa && I18N[lang]?.tpl_pilot_body) pilotTa.value = I18N[lang].tpl_pilot_body;
+        if (techTa && I18N[lang]?.tpl_tech_body) techTa.value = I18N[lang].tpl_tech_body;
       }
 
       function setCopyStatus(kind, message) {
