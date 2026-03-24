@@ -272,6 +272,11 @@ def offer_print():
     return FileResponse(BASE_DIR / "static" / "offer-print.html")
 
 
+@app.get("/ops", include_in_schema=False)
+def ops():
+    return FileResponse(BASE_DIR / "static" / "ops.html")
+
+
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     return Response(status_code=204)

@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API Ops</title>
+  <meta name="description" content="Internal ops onboarding pack for first clients." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --warn: #ffd166;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .brand { font-weight: bold; font-size: 20px; }
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    #lang-select {
+      width: auto !important;
+      max-width: 220px;
+      cursor: pointer;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    p.lead {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .box {
+      padding: 16px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .box h3 { margin: 0 0 8px; font-size: 18px; }
+    .box p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .links {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px;
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .link-row code {
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      color: #d8e7ff;
+      background: #0b1428;
+      border: 1px solid #223965;
+      padding: 6px 10px;
+      border-radius: 10px;
+      word-break: break-word;
+    }
+
+    .btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #162747;
+      color: var(--text);
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #08111f;
+      border-color: transparent;
+    }
+
+    .copy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .template-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .template-head strong { font-size: 14px; }
+    .hint { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #223965;
+      background: #0b1428;
+      color: #d8e7ff;
+      outline: none;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 18px;
+    }
+
+    .status.ok { color: var(--accent-2); }
+    .status.err { color: var(--warn); }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #101b34;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .grid-2, .grid-3, .copy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API Ops</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/admin" data-i18n="nav_admin">Admin</a>
+        <a class="nav-link" href="/onboarding" data-i18n="nav_onboarding">Onboarding</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Ponuda</a>
+        <a class="nav-link" href="/offer-print" data-i18n="nav_offer_print">Ponuda (print)</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_docs">Docs</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1 data-i18n="title">Interni onboarding pack (Ops)</h1>
+      <p class="lead" data-i18n="lead">
+        Interna radna stranica za onboarding prvih klijenata: planovi, checkliste, šta šaljemo i standardni pilot tok.
+      </p>
+      <div class="pill-row">
+        <span class="pill" data-i18n="pill_internal">Internal only</span>
+        <span class="pill" data-i18n="pill_no_db">No DB</span>
+        <span class="pill" data-i18n="pill_reusable">Reusable templates</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="plans_h2">Planovi (kratko poređenje)</h2>
+      <div class="grid-3">
+        <div class="box">
+          <h3 data-i18n="plan_demo_h3">Demo</h3>
+          <p data-i18n="plan_demo_p">Brza tehnička validacija i pregled UI/docs.</p>
+          <ul>
+            <li data-i18n="plan_demo_li1">Demo UI + Swagger docs</li>
+            <li data-i18n="plan_demo_li2">Primeri scenarija i očekivanja</li>
+            <li data-i18n="plan_demo_li3">Kratka podrška za pitanja</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3 data-i18n="plan_pilot_h3">Pilot</h3>
+          <p data-i18n="plan_pilot_p">Kontrolisan test sa realnim uzorcima i KPI-jevima.</p>
+          <ul>
+            <li data-i18n="plan_pilot_li1">Dodeljen API ključ (per-client)</li>
+            <li data-i18n="plan_pilot_li2">Dogovoreni entiteti + politika</li>
+            <li data-i18n="plan_pilot_li3">Praćenje upotrebe i feedback</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3 data-i18n="plan_business_h3">Business</h3>
+          <p data-i18n="plan_business_p">Produkcijska upotreba sa više timova i governance.</p>
+          <ul>
+            <li data-i18n="plan_business_li1">Limit i kvote po dogovoru</li>
+            <li data-i18n="plan_business_li2">Operativni ritam + revizije</li>
+            <li data-i18n="plan_business_li3">Rotacija ključeva po potrebi</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2 data-i18n="checklist_h2">Onboarding checklist (interno)</h2>
+        <ul>
+          <li data-i18n="chk_1">Identifikuj use-case i vlasnika procesa</li>
+          <li data-i18n="chk_2">Potvrdi tipove entiteta i politiku (mask/hash/rm)</li>
+          <li data-i18n="chk_3">Kreiraj klijenta i dodeli plan</li>
+          <li data-i18n="chk_4">Postavi limite (RPM, quota) i status</li>
+          <li data-i18n="chk_5">Pošalji API ključ i tehničke smernice</li>
+          <li data-i18n="chk_6">Potvrdi testne primere (real samples, sanitized)</li>
+          <li data-i18n="chk_7">Prati usage i incident/feedback signal</li>
+          <li data-i18n="chk_8">Završi pilot sa zaključkom i sledećim korakom</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 data-i18n="send_h2">Šta šaljemo klijentu</h2>
+        <ul>
+          <li data-i18n="send_1">Linkovi (landing/offer/onboarding/demo/docs)</li>
+          <li data-i18n="send_2">API ključ (x-api-key) i osnovne bezbednosne smernice</li>
+          <li data-i18n="send_3">Dogovoreni entiteti + politika redakcije</li>
+          <li data-i18n="send_4">Pilot okvir: obim, KPI i datum revizije</li>
+          <li data-i18n="send_5">Kontakt tačka za tehnička pitanja</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="links_h2">Linkovi za slanje (copy)</h2>
+      <div class="links" id="links">
+        <div class="link-row">
+          <div>
+            <div class="hint" data-i18n="link_landing">Landing</div>
+            <code id="lnk-landing">/</code>
+          </div>
+          <button class="btn" type="button" data-copy-target="lnk-landing" data-i18n="copy_btn">Copy</button>
+        </div>
+        <div class="link-row">
+          <div>
+            <div class="hint" data-i18n="link_offer">Offer</div>
+            <code id="lnk-offer">/offer</code>
+          </div>
+          <button class="btn" type="button" data-copy-target="lnk-offer" data-i18n="copy_btn">Copy</button>
+        </div>
+        <div class="link-row">
+          <div>
+            <div class="hint" data-i18n="link_onboarding">Onboarding</div>
+            <code id="lnk-onboarding">/onboarding</code>
+          </div>
+          <button class="btn" type="button" data-copy-target="lnk-onboarding" data-i18n="copy_btn">Copy</button>
+        </div>
+        <div class="link-row">
+          <div>
+            <div class="hint" data-i18n="link_demo">Demo</div>
+            <code id="lnk-demo">/demo</code>
+          </div>
+          <button class="btn" type="button" data-copy-target="lnk-demo" data-i18n="copy_btn">Copy</button>
+        </div>
+        <div class="link-row">
+          <div>
+            <div class="hint" data-i18n="link_docs">Docs</div>
+            <code id="lnk-docs">/docs</code>
+          </div>
+          <button class="btn" type="button" data-copy-target="lnk-docs" data-i18n="copy_btn">Copy</button>
+        </div>
+      </div>
+      <div class="status" id="copy-status" aria-live="polite"></div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="criteria_h2">Standardni pilot success criteria</h2>
+      <ul>
+        <li data-i18n="crit_1">Integracija: prvi uspešan poziv iz klijentovog sistema</li>
+        <li data-i18n="crit_2">Kvalitet: pokrivenost dogovorenih entiteta u uzorcima</li>
+        <li data-i18n="crit_3">Operativno: stabilna latencija i bez grešaka u normalnom opterećenju</li>
+        <li data-i18n="crit_4">Bezbednost: API key čuvan server-side (ne u javnom frontendu)</li>
+        <li data-i18n="crit_5">Ishod: jasna odluka za production rollout ili korekcije</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="internal_steps_h2">Standardni interni koraci (operativno)</h2>
+      <div class="grid-2">
+        <div class="box">
+          <h3 data-i18n="ops_admin_h3">U admin-u</h3>
+          <ul>
+            <li data-i18n="ops_1">Create client</li>
+            <li data-i18n="ops_2">Assign plan</li>
+            <li data-i18n="ops_3">Set limits (RPM, quota)</li>
+            <li data-i18n="ops_4">Confirm allowed entities</li>
+            <li data-i18n="ops_5">Send API key (one-time display)</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3 data-i18n="ops_monitor_h3">Tokom pilota</h3>
+          <ul>
+            <li data-i18n="ops_6">Monitor usage summary</li>
+            <li data-i18n="ops_7">Review errors/feedback</li>
+            <li data-i18n="ops_8">Rotate key if needed</li>
+            <li data-i18n="ops_9">Update plan/limits after review</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="templates_h2">Copy blocks (templates)</h2>
+      <p class="lead" data-i18n="templates_p">
+        Koristi ove blokove kao email/Slack poruke. Popuni placeholders pre slanja.
+      </p>
+      <div class="copy-grid">
+        <div class="box">
+          <div class="template-head">
+            <strong data-i18n="tpl_demo_h">Demo invitation</strong>
+            <button class="btn primary" type="button" data-copy-textarea="tpl-demo" data-i18n="copy_btn">Copy</button>
+          </div>
+          <textarea id="tpl-demo" spellcheck="false">Subject: PII Redaction API — Demo access
+
+Hi {{name}},
+
+Here are the links for a quick evaluation:
+- Landing: {{base_url}}/
+- Offer: {{base_url}}/offer
+- Demo: {{base_url}}/demo
+- API docs: {{base_url}}/docs
+
+If you’d like, share 2–3 representative (sanitized) text samples and the entity types you care about, and we’ll confirm coverage.
+
+Best,
+{{sender}}</textarea>
+        </div>
+
+        <div class="box">
+          <div class="template-head">
+            <strong data-i18n="tpl_pilot_h">Pilot onboarding message</strong>
+            <button class="btn primary" type="button" data-copy-textarea="tpl-pilot" data-i18n="copy_btn">Copy</button>
+          </div>
+          <textarea id="tpl-pilot" spellcheck="false">Subject: Pilot onboarding — PII Redaction API
+
+Hi {{name}},
+
+We’re ready to start the pilot. Scope and success criteria:
+- Process/workflow: {{workflow}}
+- Duration: {{duration}}
+- Entity types: {{entities}}
+- Policy: {{policy}}
+- KPI: redaction coverage on agreed entity types + stable usage
+
+Key links:
+- Onboarding: {{base_url}}/onboarding
+- API docs: {{base_url}}/docs
+
+Next step: please confirm the entity types/policy and the integration owner on your side.
+
+Best,
+{{sender}}</textarea>
+        </div>
+
+        <div class="box">
+          <div class="template-head">
+            <strong data-i18n="tpl_tech_h">Technical integration message</strong>
+            <button class="btn primary" type="button" data-copy-textarea="tpl-tech" data-i18n="copy_btn">Copy</button>
+          </div>
+          <textarea id="tpl-tech" spellcheck="false">Subject: Technical integration — PII Redaction API
+
+Hi {{name}},
+
+Integration details:
+- Endpoint: POST {{base_url}}/api/v1/redact
+- Auth header: x-api-key: {{api_key}}
+- Body: { "text": "...", "policy": "mask|hash|rm", "entities": ["JMBG", "PIB", ...] }
+
+Recommended pattern:
+1) Call the redaction API server-side (do not expose the API key in a public frontend).
+2) Send only redacted text to downstream tools/vendors/LLMs.
+
+Docs: {{base_url}}/docs
+Demo (for quick examples): {{base_url}}/demo
+
+Best,
+{{sender}}</textarea>
+        </div>
+
+        <div class="box">
+          <div class="template-head">
+            <strong data-i18n="tpl_notes_h">Internal notes</strong>
+          </div>
+          <div class="hint" data-i18n="tpl_notes_p">
+            Tip: Ako klijent traži ograničenje entiteta, postavi `allowed_entities` u admin-u (umesto `*`) i potvrdi listu pre slanja ključa.
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_admin: "Admin",
+          nav_onboarding: "Onboarding",
+          nav_offer: "Ponuda",
+          nav_offer_print: "Ponuda (print)",
+          nav_demo: "Demo",
+          nav_docs: "API dokumentacija",
+          title: "Interni onboarding pack (Ops)",
+          lead: "Interna radna stranica za onboarding prvih klijenata: planovi, checkliste, šta šaljemo i standardni pilot tok.",
+          pill_internal: "Internal only",
+          pill_no_db: "No DB",
+          pill_reusable: "Reusable templates",
+          plans_h2: "Planovi (kratko poređenje)",
+          plan_demo_h3: "Demo",
+          plan_demo_p: "Brza tehnička validacija i pregled UI/docs.",
+          plan_demo_li1: "Demo UI + Swagger docs",
+          plan_demo_li2: "Primeri scenarija i očekivanja",
+          plan_demo_li3: "Kratka podrška za pitanja",
+          plan_pilot_h3: "Pilot",
+          plan_pilot_p: "Kontrolisan test sa realnim uzorcima i KPI-jevima.",
+          plan_pilot_li1: "Dodeljen API ključ (per-client)",
+          plan_pilot_li2: "Dogovoreni entiteti + politika",
+          plan_pilot_li3: "Praćenje upotrebe i feedback",
+          plan_business_h3: "Business",
+          plan_business_p: "Produkcijska upotreba sa više timova i governance.",
+          plan_business_li1: "Limit i kvote po dogovoru",
+          plan_business_li2: "Operativni ritam + revizije",
+          plan_business_li3: "Rotacija ključeva po potrebi",
+          checklist_h2: "Onboarding checklist (interno)",
+          chk_1: "Identifikuj use-case i vlasnika procesa",
+          chk_2: "Potvrdi tipove entiteta i politiku (mask/hash/rm)",
+          chk_3: "Kreiraj klijenta i dodeli plan",
+          chk_4: "Postavi limite (RPM, quota) i status",
+          chk_5: "Pošalji API ključ i tehničke smernice",
+          chk_6: "Potvrdi testne primere (real samples, sanitized)",
+          chk_7: "Prati usage i incident/feedback signal",
+          chk_8: "Završi pilot sa zaključkom i sledećim korakom",
+          send_h2: "Šta šaljemo klijentu",
+          send_1: "Linkovi (landing/offer/onboarding/demo/docs)",
+          send_2: "API ključ (x-api-key) i osnovne bezbednosne smernice",
+          send_3: "Dogovoreni entiteti + politika redakcije",
+          send_4: "Pilot okvir: obim, KPI i datum revizije",
+          send_5: "Kontakt tačka za tehnička pitanja",
+          links_h2: "Linkovi za slanje (copy)",
+          link_landing: "Landing",
+          link_offer: "Offer",
+          link_onboarding: "Onboarding",
+          link_demo: "Demo",
+          link_docs: "Docs",
+          copy_btn: "Kopiraj",
+          copy_ok: "Kopirano u clipboard.",
+          copy_err: "Kopiranje nije uspelo. Označi tekst i kopiraj ručno.",
+          criteria_h2: "Standardni pilot success criteria",
+          crit_1: "Integracija: prvi uspešan poziv iz klijentovog sistema",
+          crit_2: "Kvalitet: pokrivenost dogovorenih entiteta u uzorcima",
+          crit_3: "Operativno: stabilna latencija i bez grešaka u normalnom opterećenju",
+          crit_4: "Bezbednost: API key čuvan server-side (ne u javnom frontendu)",
+          crit_5: "Ishod: jasna odluka za production rollout ili korekcije",
+          internal_steps_h2: "Standardni interni koraci (operativno)",
+          ops_admin_h3: "U admin-u",
+          ops_monitor_h3: "Tokom pilota",
+          ops_1: "Create client",
+          ops_2: "Assign plan",
+          ops_3: "Set limits (RPM, quota)",
+          ops_4: "Confirm allowed entities",
+          ops_5: "Send API key (one-time display)",
+          ops_6: "Monitor usage summary",
+          ops_7: "Review errors/feedback",
+          ops_8: "Rotate key if needed",
+          ops_9: "Update plan/limits after review",
+          templates_h2: "Copy blocks (templates)",
+          templates_p: "Koristi ove blokove kao email/Slack poruke. Popuni placeholders pre slanja.",
+          tpl_demo_h: "Demo invitation",
+          tpl_pilot_h: "Pilot onboarding message",
+          tpl_tech_h: "Technical integration message",
+          tpl_notes_h: "Internal notes",
+          tpl_notes_p: "Tip: Ako klijent traži ograničenje entiteta, postavi `allowed_entities` u admin-u (umesto `*`) i potvrdi listu pre slanja ključa."
+        },
+        en: {
+          nav_admin: "Admin",
+          nav_onboarding: "Onboarding",
+          nav_offer: "Offer",
+          nav_offer_print: "Offer (print)",
+          nav_demo: "Demo",
+          nav_docs: "API Docs",
+          title: "Internal onboarding pack (Ops)",
+          lead: "Internal working page for onboarding first clients: plans, checklists, what we send, and a standard pilot flow.",
+          pill_internal: "Internal only",
+          pill_no_db: "No DB",
+          pill_reusable: "Reusable templates",
+          plans_h2: "Plans (quick comparison)",
+          plan_demo_h3: "Demo",
+          plan_demo_p: "Fast technical validation and a UI/docs walkthrough.",
+          plan_demo_li1: "Demo UI + Swagger docs",
+          plan_demo_li2: "Representative scenarios and expectations",
+          plan_demo_li3: "Light support for questions",
+          plan_pilot_h3: "Pilot",
+          plan_pilot_p: "Controlled test with real samples and KPIs.",
+          plan_pilot_li1: "Dedicated API key (per client)",
+          plan_pilot_li2: "Agreed entities + policy",
+          plan_pilot_li3: "Usage tracking and feedback",
+          plan_business_h3: "Business",
+          plan_business_p: "Production usage across teams with governance.",
+          plan_business_li1: "Limits and quotas as agreed",
+          plan_business_li2: "Operational cadence + reviews",
+          plan_business_li3: "Key rotation as needed",
+          checklist_h2: "Onboarding checklist (internal)",
+          chk_1: "Identify use case and process owner",
+          chk_2: "Confirm entity types and policy (mask/hash/rm)",
+          chk_3: "Create client and assign plan",
+          chk_4: "Set limits (RPM, quota) and status",
+          chk_5: "Send API key and technical guidance",
+          chk_6: "Confirm test samples (real samples, sanitized)",
+          chk_7: "Monitor usage and incident/feedback signal",
+          chk_8: "Close the pilot with an outcome and next step",
+          send_h2: "What to send to the client",
+          send_1: "Links (landing/offer/onboarding/demo/docs)",
+          send_2: "API key (x-api-key) and basic security guidance",
+          send_3: "Agreed entities + redaction policy",
+          send_4: "Pilot framework: scope, KPIs, review date",
+          send_5: "A contact point for technical questions",
+          links_h2: "Links to send (copy)",
+          link_landing: "Landing",
+          link_offer: "Offer",
+          link_onboarding: "Onboarding",
+          link_demo: "Demo",
+          link_docs: "Docs",
+          copy_btn: "Copy",
+          copy_ok: "Copied to clipboard.",
+          copy_err: "Copy failed. Select text and copy manually.",
+          criteria_h2: "Standard pilot success criteria",
+          crit_1: "Integration: first successful call from the client system",
+          crit_2: "Quality: coverage of agreed entity types in samples",
+          crit_3: "Ops: stable latency and no errors under normal load",
+          crit_4: "Security: API key kept server-side (not in a public frontend)",
+          crit_5: "Outcome: clear decision for production rollout or adjustments",
+          internal_steps_h2: "Standard internal steps (ops)",
+          ops_admin_h3: "In admin",
+          ops_monitor_h3: "During the pilot",
+          ops_1: "Create client",
+          ops_2: "Assign plan",
+          ops_3: "Set limits (RPM, quota)",
+          ops_4: "Confirm allowed entities",
+          ops_5: "Send API key (one-time display)",
+          ops_6: "Monitor usage summary",
+          ops_7: "Review errors/feedback",
+          ops_8: "Rotate key if needed",
+          ops_9: "Update plan/limits after review",
+          templates_h2: "Copy blocks (templates)",
+          templates_p: "Use these blocks as email/Slack messages. Fill placeholders before sending.",
+          tpl_demo_h: "Demo invitation",
+          tpl_pilot_h: "Pilot onboarding message",
+          tpl_tech_h: "Technical integration message",
+          tpl_notes_h: "Internal notes",
+          tpl_notes_p: "Tip: If the client wants entity restrictions, set `allowed_entities` in admin (instead of `*`) and confirm the list before sending the key."
+        }
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang] && I18N[lang][key];
+          if (value !== undefined) el.textContent = value;
+        });
+      }
+
+      function setCopyStatus(kind, message) {
+        const el = document.getElementById("copy-status");
+        el.textContent = message || "";
+        el.classList.remove("ok", "err");
+        if (kind === "ok") el.classList.add("ok");
+        if (kind === "err") el.classList.add("err");
+      }
+
+      async function copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          setCopyStatus("ok", I18N[currentLang].copy_ok);
+          return true;
+        } catch (_e) {
+          setCopyStatus("err", I18N[currentLang].copy_err);
+          return false;
+        }
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+          setCopyStatus("", "");
+        });
+      }
+
+      document.querySelectorAll("[data-copy-target]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const id = btn.getAttribute("data-copy-target");
+          const target = document.getElementById(id);
+          if (!target) return;
+          copyText(target.textContent || "");
+        });
+      });
+
+      document.querySelectorAll("[data-copy-textarea]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const id = btn.getAttribute("data-copy-textarea");
+          const ta = document.getElementById(id);
+          if (!ta) return;
+          copyText(ta.value || "");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
