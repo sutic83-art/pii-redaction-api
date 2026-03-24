@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API - Onboarding</title>
+  <meta name="description" content="Client onboarding page for PII Redaction API." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .brand { font-weight: bold; font-size: 20px; }
+
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 34px; }
+    h2 { margin: 0 0 10px; font-size: 24px; }
+    h3 { margin: 0 0 8px; font-size: 18px; }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .lead { margin-top: 8px; font-size: 17px; max-width: 920px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      background: #101b34;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .num {
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #1a2c53;
+      color: var(--accent-2);
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #101b34;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .btn-primary { background: var(--accent); color: #08111f; border-color: transparent; }
+    .btn-secondary { background: #162747; color: var(--text); }
+    .btn-tertiary { background: #102038; color: var(--accent-2); border-color: #214a57; }
+
+    @media (max-width: 980px) {
+      .grid-2, .steps { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/" data-i18n="nav_landing">Početna</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Ponuda</a>
+        <a class="nav-link" href="/offer-print" data-i18n="nav_offer_print">Ponuda za štampu</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_docs">API dokumentacija</a>
+        <a class="nav-link" href="/admin" data-i18n="nav_admin">Admin</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1 data-i18n="title">Onboarding za klijente</h1>
+      <p class="lead" data-i18n="lead">
+        Ova stranica opisuje kako proizvod radi, kome je namenjen i kako izgleda prvi pilot bez uvođenja dodatne infrastrukture.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/demo" data-i18n="cta_demo">Otvori demo</a>
+        <a class="btn btn-secondary" href="/docs" data-i18n="cta_docs">Otvori docs</a>
+        <a class="btn btn-tertiary" href="/admin" data-i18n="cta_admin">Admin pristup</a>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2 data-i18n="what_h2">Šta proizvod radi</h2>
+        <p data-i18n="what_p">
+          API prima tekst, prepoznaje osetljive entitete i vraća redigovanu verziju kroz standardne politike: mask, hash ili rm.
+        </p>
+      </div>
+      <div class="card">
+        <h2 data-i18n="who_h2">Za koga je namenjen</h2>
+        <p data-i18n="who_p">
+          Za pravne, finansijske i AI timove koji moraju da zaštite podatke pre slanja sadržaja ka eksternim sistemima.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="types_h2">Podržani tipovi osetljivih podataka</h2>
+      <div class="chips">
+        <span class="chip">JMBG</span>
+        <span class="chip">PIB</span>
+        <span class="chip">MB_COMPANY</span>
+        <span class="chip">EMAIL</span>
+        <span class="chip">PHONE</span>
+        <span class="chip">IBAN</span>
+        <span class="chip">CARD_NUMBER</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="setup_h2">Koraci postavljanja za novog klijenta</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3 data-i18n="setup_1_h3">Kickoff</h3>
+          <p data-i18n="setup_1_p">Definišemo use-case, očekivani obim i kriterijume uspeha.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3 data-i18n="setup_2_h3">API ključ</h3>
+          <p data-i18n="setup_2_p">Kreiramo klijenta i dodeljujemo API ključ kroz postojeći admin tok.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3 data-i18n="setup_3_h3">Integracija</h3>
+          <p data-i18n="setup_3_p">Klijent povezuje svoj servis na endpoint za redakciju.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h3 data-i18n="setup_4_h3">Validacija</h3>
+          <p data-i18n="setup_4_p">Testiramo realne uzorke i usaglašavamo pravila redakcije.</p>
+        </div>
+        <div class="step">
+          <div class="num">5</div>
+          <h3 data-i18n="setup_5_h3">Pilot</h3>
+          <p data-i18n="setup_5_p">Pokreće se vremenski ograničen pilot sa praćenjem rezultata.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2 data-i18n="keys_h2">Kako se koriste API ključevi</h2>
+        <ul class="list">
+          <li data-i18n="keys_li_1">Svaki klijent ima jedinstven ključ.</li>
+          <li data-i18n="keys_li_2">Ključ se šalje kroz `x-api-key` zaglavlje.</li>
+          <li data-i18n="keys_li_3">Ključ je vezan za status, rate limit i dozvoljene entitete.</li>
+          <li data-i18n="keys_li_4">Rotacija ključa je podržana kroz admin rutu.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 data-i18n="pilot_h2">Kako pilot funkcioniše</h2>
+        <ul class="list">
+          <li data-i18n="pilot_li_1">Pilot traje dogovoreni period i ciljano pokriva jedan proces.</li>
+          <li data-i18n="pilot_li_2">Meri se broj obrađenih zahteva i kvalitet redakcije.</li>
+          <li data-i18n="pilot_li_3">Rezultat pilota je preporuka za sledeći komercijalni korak.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_landing: "Početna",
+          nav_offer: "Ponuda",
+          nav_offer_print: "Ponuda za štampu",
+          nav_demo: "Demo",
+          nav_docs: "API dokumentacija",
+          nav_admin: "Admin",
+          title: "Onboarding za klijente",
+          lead: "Ova stranica opisuje kako proizvod radi, kome je namenjen i kako izgleda prvi pilot bez uvođenja dodatne infrastrukture.",
+          cta_demo: "Otvori demo",
+          cta_docs: "Otvori docs",
+          cta_admin: "Admin pristup",
+          what_h2: "Šta proizvod radi",
+          what_p: "API prima tekst, prepoznaje osetljive entitete i vraća redigovanu verziju kroz standardne politike: mask, hash ili rm.",
+          who_h2: "Za koga je namenjen",
+          who_p: "Za pravne, finansijske i AI timove koji moraju da zaštite podatke pre slanja sadržaja ka eksternim sistemima.",
+          types_h2: "Podržani tipovi osetljivih podataka",
+          setup_h2: "Koraci postavljanja za novog klijenta",
+          setup_1_h3: "Kickoff",
+          setup_1_p: "Definišemo use-case, očekivani obim i kriterijume uspeha.",
+          setup_2_h3: "API ključ",
+          setup_2_p: "Kreiramo klijenta i dodeljujemo API ključ kroz postojeći admin tok.",
+          setup_3_h3: "Integracija",
+          setup_3_p: "Klijent povezuje svoj servis na endpoint za redakciju.",
+          setup_4_h3: "Validacija",
+          setup_4_p: "Testiramo realne uzorke i usaglašavamo pravila redakcije.",
+          setup_5_h3: "Pilot",
+          setup_5_p: "Pokreće se vremenski ograničen pilot sa praćenjem rezultata.",
+          keys_h2: "Kako se koriste API ključevi",
+          keys_li_1: "Svaki klijent ima jedinstven ključ.",
+          keys_li_2: "Ključ se šalje kroz `x-api-key` zaglavlje.",
+          keys_li_3: "Ključ je vezan za status, rate limit i dozvoljene entitete.",
+          keys_li_4: "Rotacija ključa je podržana kroz admin rutu.",
+          pilot_h2: "Kako pilot funkcioniše",
+          pilot_li_1: "Pilot traje dogovoreni period i ciljano pokriva jedan proces.",
+          pilot_li_2: "Meri se broj obrađenih zahteva i kvalitet redakcije.",
+          pilot_li_3: "Rezultat pilota je preporuka za sledeći komercijalni korak."
+        },
+        en: {
+          nav_landing: "Landing",
+          nav_offer: "Offer",
+          nav_offer_print: "Printable offer",
+          nav_demo: "Demo",
+          nav_docs: "API docs",
+          nav_admin: "Admin",
+          title: "Client onboarding",
+          lead: "This page explains what the product does, who it is for, and how the first pilot works without introducing new infrastructure.",
+          cta_demo: "Open demo",
+          cta_docs: "Open docs",
+          cta_admin: "Admin access",
+          what_h2: "What the product does",
+          what_p: "The API receives text, detects sensitive entities, and returns a redacted version using standard policies: mask, hash, or rm.",
+          who_h2: "Who it is for",
+          who_p: "For legal, finance, and AI teams that need to protect data before sending content to external systems.",
+          types_h2: "Supported sensitive data types",
+          setup_h2: "Setup steps for a new client",
+          setup_1_h3: "Kickoff",
+          setup_1_p: "We define use cases, expected volume, and success criteria.",
+          setup_2_h3: "API key",
+          setup_2_p: "We create the client and issue an API key through existing admin flows.",
+          setup_3_h3: "Integration",
+          setup_3_p: "The client connects their service to the redaction endpoint.",
+          setup_4_h3: "Validation",
+          setup_4_p: "We test real samples and align redaction rules.",
+          setup_5_h3: "Pilot",
+          setup_5_p: "A time-boxed pilot starts with tracked results.",
+          keys_h2: "How API keys are used",
+          keys_li_1: "Each client has a unique key.",
+          keys_li_2: "The key is sent via the `x-api-key` header.",
+          keys_li_3: "The key is tied to status, rate limits, and allowed entities.",
+          keys_li_4: "Key rotation is supported via admin routes.",
+          pilot_h2: "How the pilot works",
+          pilot_li_1: "The pilot runs for an agreed period and focuses on one process.",
+          pilot_li_2: "Request volume and redaction quality are measured.",
+          pilot_li_3: "Pilot outcome informs the next commercial step."
+        }
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang] && I18N[lang][key];
+          if (value !== undefined) {
+            el.textContent = value;
+          }
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

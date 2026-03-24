@@ -262,6 +262,16 @@ def offer():
     return FileResponse(BASE_DIR / "static" / "offer.html")
 
 
+@app.get("/onboarding", include_in_schema=False)
+def onboarding():
+    return FileResponse(BASE_DIR / "static" / "onboarding.html")
+
+
+@app.get("/offer-print", include_in_schema=False)
+def offer_print():
+    return FileResponse(BASE_DIR / "static" / "offer-print.html")
+
+
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     return Response(status_code=204)
