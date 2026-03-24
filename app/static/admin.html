@@ -237,6 +237,8 @@
         <button id="load-clients" class="primary" type="button" data-i18n="admin_btn_load_clients">Load clients</button>
         <button id="load-usage" type="button" data-i18n="admin_btn_load_usage">Load usage</button>
         <button id="load-contact-requests" type="button" data-i18n="admin_btn_load_contact_requests">Load contact requests</button>
+        <button id="export-contact-requests" type="button" data-i18n="admin_btn_export_contact_requests">Export contact requests CSV</button>
+        <button id="export-usage-summary" type="button" data-i18n="admin_btn_export_usage_summary">Export usage summary CSV</button>
         <button id="reload-clients" class="warn" type="button" data-i18n="admin_btn_reload_clients">Reload clients</button>
       </div>
     </section>
@@ -327,6 +329,7 @@
       <p class="sub" data-i18n="admin_contact_requests_sub">View contact form submissions in reverse chronological order.</p>
       <div class="actions">
         <button id="load-contact-requests-2" class="primary" type="button" data-i18n="admin_btn_load_contact_requests">Load contact requests</button>
+        <button id="export-contact-requests-2" type="button" data-i18n="admin_btn_export_contact_requests">Export contact requests CSV</button>
       </div>
     </section>
 
@@ -377,6 +380,8 @@
           admin_rotate_sub: "Generiše novi ključ i poništava stari ključ za taj klijent.",
           admin_btn_rotate_key: "Rotiraj ključ",
           admin_btn_load_contact_requests: "Učitaj kontakt zahteve",
+          admin_btn_export_contact_requests: "Izvezi kontakt zahteve CSV",
+          admin_btn_export_usage_summary: "Izvezi upotrebu CSV",
           admin_contact_requests_h2: "Kontakt zahtevi (Lead-ovi)",
           admin_contact_requests_sub: "Pogledajte podneske sa kontakt forme u obrnutom hronološkom redosledu.",
           admin_status_admin_key_required: "Admin ključ je obavezan.",
@@ -425,6 +430,8 @@
           admin_rotate_sub: "Generates a new key and invalidates the old key for that client.",
           admin_btn_rotate_key: "Rotate key",
           admin_btn_load_contact_requests: "Load contact requests",
+          admin_btn_export_contact_requests: "Export contact requests CSV",
+          admin_btn_export_usage_summary: "Export usage summary CSV",
           admin_contact_requests_h2: "Contact Requests (Leads)",
           admin_contact_requests_sub: "View contact form submissions in reverse chronological order.",
           admin_status_admin_key_required: "Admin key is required.",
@@ -512,6 +519,51 @@
         return raw.split(",").map(function (item) { return item.trim(); }).filter(Boolean);
       }
 
+      function exportCsv(path) {
+        const adminKey = (keyInput.value || "").trim();
+        if (!adminKey) {
+          setStatus("err", t("admin_status_admin_key_required"));
+          return;
+        }
+
+        setStatus("", t("admin_status_loading"));
+
+        fetch(path, {
+          headers: { "x-admin-key": adminKey }
+        })
+        .then(function (res) {
+          if (!res.ok) {
+            throw new Error("Export failed");
+          }
+          
+          // Get filename from Content-Disposition header or use default
+          const contentDisposition = res.headers.get("Content-Disposition");
+          let filename = "export.csv";
+          if (contentDisposition) {
+            const matches = contentDisposition.match(/filename="([^"]+)"/);
+            if (matches && matches[1]) {
+              filename = matches[1];
+            }
+          }
+
+          return res.blob().then(function (blob) {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            setStatus("ok", t("admin_status_request_successful"));
+          });
+        })
+        .catch(function (_e) {
+          setStatus("err", t("admin_status_network_error"));
+        });
+      }
+
       async function callApi(path, method, payload) {
         const adminKey = (keyInput.value || "").trim();
         if (!adminKey) {
@@ -574,6 +626,18 @@
 
       document.getElementById("load-contact-requests-2").addEventListener("click", function () {
         callApi("/api/admin/contact-requests", "GET");
+      });
+
+      document.getElementById("export-contact-requests").addEventListener("click", function () {
+        exportCsv("/api/admin/contact-requests.csv");
+      });
+
+      document.getElementById("export-contact-requests-2").addEventListener("click", function () {
+        exportCsv("/api/admin/contact-requests.csv");
+      });
+
+      document.getElementById("export-usage-summary").addEventListener("click", function () {
+        exportCsv("/api/admin/usage-summary.csv");
       });
 
       document.getElementById("reload-clients").addEventListener("click", function () {

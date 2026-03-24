@@ -307,6 +307,69 @@ def test_admin_contact_requests_endpoint_unauthorized():
     assert response.json()["error"]["code"] == "unauthorized"
 
 
+def test_admin_contact_requests_csv_endpoint():
+    # First, create a contact request
+    payload = {
+        "full_name": "Jane Export",
+        "email": "jane.export@example.com", 
+        "company": "Export Corp",
+        "message": "Test message for CSV export",
+    }
+    response = client.post("/api/contact", json=payload)
+    assert response.status_code == 200
+
+    # Then export via admin API
+    response = client.get(
+        "/api/admin/contact-requests.csv",
+        headers={"x-admin-key": ADMIN_KEY},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/csv; charset=utf-8"
+    assert "content-disposition" in response.headers
+    assert "contact_requests_" in response.headers["content-disposition"]
+    
+    # Check CSV content
+    csv_content = response.content.decode()
+    assert "ts,full_name,email,company,message,request_id" in csv_content
+    assert "Jane Export" in csv_content
+    assert "jane.export@example.com" in csv_content
+
+
+def test_admin_usage_summary_csv_endpoint():
+    # First, make some API calls to generate usage data
+    client.post(
+        "/api/v1/redact",
+        headers={"x-api-key": DEMO_KEY},
+        json={"text": "Test email: test@example.com", "policy": "mask"},
+    )
+    
+    # Then export via admin API
+    response = client.get(
+        "/api/admin/usage-summary.csv",
+        headers={"x-admin-key": ADMIN_KEY},
+    )
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/csv; charset=utf-8"
+    assert "content-disposition" in response.headers
+    assert "usage_summary_" in response.headers["content-disposition"]
+    
+    # Check CSV content
+    csv_content = response.content.decode()
+    assert "client_id,client_name,total_requests,current_month_requests,last_request_at" in csv_content
+
+
+def test_admin_csv_endpoints_unauthorized():
+    # Test contact requests CSV without auth
+    response = client.get("/api/admin/contact-requests.csv")
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "unauthorized"
+    
+    # Test usage summary CSV without auth
+    response = client.get("/api/admin/usage-summary.csv")
+    assert response.status_code == 401
+    assert response.json()["error"]["code"] == "unauthorized"
+
+
 def test_admin_rotate_key_changes_key_for_client():
     before = client.get("/api/admin/clients", headers={"x-admin-key": ADMIN_KEY})
     assert before.status_code == 200

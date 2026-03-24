@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
 from uuid import uuid4
+import csv
+from io import StringIO
 
 from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.exceptions import RequestValidationError
@@ -433,6 +435,87 @@ def admin_contact_requests(x_admin_key: Optional[str] = Header(default=None)):
     _check_admin_key(x_admin_key)
     requests = read_contact_requests()
     return {"contact_requests": requests}
+
+
+@app.get("/api/admin/contact-requests.csv")
+def admin_contact_requests_csv(x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    
+    requests = read_contact_requests()
+    
+    # Create CSV content
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(["ts", "full_name", "email", "company", "message", "request_id"])
+    
+    # Write data rows
+    for req in requests:
+        writer.writerow([
+            req.get("ts", ""),
+            req.get("full_name", ""),
+            req.get("email", ""),
+            req.get("company", ""),
+            req.get("message", ""),
+            req.get("request_id", "")
+        ])
+    
+    # Create response with proper headers
+    csv_content = output.getvalue()
+    output.close()
+    
+    # Generate filename with timestamp
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    filename = f"contact_requests_{timestamp}.csv"
+    
+    return Response(
+        content=csv_content,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
+
+
+@app.get("/api/admin/usage-summary.csv")
+def admin_usage_summary_csv(x_admin_key: Optional[str] = Header(default=None)):
+    _check_admin_key(x_admin_key)
+    
+    usage_data = get_usage_summary()
+    
+    # Create CSV content
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(["client_id", "client_name", "total_requests", "current_month_requests", "last_request_at"])
+    
+    # Write data rows
+    for client in usage_data.get("clients", []):
+        writer.writerow([
+            client.get("client_id", ""),
+            client.get("client_name", ""),
+            client.get("total_requests", 0),
+            client.get("current_month_requests", 0),
+            client.get("last_request_at", "")
+        ])
+    
+    # Create response with proper headers
+    csv_content = output.getvalue()
+    output.close()
+    
+    # Generate filename with timestamp
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    filename = f"usage_summary_{timestamp}.csv"
+    
+    return Response(
+        content=csv_content,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
 
 
 @app.post("/api/admin/clients/{client_id}/rotate-key")
