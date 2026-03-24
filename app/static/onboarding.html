@@ -278,6 +278,12 @@
         </ul>
       </div>
     </section>
+
+    <div class="card" style="text-align: center;">
+      <div style="color: var(--muted); font-size: 13px; line-height: 1.6;">
+        <span data-i18n="footer_trust_links">Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a></span>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -322,7 +328,8 @@
           pilot_h2: "Kako pilot funkcioniše",
           pilot_li_1: "Pilot traje dogovoreni period i ciljano pokriva jedan proces.",
           pilot_li_2: "Meri se broj obrađenih zahteva i kvalitet redakcije.",
-          pilot_li_3: "Rezultat pilota je preporuka za sledeći komercijalni korak."
+          pilot_li_3: "Rezultat pilota je preporuka za sledeći komercijalni korak.",
+          footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
         en: {
           nav_landing: "Landing",
@@ -360,7 +367,8 @@
           pilot_h2: "How the pilot works",
           pilot_li_1: "The pilot runs for an agreed period and focuses on one process.",
           pilot_li_2: "Request volume and redaction quality are measured.",
-          pilot_li_3: "Pilot outcome informs the next commercial step."
+          pilot_li_3: "Pilot outcome informs the next commercial step.",
+          footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         }
       };
 
@@ -380,7 +388,8 @@
           const key = el.getAttribute("data-i18n");
           const value = I18N[lang] && I18N[lang][key];
           if (value !== undefined) {
-            el.textContent = value;
+            if (key === "footer_trust_links") el.innerHTML = value;
+            else el.textContent = value;
           }
         });
       }

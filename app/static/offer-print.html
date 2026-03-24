@@ -299,6 +299,7 @@
       <div class="footer">
         <span data-i18n="footer_left">PII Redaction API - printable offer</span>
         <span data-i18n="footer_right">Kontakt: sales@example.com</span>
+        <span data-i18n="footer_trust_links">Trust: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a></span>
       </div>
     </main>
   </div>
@@ -348,7 +349,8 @@
           onb_2_li_2: "Preporuka za širu produkcijsku upotrebu",
           onb_2_li_3: "Definisan sledeći komercijalni korak",
           footer_left: "PII Redaction API - printable offer",
-          footer_right: "Kontakt: sales@example.com"
+          footer_right: "Kontakt: sales@example.com",
+          footer_trust_links: 'Trust: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>'
         },
         en: {
           btn_home: "Home",
@@ -390,7 +392,8 @@
           onb_2_li_2: "Recommendation for broader production use",
           onb_2_li_3: "Defined next commercial step",
           footer_left: "PII Redaction API - printable offer",
-          footer_right: "Contact: sales@example.com"
+          footer_right: "Contact: sales@example.com",
+          footer_trust_links: 'Trust: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>'
         }
       };
 
@@ -407,7 +410,8 @@
           const key = el.getAttribute("data-i18n");
           const value = I18N[lang] && I18N[lang][key];
           if (value !== undefined) {
-            el.textContent = value;
+            if (key === "footer_trust_links") el.innerHTML = value;
+            else el.textContent = value;
           }
         });
       }

@@ -3,7 +3,7 @@
     {
       "client_id": "demo-local",
       "client_name": "Demo Local",
-      "api_key": "br2yBeNOC4VTGWcPMcUvH4BxjThYAz5T",
+      "api_key": "SvuCVV1tb0swlbctqZNvCU8UHd6Vo9rM",
       "status": "active",
       "plan": "demo",
       "rate_limit_per_minute": 200,
@@ -39,7 +39,7 @@
     {
       "client_id": "new-client",
       "client_name": "New Client",
-      "api_key": "8YX1dPU3t5SgmrAOCXlFLuc3nyUh10ei",
+      "api_key": "GRHetxM39cjDpDM003pvlGVFtxQr0yj6",
       "status": "active",
       "plan": "pilot",
       "rate_limit_per_minute": 55,

@@ -795,7 +795,10 @@
     </section>
 
     <div class="footer">
-      PII Redaction API • Landing, demo i API rade iz istog FastAPI servisa.
+      <span data-i18n="footer_line_1">PII Redaction API • Landing, demo i API rade iz istog FastAPI servisa.</span>
+      <div style="margin-top: 8px;">
+        <span data-i18n="footer_trust_links">Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a></span>
+      </div>
     </div>
   <script>
     (function () {
@@ -855,6 +858,8 @@
             "Neuspešno slanje upita. Proveri polja i pokušaj ponovo.",
           contact_status_error_network:
             "Neuspešno slanje upita. Proveri konekciju i pokušaj ponovo.",
+          footer_line_1: "PII Redaction API • Landing, demo i API rade iz istog FastAPI servisa.",
+          footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
         en: {
           nav_use_cases: "Use cases",
@@ -908,6 +913,8 @@
           contact_status_error: "Failed to send request. Check fields and try again.",
           contact_status_error_network:
             "Failed to send request. Check your connection and try again.",
+          footer_line_1: "PII Redaction API • Landing, demo and API run from the same FastAPI service.",
+          footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
       };
 
@@ -928,7 +935,10 @@
         document.querySelectorAll("[data-i18n]").forEach(function (el) {
           const key = el.getAttribute("data-i18n");
           const value = I18N[lang]?.[key];
-          if (value !== undefined) el.textContent = value;
+          if (value !== undefined) {
+            if (key === "footer_trust_links") el.innerHTML = value;
+            else el.textContent = value;
+          }
         });
       }
 

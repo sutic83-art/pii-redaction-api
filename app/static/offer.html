@@ -538,7 +538,10 @@
     </section>
 
     <div class="footer">
-      PII Redaction API • Offer page for initial commercial conversations.
+      <span data-i18n="footer_line_1">PII Redaction API • Offer page for initial commercial conversations.</span>
+      <div style="margin-top: 8px;">
+        <span data-i18n="footer_trust_links">Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a></span>
+      </div>
     </div>
   </div>
   <script>
@@ -640,6 +643,8 @@
           offer_faq_q4: "Kako izgleda uspeh?",
           offer_faq_a4:
             "Manje ručnog redigovanja, manje privacy incidenata i stabilno operativno usvajanje.",
+          footer_line_1: "PII Redaction API • Ponuda za inicijalne komercijalne razgovore.",
+          footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
         en: {
           nav_landing: "Landing",
@@ -734,6 +739,8 @@
           offer_faq_q4: "What does success look like?",
           offer_faq_a4:
             "Reduced manual redaction effort, fewer privacy incidents, and stable operational adoption.",
+          footer_line_1: "PII Redaction API • Offer page for initial commercial conversations.",
+          footer_trust_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>',
         },
       };
 
@@ -754,7 +761,10 @@
         document.querySelectorAll("[data-i18n]").forEach(function (el) {
           const key = el.getAttribute("data-i18n");
           const value = I18N[lang]?.[key];
-          if (value !== undefined) el.textContent = value;
+          if (value !== undefined) {
+            if (key === "footer_trust_links") el.innerHTML = value;
+            else el.textContent = value;
+          }
         });
       }
 

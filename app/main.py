@@ -277,6 +277,21 @@ def ops():
     return FileResponse(BASE_DIR / "static" / "ops.html")
 
 
+@app.get("/privacy", include_in_schema=False)
+def privacy():
+    return FileResponse(BASE_DIR / "static" / "privacy.html")
+
+
+@app.get("/terms", include_in_schema=False)
+def terms():
+    return FileResponse(BASE_DIR / "static" / "terms.html")
+
+
+@app.get("/security", include_in_schema=False)
+def security():
+    return FileResponse(BASE_DIR / "static" / "security.html")
+
+
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
     return Response(status_code=204)

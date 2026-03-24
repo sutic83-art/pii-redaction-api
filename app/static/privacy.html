@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API - Privacy</title>
+  <meta name="description" content="Privacy information for PII Redaction API." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --warn: #ffd166;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .brand { font-weight: bold; font-size: 20px; }
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .lead { margin-top: 8px; }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #335a64;
+      background: #10232b;
+      color: #aef3cc;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .footer a { text-decoration: underline; }
+
+    @media (max-width: 900px) {
+      h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/" data-i18n="nav_landing">Početna</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Ponuda</a>
+        <a class="nav-link" href="/onboarding" data-i18n="nav_onboarding">Onboarding</a>
+        <a class="nav-link" href="/demo" data-i18n="nav_demo">Demo</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_docs">Docs</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1 data-i18n="title">Politika privatnosti (sažeto)</h1>
+      <p class="lead" data-i18n="lead">
+        Ova stranica objašnjava koje podatke servis obrađuje i koje evidencije se čuvaju u trenutnoj verziji.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="processing_h2">Šta servis obrađuje</h2>
+      <ul>
+        <li data-i18n="processing_1">Tekst koji pošaljete na redakciju (API ili demo) se obrađuje da bi se prepoznali i redigovali osetljivi entiteti.</li>
+        <li data-i18n="processing_2">Servis vraća redigovan tekst i metapodatke o detekcijama (bez potrebe da čuva sirov tekst).</li>
+      </ul>
+      <div class="note" data-i18n="processing_note">
+        Napomena: U ovoj verziji cilj je da se sirov sadržaj ne zadržava duže nego što je potrebno za obradu zahteva.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="stored_h2">Šta se čuva / loguje</h2>
+      <ul>
+        <li data-i18n="stored_1">Kontakt forma: prijave (ime, email, kompanija opcionalno, poruka) se čuvaju kao evidencija upita.</li>
+        <li data-i18n="stored_2">Konfiguracija klijenata: postoji model klijenta (plan, status, limiti, dozvoljeni entiteti) i admin rute za upravljanje.</li>
+        <li data-i18n="stored_3">Praćenje upotrebe: beleži se broj zahteva i osnovni metapodaci o upotrebi (npr. client_id, plan, ruta, broj detekcija, dužina teksta), radi kontrole i kapaciteta.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="secrets_h2">API ključevi i tajne</h2>
+      <ul>
+        <li data-i18n="secrets_1">API ključ se koristi za autorizaciju pristupa po klijentu.</li>
+        <li data-i18n="secrets_2">API ključ ne treba izlagati u javnom frontendu (npr. u browser aplikaciji) — integracije se rade server-side.</li>
+        <li data-i18n="secrets_3">Admin ključ štiti admin rute i treba da bude čuvan kao tajna (env/secret store).</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      <span data-i18n="footer_links">
+        Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>
+      </span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_landing: "Početna",
+          nav_offer: "Ponuda",
+          nav_onboarding: "Onboarding",
+          nav_demo: "Demo",
+          nav_docs: "API dokumentacija",
+          title: "Politika privatnosti (sažeto)",
+          lead: "Ova stranica objašnjava koje podatke servis obrađuje i koje evidencije se čuvaju u trenutnoj verziji.",
+          processing_h2: "Šta servis obrađuje",
+          processing_1: "Tekst koji pošaljete na redakciju (API ili demo) se obrađuje da bi se prepoznali i redigovali osetljivi entiteti.",
+          processing_2: "Servis vraća redigovan tekst i metapodatke o detekcijama (bez potrebe da čuva sirov tekst).",
+          processing_note: "Napomena: U ovoj verziji cilj je da se sirov sadržaj ne zadržava duže nego što je potrebno za obradu zahteva.",
+          stored_h2: "Šta se čuva / loguje",
+          stored_1: "Kontakt forma: prijave (ime, email, kompanija opcionalno, poruka) se čuvaju kao evidencija upita.",
+          stored_2: "Konfiguracija klijenata: postoji model klijenta (plan, status, limiti, dozvoljeni entiteti) i admin rute za upravljanje.",
+          stored_3: "Praćenje upotrebe: beleži se broj zahteva i osnovni metapodaci o upotrebi (npr. client_id, plan, ruta, broj detekcija, dužina teksta), radi kontrole i kapaciteta.",
+          secrets_h2: "API ključevi i tajne",
+          secrets_1: "API ključ se koristi za autorizaciju pristupa po klijentu.",
+          secrets_2: "API ključ ne treba izlagati u javnom frontendu (npr. u browser aplikaciji) — integracije se rade server-side.",
+          secrets_3: "Admin ključ štiti admin rute i treba da bude čuvan kao tajna (env/secret store).",
+          footer_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>'
+        },
+        en: {
+          nav_landing: "Landing",
+          nav_offer: "Offer",
+          nav_onboarding: "Onboarding",
+          nav_demo: "Demo",
+          nav_docs: "API docs",
+          title: "Privacy (summary)",
+          lead: "This page explains what the service processes and what records are stored in the current version.",
+          processing_h2: "What the service processes",
+          processing_1: "Text submitted for redaction (API or demo) is processed to detect and redact sensitive entities.",
+          processing_2: "The service returns redacted text and detection metadata (without needing to retain raw text).",
+          processing_note: "Note: In this version the goal is to avoid retaining raw content longer than needed to process a request.",
+          stored_h2: "What is stored / logged",
+          stored_1: "Contact form: submissions (name, email, optional company, message) are stored for request tracking.",
+          stored_2: "Client configuration: a client model exists (plan, status, limits, allowed entities) with admin routes to manage it.",
+          stored_3: "Usage tracking: request counts and basic usage metadata are recorded (e.g., client_id, plan, route, detections count, text length) for control and capacity planning.",
+          secrets_h2: "API keys and secrets",
+          secrets_1: "An API key is used to authorize per-client access.",
+          secrets_2: "Do not expose API keys in a public frontend (e.g., browser apps) — integrate server-side.",
+          secrets_3: "An admin key protects admin routes and must be treated as a secret (env/secret store).",
+          footer_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>'
+        }
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      let currentLang = getLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        document.documentElement.setAttribute("lang", lang);
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang] && I18N[lang][key];
+          if (value !== undefined) {
+            if (key === "footer_links") el.innerHTML = value;
+            else el.textContent = value;
+          }
+        });
+      }
+
+      applyLang(currentLang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const lang = langSel.value;
+          localStorage.setItem(LANG_KEY, lang);
+          applyLang(lang);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

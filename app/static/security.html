@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PII Redaction API - Security</title>
+  <meta name="description" content="Security overview for PII Redaction API." />
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1830;
+      --panel: rgba(17, 27, 50, 0.94);
+      --text: #eef4ff;
+      --muted: #aab7d1;
+      --accent: #78a8ff;
+      --accent-2: #8ef0c2;
+      --warn: #ffd166;
+      --border: #26385f;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #15305f 0%, transparent 30%),
+        radial-gradient(circle at top right, #103a4c 0%, transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .brand { font-weight: bold; font-size: 20px; }
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .nav-link {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(19, 32, 61, 0.75);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #5c2c3f;
+      background: #2f1e28;
+      color: #ffd7e7;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .footer a { text-decoration: underline; }
+
+    @media (max-width: 980px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <div class="brand">PII Redaction API</div>
+      <div class="nav-links">
+        <a class="nav-link" href="/" data-i18n="nav_landing">Početna</a>
+        <a class="nav-link" href="/offer" data-i18n="nav_offer">Ponuda</a>
+        <a class="nav-link" href="/onboarding" data-i18n="nav_onboarding">Onboarding</a>
+        <a class="nav-link" href="/docs" data-i18n="nav_docs">Docs</a>
+        <select id="lang-select" class="nav-link" aria-label="Language">
+          <option value="sr">SR</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="card">
+      <h1 data-i18n="title">Security (sažet pregled)</h1>
+      <p data-i18n="lead">
+        Ovo je realističan pregled trenutnih kontrola i operativnog modela u ovoj verziji proizvoda.
+      </p>
+      <div class="note" data-i18n="no_claims">
+        Ne tvrdimo sertifikate (npr. ISO/SOC) osim ako se eksplicitno ne dogovore i ne verifikuju u posebnom aranžmanu.
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2 data-i18n="access_h2">Kontrole pristupa</h2>
+        <ul>
+          <li data-i18n="access_1">API ključ (x-api-key) po klijentu.</li>
+          <li data-i18n="access_2">Status klijenta (active/disabled) i mogućnost rotacije ključa.</li>
+          <li data-i18n="access_3">Admin rute za upravljanje su zaštićene admin ključem (x-admin-key).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 data-i18n="limits_h2">Limiti i kontrola zloupotrebe</h2>
+        <ul>
+          <li data-i18n="limits_1">Per-client rate limit (zahtevi/minut).</li>
+          <li data-i18n="limits_2">Mesečne kvote (po potrebi) i evidencija upotrebe.</li>
+          <li data-i18n="limits_3">Ograničenje entiteta po klijentu (allowed_entities).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="flow_h2">Redaction flow (bezbednosna logika)</h2>
+      <ul>
+        <li data-i18n="flow_1">Klijent šalje tekst server-side, uz API ključ.</li>
+        <li data-i18n="flow_2">Servis detektuje i rediguje osetljive entitete pre daljeg slanja ka eksternim sistemima.</li>
+        <li data-i18n="flow_3">Preporuka: ključ nikada ne izlagati u javnom browser frontendu.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="storage_h2">Skladištenje podataka u ovoj verziji</h2>
+      <ul>
+        <li data-i18n="storage_1">Nema baze podataka po default-u u ovom projektu.</li>
+        <li data-i18n="storage_2">Postoje interne evidencije (kontakt upiti, usage tracking, konfiguracija klijenata) u file-based modelu.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="deploy_h2">Deploy i operacije</h2>
+      <ul>
+        <li data-i18n="deploy_1">Produkcijski deploy model je baziran na standardnom FastAPI servisu.</li>
+        <li data-i18n="deploy_2">CI/CD i standardni build/deploy tok (npr. Docker) su predviđeni u projektu.</li>
+        <li data-i18n="deploy_3">Preporuka: tajne (admin key, API keys) držati u environment/secret store, ne u kodu.</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      <span data-i18n="footer_links">
+        Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>
+      </span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const LANG_KEY = "ui_lang";
+      const DEFAULT_LANG = "sr";
+
+      const I18N = {
+        sr: {
+          nav_landing: "Početna",
+          nav_offer: "Ponuda",
+          nav_onboarding: "Onboarding",
+          nav_docs: "API dokumentacija",
+          title: "Security (sažet pregled)",
+          lead: "Ovo je realističan pregled trenutnih kontrola i operativnog modela u ovoj verziji proizvoda.",
+          no_claims: "Ne tvrdimo sertifikate (npr. ISO/SOC) osim ako se eksplicitno ne dogovore i ne verifikuju u posebnom aranžmanu.",
+          access_h2: "Kontrole pristupa",
+          access_1: "API ključ (x-api-key) po klijentu.",
+          access_2: "Status klijenta (active/disabled) i mogućnost rotacije ključa.",
+          access_3: "Admin rute za upravljanje su zaštićene admin ključem (x-admin-key).",
+          limits_h2: "Limiti i kontrola zloupotrebe",
+          limits_1: "Per-client rate limit (zahtevi/minut).",
+          limits_2: "Mesečne kvote (po potrebi) i evidencija upotrebe.",
+          limits_3: "Ograničenje entiteta po klijentu (allowed_entities).",
+          flow_h2: "Redaction flow (bezbednosna logika)",
+          flow_1: "Klijent šalje tekst server-side, uz API ključ.",
+          flow_2: "Servis detektuje i rediguje osetljive entitete pre daljeg slanja ka eksternim sistemima.",
+          flow_3: "Preporuka: ključ nikada ne izlagati u javnom browser frontendu.",
+          storage_h2: "Skladištenje podataka u ovoj verziji",
+          storage_1: "Nema baze podataka po default-u u ovom projektu.",
+          storage_2: "Postoje interne evidencije (kontakt upiti, usage tracking, konfiguracija klijenata) u file-based modelu.",
+          deploy_h2: "Deploy i operacije",
+          deploy_1: "Produkcijski deploy model je baziran na standardnom FastAPI servisu.",
+          deploy_2: "CI/CD i standardni build/deploy tok (npr. Docker) su predviđeni u projektu.",
+          deploy_3: "Preporuka: tajne (admin key, API keys) držati u environment/secret store, ne u kodu.",
+          footer_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>'
+        },
+        en: {
+          nav_landing: "Landing",
+          nav_offer: "Offer",
+          nav_onboarding: "Onboarding",
+          nav_docs: "API docs",
+          title: "Security (overview)",
+          lead: "This is a realistic overview of current controls and operating model in this version of the product.",
+          no_claims: "We do not claim certifications (e.g., ISO/SOC) unless explicitly agreed and verified under a separate arrangement.",
+          access_h2: "Access controls",
+          access_1: "Per-client API key (x-api-key).",
+          access_2: "Client status (active/disabled) and key rotation capability.",
+          access_3: "Admin management routes are protected by an admin key (x-admin-key).",
+          limits_h2: "Limits and abuse control",
+          limits_1: "Per-client rate limit (requests/minute).",
+          limits_2: "Monthly quotas (when configured) and usage tracking.",
+          limits_3: "Per-client entity restrictions (allowed_entities).",
+          flow_h2: "Redaction flow (security logic)",
+          flow_1: "Clients submit text server-side with an API key.",
+          flow_2: "The service detects and redacts sensitive entities before content is sent to external systems.",
+          flow_3: "Recommendation: never expose the key in a public browser frontend.",
+          storage_h2: "Data storage in this version",
+          storage_1: "No database by default in this project.",
+          storage_2: "Internal records exist (contact requests, usage tracking, client configuration) in a file-based model.",
+          deploy_h2: "Deployment and operations",
+          deploy_1: "Production deployment follows a standard FastAPI service model.",
+          deploy_2: "CI/CD and a standard build/deploy flow (e.g., Docker) are part of the project approach.",
+          deploy_3: "Recommendation: keep secrets (admin key, API keys) in environment/secret store, not in code.",
+          footer_links: 'Trust pages: <a href="/privacy">Privacy</a> • <a href="/terms">Terms</a> • <a href="/security">Security</a>'
+        }
+      };
+
+      function getLang() {
+        const raw = (localStorage.getItem(LANG_KEY) || "").toLowerCase();
+        return raw === "en" || raw === "sr" ? raw : DEFAULT_LANG;
+      }
+
+      function applyLang(lang) {
+        document.documentElement.setAttribute("lang", lang);
+        const sel = document.getElementById("lang-select");
+        if (sel) sel.value = lang;
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          const key = el.getAttribute("data-i18n");
+          const value = I18N[lang] && I18N[lang][key];
+          if (value !== undefined) {
+            if (key === "footer_links") el.innerHTML = value;
+            else el.textContent = value;
+          }
+        });
+      }
+
+      const lang = getLang();
+      applyLang(lang);
+
+      const langSel = document.getElementById("lang-select");
+      if (langSel) {
+        langSel.addEventListener("change", function () {
+          const next = langSel.value;
+          localStorage.setItem(LANG_KEY, next);
+          applyLang(next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
